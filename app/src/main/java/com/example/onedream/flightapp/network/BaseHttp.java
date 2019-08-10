@@ -38,9 +38,9 @@ public class BaseHttp {
     //调度部门列表接口
     public static String CONTROL_COMPANY_LIST =BASE+"getDeptList";
     //普通单调度部门接口
-    public static String ORDER_NORMA_SAVE =BASE +"saveDept";
+    public static String CONTROL_ORDER_NORMA =BASE +"saveDept";
     //退废单调度部门接口
-    public static String ORDER_REFUND_SAVE =BASE +"saveTfDept";
+    public static String CONTROL_ORDER_REFUND =BASE +"saveTfDept";
     //改签单调度部门接口
-    public static String ORDER_ENDORE_SAVE =BASE +"saveGqdDept";
+    public static String CONTROL_ORDER_ENDORE=BASE +"saveGqdDept";
 }
