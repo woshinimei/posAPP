@@ -28,6 +28,7 @@
         <activity android:name=".activity.FilterTicketActivity" />
         <activity android:name=".activity.OrderDetailActivity" />
         <activity android:name=".activity.PayTypeActivity" />
+        <activity android:name=".activity.ControlDepartmentActivity" />
     </application>
 
 </manifest>

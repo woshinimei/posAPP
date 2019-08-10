@@ -66,7 +66,7 @@
                 android:id="@+id/tv_top_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="20"
+                android:text=""
                 android:textColor="@color/price_color"
                 android:textSize="@dimen/sp_17" />
         </LinearLayout>
@@ -130,7 +130,7 @@
             android:id="@+id/tv_bottom_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="20"
+            android:text="0"
             android:textColor="@android:color/white"
             android:textSize="@dimen/sp_16" />
     </LinearLayout>

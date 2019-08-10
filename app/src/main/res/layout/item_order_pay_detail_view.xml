@@ -32,6 +32,7 @@
                 android:textSize="@dimen/sp_14" />
 
             <TextView
+                android:id="@+id/tv_ddje"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
@@ -59,17 +60,30 @@
                 android:id="@+id/tv_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="@dimen/dp_10"
                 android:background="@drawable/btn_pay_cancel"
                 android:gravity="center"
-                android:paddingLeft="@dimen/dp_18"
+                android:paddingLeft="@dimen/dp_16"
                 android:paddingTop="@dimen/dp_5"
-                android:paddingRight="@dimen/dp_18"
+                android:paddingRight="@dimen/dp_16"
                 android:paddingBottom="@dimen/dp_5"
                 android:text="取消"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/sp_15" />
-
+                android:textSize="@dimen/sp_13" />
+            <TextView
+                android:id="@+id/tv_control"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_5"
+                android:background="@drawable/btn_pay_cancel"
+                android:gravity="center"
+                android:paddingLeft="@dimen/dp_16"
+                android:paddingTop="@dimen/dp_5"
+                android:paddingRight="@dimen/dp_16"
+                android:paddingBottom="@dimen/dp_5"
+                android:text="调度"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/sp_13" />
             <TextView
                 android:id="@+id/tv_pay"
                 android:layout_width="wrap_content"
@@ -77,13 +91,13 @@
                 android:layout_marginLeft="@dimen/dp_5"
                 android:background="@drawable/btn_pay_cancel"
                 android:gravity="center"
-                android:paddingLeft="@dimen/dp_18"
+                android:paddingLeft="@dimen/dp_16"
                 android:paddingTop="@dimen/dp_5"
-                android:paddingRight="@dimen/dp_18"
+                android:paddingRight="@dimen/dp_16"
                 android:paddingBottom="@dimen/dp_5"
                 android:text="支付"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/sp_15" />
+                android:textSize="@dimen/sp_13" />
         </LinearLayout>
     </RelativeLayout>
 </FrameLayout>

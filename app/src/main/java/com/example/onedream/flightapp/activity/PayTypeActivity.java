@@ -9,6 +9,7 @@ import com.example.onedream.flightapp.R;
 import com.example.onedream.flightapp.adapter.RvPayListAdapter;
 import com.example.onedream.flightapp.base.BaseActivity;
 import com.example.onedream.flightapp.bean.PayTypeBean;
+import com.example.onedream.flightapp.constant.OrderType;
 import com.example.onedream.flightapp.view.RecycleViewDivider;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class PayTypeActivity extends BaseActivity {
     TextView tvBottomPrice;
     RvPayListAdapter adapter;
     List<PayTypeBean> list = new ArrayList<>();
-
+    private String ddje ="";//订单金额
     @Override
     public int getLayout() {
         return R.layout.activity_pay_type;
@@ -34,6 +35,9 @@ public class PayTypeActivity extends BaseActivity {
 
     @Override
     public void initView() {
+         ddje = getIntent().getStringExtra(OrderType.ORDER_AMOUNT);//订单金额
+        tvBottomPrice.setText(ddje+"");
+        tvTopPrice.setText(ddje+"");
         initAdapter();
     }
 
@@ -84,12 +88,17 @@ public class PayTypeActivity extends BaseActivity {
                 break;
             case R.id.ll_bottom:
                 if(hasSelectPay()){
-
+                    orderPay();
                 }else {
                     showToast("请选择支付方式");
                 }
                 break;
         }
+    }
+
+    //订单支付接口
+    private void orderPay() {
+
     }
 
     //是否选择了支付方式

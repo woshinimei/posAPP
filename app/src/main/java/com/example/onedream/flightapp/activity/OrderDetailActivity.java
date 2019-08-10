@@ -1,22 +1,22 @@
 package com.example.onedream.flightapp.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.onedream.flightapp.R;
 import com.example.onedream.flightapp.adapter.DialogPriceDetailAdapter;
 import com.example.onedream.flightapp.adapter.OrderDetailTopAdapter;
 import com.example.onedream.flightapp.adapter.VpFragmentAdapter;
 import com.example.onedream.flightapp.base.BaseActivity;
+import com.example.onedream.flightapp.bean.FlightPayInfo;
 import com.example.onedream.flightapp.bean.PriceChildInfo;
 import com.example.onedream.flightapp.bean.PriceGroupInfo;
 import com.example.onedream.flightapp.bean.TopBarBean;
@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class OrderDetailActivity extends BaseActivity {
@@ -50,10 +51,22 @@ public class OrderDetailActivity extends BaseActivity {
     DialogPriceDetailAdapter priceAdapter;
     List<PriceGroupInfo> priceList = new ArrayList<>();
     String orderNo;
+    OrderDetailResponse response;//返回的接口数据
     OrderDetailBaseFragment baseFragment = new OrderDetailBaseFragment();
     OrderDetailDeliveryFragment deliveryFragment = new OrderDetailDeliveryFragment();
     OrderDetailTravelFragment travelFragment = new OrderDetailTravelFragment();
     OrderDetailApprovalFragment approvalFragment = new OrderDetailApprovalFragment();
+    @BindView(R.id.tv_back)
+    TextView tvBack;
+    @BindView(R.id.tv_mingxi)
+    TextView tvMingxi;
+    @BindView(R.id.tv_cancel)
+    TextView tvCancel;
+    @BindView(R.id.tv_pay)
+    TextView tvPay;
+    @BindView(R.id.tv_ddje)
+    TextView tvDdje;
+
     @Override
     public int getLayout() {
         return R.layout.activity_order_normal_detail;
@@ -74,11 +87,12 @@ public class OrderDetailActivity extends BaseActivity {
         model.getData(type, "", getActivity(), new OnCallBack<String>() {
             @Override
             public void onSucess(String s) {
-                OrderDetailResponse response = GsonUtils.fromJson(s, OrderDetailResponse.class);
+                response = GsonUtils.fromJson(s, OrderDetailResponse.class);
                 baseFragment.refreshData(response);
                 deliveryFragment.refreshData(response);
                 travelFragment.refreshData(response);
                 approvalFragment.refreshData(response);
+                initBottomPrice();
             }
 
             @Override
@@ -86,6 +100,17 @@ public class OrderDetailActivity extends BaseActivity {
                 showToast(msg);
             }
         });
+    }
+
+    //初始化顶部价格数据
+    private void initBottomPrice() {
+        if (response != null && response.isSuccess()) {
+            FlightPayInfo payInfo = response.getGjhcxx();
+            if (payInfo!=null){
+                String ddje = payInfo.getDdje();
+                tvDdje.setText(ddje+"");
+            }
+        }
     }
 
     private void initVp() {
@@ -149,8 +174,21 @@ public class OrderDetailActivity extends BaseActivity {
             case R.id.tv_cancel:
                 showNoteDialog();
                 break;
+            case R.id.tv_control:
+                Intent conIntent = new Intent(getActivity(),ControlDepartmentActivity.class);
+                conIntent.putExtra(OrderType.ORDER_NO,orderNo);
+                startActivity(conIntent);
+                break;
             case R.id.tv_pay:
                 Intent payIntent = new Intent(getActivity(), PayTypeActivity.class);
+                if (response!=null){
+                    FlightPayInfo payInfo = response.getGjhcxx();
+                    if (payInfo!=null){
+                        String ddje = payInfo.getDdje();
+                        payIntent.putExtra(OrderType.ORDER_AMOUNT,ddje);
+                    }
+
+                }
                 startActivity(payIntent);
                 break;
         }
@@ -226,4 +264,6 @@ public class OrderDetailActivity extends BaseActivity {
             priceDialog.dismiss();
         }
     }
+
+
 }

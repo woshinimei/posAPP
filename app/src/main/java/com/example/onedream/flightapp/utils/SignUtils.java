@@ -7,7 +7,9 @@ public class SignUtils {
        //生成签名
     public static String getSign() {
         //公钥
-        String key ="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDNmM0GTsYXf7TLA4vLghJd0wiRtelxDC8/IPskdBzYfP3F+LqNdnu722XXX4gzIz1g/LnU0WPIfVEa7rOjiv/z/R6PanDAgjicz5amZaQsw4FudNmhSn1bAwj1cyfPx9CR3kBPiqQPnFt3+DEK/V5yDlc50r30dvB3h4Q+0lJmKQIDAQAB";
+      String key = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCmtR0eyQX84ZSoaiK/EY0KZmFvS3Bew5+IcHL+ZU/90Fh1I4EbSGOkgLa9rjsntZxvKepIovWTJLonx45FhpP+4DPmyGekkA7z443naGlQvmMKpqJ26Jpk0bUHBfvS5+9ZXtwI8k2hRcQIFeYRt8yKCnkKy6bwvmb9B6BPa3fdpQIDAQAB";
+
+//        String key ="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDNmM0GTsYXf7TLA4vLghJd0wiRtelxDC8/IPskdBzYfP3F+LqNdnu722XXX4gzIz1g/LnU0WPIfVEa7rOjiv/z/R6PanDAgjicz5amZaQsw4FudNmhSn1bAwj1cyfPx9CR3kBPiqQPnFt3+DEK/V5yDlc50r30dvB3h4Q+0lJmKQIDAQAB";
         String sign ="SHGM"+"/"+System.currentTimeMillis();
         Log.e("------加密前--sign--",sign);
         PublicKey publicKey = RSAUtils.loadPublicKey(key);

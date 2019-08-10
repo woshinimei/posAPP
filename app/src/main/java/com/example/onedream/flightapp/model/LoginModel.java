@@ -13,7 +13,7 @@ import com.example.onedream.flightapp.utils.DesUtils;
 import com.example.onedream.flightapp.utils.GsonUtils;
 import com.example.onedream.flightapp.utils.RSAUtils;
 import com.example.onedream.flightapp.utils.Rs;
-import com.example.onedream.flightapp.utils.RsaUtil;
+
 import com.example.onedream.flightapp.utils.SignUtils;
 import com.google.gson.Gson;
 
@@ -46,9 +46,9 @@ public class LoginModel extends BaseModel {
 //            e.printStackTrace();
 //            Log.e("----e-----",e.getMessage()+"");
 //        }
-        String decrypt = RsaUtil.decrypt(sign);
+//        String decrypt = RsaUtil.decrypt(sign);
 //        String decrypt = Rs.decrypt(sign);
-        Log.e("---解密后--sign-22-",decrypt);
+//        Log.e("---解密后--sign-22-",decrypt);
 //        json = "{\n" +
 //                " \"username\":\"SHGMADMIN\",\"password\":\"aA123456\",\"sign\":\"SHGM/ASMIN\"\n" +
 //                "}";
