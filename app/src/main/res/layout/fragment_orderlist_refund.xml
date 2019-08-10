@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:drawableTop="@mipmap/no_data"
+        android:drawablePadding="@dimen/dp_10"
+        android:gravity="center_horizontal"
+        android:text="暂无数据"
+        android:textSize="@dimen/sp_14" />
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/pull"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srlDisableContentWhenLoading="true"
+        app:srlDisableContentWhenRefresh="true">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@color/colorLine"
+            android:overScrollMode="never"></android.support.v7.widget.RecyclerView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</RelativeLayout>

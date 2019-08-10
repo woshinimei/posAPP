@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--<include layout="@layout/item_travel_costcenter_view" />-->
+<LinearLayout
+    android:id="@+id/ll_lx"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"></LinearLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/white"
+        android:padding="@dimen/dp_10">
+
+        <TableRow android:padding="@dimen/dp_10">
+
+            <TextView
+                android:text="出差申请单号"
+                android:textColor="@color/colorT3"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:id="@+id/tv_no"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_weight="1"
+                android:text="无"
+                android:textColor="@color/colorT3"
+                android:textSize="@dimen/sp_14" />
+        </TableRow>
+
+        <View
+            android:background="@color/colorLine"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"></View>
+
+        <TableRow android:padding="@dimen/dp_10">
+
+            <TextView
+                android:text="差旅事项"
+                android:textColor="@color/colorT3"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:id="@+id/tv_thing"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_weight="1"
+                android:text="无"
+                android:textColor="@color/colorT3"
+                android:textSize="@dimen/sp_14" />
+        </TableRow>
+        <View
+            android:background="@color/colorLine"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"></View>
+        <TableRow android:padding="@dimen/dp_10">
+
+            <TextView
+                android:text="项目"
+                android:textColor="@color/colorT3"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:id="@+id/tv_xm"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_weight="1"
+                android:text=""
+                android:textColor="@color/colorT3"
+                android:textSize="@dimen/sp_14" />
+        </TableRow>
+        <View
+            android:background="@color/colorLine"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"></View>
+        <TableRow android:padding="@dimen/dp_10">
+
+            <TextView
+                android:text="违背原因"
+                android:textColor="@color/colorT3"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:id="@+id/tv_reson"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_weight="1"
+                android:text=""
+                android:textColor="@color/colorT3"
+                android:textSize="@dimen/sp_14" />
+        </TableRow>
+
+    </TableLayout>
+
+
+</LinearLayout>

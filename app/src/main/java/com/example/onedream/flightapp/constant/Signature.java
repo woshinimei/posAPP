@@ -1,0 +1,10 @@
+package com.example.onedream.flightapp.constant;
+
+public class Signature {
+    //登录密码des加密密钥
+    public static String DSE_KEY  ="12345678";
+    //登录sign的加密公钥
+    public static String gkey="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDNmM0GTsYXf7TLA4vLghJd0wiRtelxDC8/IPskdBzYfP3F+LqNdnu722XXX4gzIz1g/LnU0WPIfVEa7rOjiv/z/R6PanDAgjicz5amZaQsw4FudNmhSn1bAwj1cyfPx9CR3kBPiqQPnFt3+DEK/V5yDlc50r30dvB3h4Q+0lJmKQIDAQAB";
+    //
+    public static String skey = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAM2YzQZOxhd/tMsDi8uCEl3TCJG16XEMLz8g+yR0HNh8/cX4uo12e7vbZddfiDMjPWD8udTRY8h9URrus6OK//P9Ho9qcMCCOJzPlqZlpCzDgW502aFKfVsDCPVzJ8/H0JHeQE+KpA+cW3f4MQr9XnIOVznSvfR28HeHhD7SUmYpAgMBAAECgYAny1SbzPGAqOJIjTYovNNrP6af9XLqw639bRfPNX5D1OWVxQ/uw6ktckjjCAWnyEFgHWqmq6TBsKfbK6qvk/74VQ01eBTkclgp1b1QoEnRkZv8FVhvAB6BrZao3ZdZ9FI/k0tzY1G+vyPPS5bmE6yXJpXmAbqt3jiccZwmRzocgQJBAOVxHAWIz6kFHzkBQ6X/XXW+39leHEXO2GNrep4ERa3IiLJ37zy4YbimVu4gYmIXx+a3oOWHoRpO0fbAH61eUTECQQDlZRxD+6W1aEgCP3JBgGfTVDY6CWMkk/7/wIu4Ikb3DZZ4OqEHztvnu4m2NTGLnz52togVLXQ4Eso7APNNjOZ5AkEAhnbrfTLYwK2Hxti+1KH8G+1pMvK8jwzSNDHhAopua5KCylUPl/5XBug1Ogkwn1xggw5K9TmvaMOYuYuPBQOpgQJBANsOJeLJkSFdlr4Gxl3Ed+E3npznT/SjGzQxM3s/yFKteA4RtqqVICv3S3di7pAtHmIQxnyqrjvJvbKAotZggckCQEJ2hPfJo3RSoxdXnLZ6+8aqM3iWdrMBXr8VIJsXFw6nN4T/oFJKCJBEo/P9Xj++ZD+BfkA7G79W3oDAVYpAZxY=";
+}

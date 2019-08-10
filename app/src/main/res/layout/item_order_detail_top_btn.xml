@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/fl_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_5"
+        android:background="@drawable/btn_order_detail_top"
+        android:gravity="center"
+        android:paddingRight="@dimen/dp_5"
+        android:paddingLeft="@dimen/dp_5"
+        android:paddingTop="@dimen/dp_10"
+     android:paddingBottom="@dimen/dp_10"
+        android:text="基本信息"
+        android:textColor="@color/btn_order_detail_text"
+        android:textSize="@dimen/sp_14" />
+</FrameLayout>

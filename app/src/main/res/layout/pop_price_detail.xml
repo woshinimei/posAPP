@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#55000000"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dp_10"
+        android:padding="@dimen/dp_10"
+        android:text="费用明细"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp_16" />
+
+
+    <ExpandableListView
+        android:layout_weight="1"
+        android:id="@+id/elv_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ExpandableListView>
+
+
+    <ImageView
+        android:id="@+id/iv_del"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="@dimen/dp_20"
+        android:src="@mipmap/pop_del" />
+</LinearLayout>

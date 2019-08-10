@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="color_transparent">#52c0c0c0</color>
+    <color name="topview_bg">#d01e2e</color>
+    <color name="topview_pressed_bg">#d01e2e</color>
+    <color name="no_data_default">#ccc</color>
+    <color name="colorT0">#000000</color>
+    <color name="colorT3">#333333</color>
+    <color name="colorT6">#666666</color>
+    <color name="colorT9">#999999</color>
+    <color name="colorLine">#e5e5e5</color>
+    <color name="colorBlue">#0874df</color>
+    <color name="colorGreen">#30c811</color>
+    <!--价格显示颜色-->
+    <color name="price_color">#FD7E15</color>
+    <color name="pay_color">#FF9914</color>
+    <!--灰色文字-->
+    <color name="text_gray">#ff585858</color>
+    <color name="yellow_color">#f60</color>
+</resources>
