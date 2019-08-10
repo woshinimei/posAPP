@@ -57,6 +57,7 @@
                 android:textSize="@dimen/sp_15" />
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tv_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -74,7 +75,7 @@
                 android:id="@+id/tv_control"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_5"
+                android:layout_marginLeft="@dimen/dp_10"
                 android:background="@drawable/btn_pay_cancel"
                 android:gravity="center"
                 android:paddingLeft="@dimen/dp_16"

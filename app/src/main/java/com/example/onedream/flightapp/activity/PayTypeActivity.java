@@ -10,6 +10,9 @@ import com.example.onedream.flightapp.adapter.RvPayListAdapter;
 import com.example.onedream.flightapp.base.BaseActivity;
 import com.example.onedream.flightapp.bean.PayTypeBean;
 import com.example.onedream.flightapp.constant.OrderType;
+import com.example.onedream.flightapp.intefaces.OnCallBack;
+import com.example.onedream.flightapp.model.PayModel;
+import com.example.onedream.flightapp.request.PayRequest;
 import com.example.onedream.flightapp.view.RecycleViewDivider;
 
 import java.util.ArrayList;
@@ -28,6 +31,8 @@ public class PayTypeActivity extends BaseActivity {
     RvPayListAdapter adapter;
     List<PayTypeBean> list = new ArrayList<>();
     private String ddje ="";//订单金额
+    private String orderNo="";//订单编号
+    private int type =0;//
     @Override
     public int getLayout() {
         return R.layout.activity_pay_type;
@@ -36,6 +41,9 @@ public class PayTypeActivity extends BaseActivity {
     @Override
     public void initView() {
          ddje = getIntent().getStringExtra(OrderType.ORDER_AMOUNT);//订单金额
+        orderNo = getIntent().getStringExtra(OrderType.ORDER_NO);//订单编号
+         type = getIntent().getIntExtra(OrderType.ORDER_TYPE,0);
+
         tvBottomPrice.setText(ddje+"");
         tvTopPrice.setText(ddje+"");
         initAdapter();
@@ -98,7 +106,19 @@ public class PayTypeActivity extends BaseActivity {
 
     //订单支付接口
     private void orderPay() {
+        PayModel model = new PayModel();
+        PayRequest request = new PayRequest();
+        model.getData(getActivity(), type, request, new OnCallBack<String>() {
+            @Override
+            public void onSucess(String s) {
 
+            }
+
+            @Override
+            public void onError(String msg) {
+
+            }
+        });
     }
 
     //是否选择了支付方式

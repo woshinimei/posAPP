@@ -66,7 +66,7 @@ public class OrderDetailActivity extends BaseActivity {
     TextView tvPay;
     @BindView(R.id.tv_ddje)
     TextView tvDdje;
-
+    int type =0;
     @Override
     public int getLayout() {
         return R.layout.activity_order_normal_detail;
@@ -74,15 +74,19 @@ public class OrderDetailActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        Intent intent = getIntent();
+        type = intent.getIntExtra(OrderType.ORDER_TYPE, 0);
+        orderNo = intent.getStringExtra(OrderType.ORDER_NO);
+        if (type==1){
+            tvPay.setText("退款");
+        }
         initTopView();
         initVp();
         initData();
     }
 
     private void initData() {
-        Intent intent = getIntent();
-        int type = intent.getIntExtra(OrderType.ORDER_TYPE, 0);
-        orderNo = intent.getStringExtra(OrderType.ORDER_NO);
+
         OrderDetailModel model = new OrderDetailModel();
         model.getData(type, "", getActivity(), new OnCallBack<String>() {
             @Override
@@ -180,18 +184,29 @@ public class OrderDetailActivity extends BaseActivity {
                 startActivity(conIntent);
                 break;
             case R.id.tv_pay:
-                Intent payIntent = new Intent(getActivity(), PayTypeActivity.class);
-                if (response!=null){
-                    FlightPayInfo payInfo = response.getGjhcxx();
-                    if (payInfo!=null){
-                        String ddje = payInfo.getDdje();
-                        payIntent.putExtra(OrderType.ORDER_AMOUNT,ddje);
+                if (type!=1){
+                    Intent payIntent = new Intent(getActivity(), PayTypeActivity.class);
+                    payIntent.putExtra(OrderType.ORDER_TYPE,type);
+                    payIntent.putExtra(OrderType.ORDER_NO,orderNo);
+                    if (response!=null){
+                        FlightPayInfo payInfo = response.getGjhcxx();
+                        if (payInfo!=null){
+                            String ddje = payInfo.getDdje();
+                            payIntent.putExtra(OrderType.ORDER_AMOUNT,ddje);
+                        }
                     }
-
+                    startActivity(payIntent);
+                }else {
+                    doRefund();
                 }
-                startActivity(payIntent);
+
                 break;
         }
+    }
+
+    //退废单退款
+    private void doRefund() {
+
     }
 
     //展示明细

@@ -74,7 +74,6 @@ public class ControlDepartmentActivity extends BaseActivity {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
                 initData();
-//                adater.notifyDataSetChanged();
                 pull.finishRefresh(1000);//加载时间，必须加这句
             }
         });
