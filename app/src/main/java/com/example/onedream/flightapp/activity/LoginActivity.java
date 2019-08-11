@@ -12,10 +12,13 @@ import android.widget.EditText;
 import com.example.onedream.flightapp.R;
 import com.example.onedream.flightapp.base.BaseActivity;
 import com.example.onedream.flightapp.constant.AppLocal;
+import com.example.onedream.flightapp.constant.Signature;
 import com.example.onedream.flightapp.intefaces.OnCallBack;
 import com.example.onedream.flightapp.model.LoginModel;
 import com.example.onedream.flightapp.response.LoginResponse;
 import com.example.onedream.flightapp.utils.GsonUtils;
+import com.example.onedream.flightapp.utils.RSAUtils;
+import com.example.onedream.flightapp.utils.RsaUtil;
 import com.example.onedream.flightapp.utils.Shelper;
 
 import butterknife.BindView;
@@ -91,29 +94,59 @@ public class LoginActivity extends BaseActivity {
             showToast("请输入密码");
             return;
         }
-        model.setLogin(getActivity(),userName, pwd,  new OnCallBack<String>() {
-            @Override
-            public void onSucess(String s) {
-                LoginResponse response =GsonUtils.fromJson(s,LoginResponse.class);
-                if (response.isSuccess()){
-                    startActivity(new Intent(getActivity(),OrderListActivity.class));
-                    Shelper shelper = new Shelper(getActivity());
-                   shelper.save(new Shelper.Contanvlues(AppLocal.USER_NAME,userName));
-                   shelper.save(new Shelper.Contanvlues(AppLocal.USER_PWD,pwd));
-                  if (TextUtils.isEmpty(response.getUserKey())){
-                      AppLocal.USERKEY = response.getUserKey();
-                  }
-                }
-
-            }
-
-            @Override
-            public void onError(String msg) {
-                showToast(msg);
-            }
-        });
+        setSign();
+        setSign2();
+//        model.setLogin(getActivity(),userName, pwd,  new OnCallBack<String>() {
+//            @Override
+//            public void onSucess(String s) {
+//                LoginResponse response =GsonUtils.fromJson(s,LoginResponse.class);
+//                if (response.isSuccess()){
+//                    startActivity(new Intent(getActivity(),OrderListActivity.class));
+//                    Shelper shelper = new Shelper(getActivity());
+//                   shelper.save(new Shelper.Contanvlues(AppLocal.USER_NAME,userName));
+//                   shelper.save(new Shelper.Contanvlues(AppLocal.USER_PWD,pwd));
+//                  if (TextUtils.isEmpty(response.getUserKey())){
+//                      AppLocal.USERKEY = response.getUserKey();
+//                  }
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onError(String msg) {
+//                showToast(msg);
+//            }
+//        });
 
     }
+    private void setSign2(){
+        String base ="123";
+        Log.e("--加密前--base---",base+"");
+        String encrypt="";
+        try {
+            encrypt = RsaUtil.encrypt(base, Signature.PUBLIC_KEY);
+            Log.e("--加密后--encrypt---",encrypt+"");
+        } catch (Exception e) {
+            Log.e("----Exception--",e.toString()+"");
+            e.printStackTrace();
+        }
+        try {
+            Log.e("--加密后--encrypt---",encrypt+"");
+            String decrypt = RsaUtil.decrypt(encrypt, Signature.PRIVATE_KEY);
+            Log.e("--解密后--decrypt---",decrypt+"");
+        } catch (Exception e) {
+            Log.e("----Exception--",e.toString()+"");
+            e.printStackTrace();
+        }
 
+    }
+    private void setSign() {
+        String base = "123";
+        Log.e("--加密前--base---",base+"");
+        String enStr = RSAUtils.getSign(base);
+        Log.e("--加密后--enStr---",enStr+"");
+        String decrypt = RSAUtils.getDecrypt(enStr);
+        Log.e("--解密后--decrypt---",decrypt+"");
+    }
 
 }
