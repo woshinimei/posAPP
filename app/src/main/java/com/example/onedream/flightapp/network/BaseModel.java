@@ -26,8 +26,8 @@ public class BaseModel {
             entity.addHeader("Content-Type", "application/json"); //设置请求头部
             entity.setAsJsonContent(true);
             entity.setBodyContent(json);
-            Log.e("请求地址：", url + "");
-            Log.e("请求参数   ：", json);
+            Log.e("请求地址: ", url + "");
+            Log.e("请求参数: ：", json);
 
         }
 
