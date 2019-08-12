@@ -187,7 +187,7 @@ public class FlightComomLogic {
 
 
     }
-    public static ArrayList<PriceInfo> getOrderDetailPriceDatas(Context context, int i, FlightTicketDetailPrice goTicketDetailPrice, int orderdetailflighttravle_type) {
+    public static ArrayList<PriceInfo> getOrderDetailPriceDatas( FlightTicketDetailPrice goTicketDetailPrice) {
         ArrayList<PriceInfo> dataList = new ArrayList<PriceInfo>();
 
 

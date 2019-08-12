@@ -133,15 +133,7 @@ public class OrderDetailActivity extends BaseActivity {
         });
     }
 
-    //初始化价格明细
-    private void initPriceDetail() {
-        if (response!=null&&response.getDetail()!=null){
-            OrderDetail detail = response.getDetail();
-            FlightTicketDetailPrice detailPrice = new FlightTicketDetailPrice();
-            FlightComomLogic.initDetailPriceInfo(detailPrice,detail);
 
-        }
-    }
 
     //初始化底部价格数据
     private void initBottomPrice() {
@@ -264,27 +256,38 @@ public class OrderDetailActivity extends BaseActivity {
         });
     }
 
+
+    //初始化价格明细
+    private void initPriceDetail() {
+        if (response!=null&&response.getDetail()!=null){
+            OrderDetail detail = response.getDetail();
+            FlightTicketDetailPrice detailPrice = new FlightTicketDetailPrice();
+            FlightComomLogic.initDetailPriceInfo(detailPrice,detail);
+            ArrayList<PriceInfo> priceInfos = FlightComomLogic.getOrderDetailPriceDatas(detailPrice);
+            if (priceInfos!=null&&priceInfos.size()>0){
+                priceList.clear();
+                priceList.addAll(priceInfos);
+            }
+        }
+    }
     //展示明细
     MyDialog priceDialog;
-
     private void showPopPriceDetail() {
         View layout = View.inflate(getActivity(), R.layout.pop_price_detail, null);
         ExpandableListView exListView = layout.findViewById(R.id.elv_content);
         LinearLayout llContent = layout.findViewById(R.id.ll_content);
-
         initPriceAdapter(exListView);
         priceDialog = new MyDialog(getActivity(), layout);
         priceDialog.showFullScreen();
     }
 
     private void initPriceAdapter(ExpandableListView exListView) {
-//        priceList.clear();
-//
-//        priceAdapter = new DialogPriceDetailAdapter(priceList, getActivity());
-//        exListView.setAdapter(priceAdapter);
-//        for (int i = 0; i < priceAdapter.getGroupCount(); i++) {
-//            exListView.expandGroup(i);
-//        }
+
+     priceAdapter = new DialogPriceDetailAdapter(priceList, getActivity());
+        exListView.setAdapter(priceAdapter);
+        for (int i = 0; i < priceAdapter.getGroupCount(); i++) {
+            exListView.expandGroup(i);
+        }
     }
 
     MyDialog dialog;
