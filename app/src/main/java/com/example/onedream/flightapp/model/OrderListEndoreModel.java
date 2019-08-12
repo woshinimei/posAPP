@@ -15,8 +15,7 @@ import com.example.onedream.flightapp.utils.SignUtils;
 public class OrderListEndoreModel extends BaseModel {
 
     public void getData(Context context, OnCallBack<String> callBack){
-        Shelper shelper =new Shelper(context);
-        String key = shelper.getString(AppLocal.USERKEY);
+        String key = AppLocal.USERKEY;
         String sign  =SignUtils.getSign();
         OrderListRequest request = new OrderListRequest();
         getCacheRequest(request);

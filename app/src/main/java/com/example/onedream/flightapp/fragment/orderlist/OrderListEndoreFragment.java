@@ -63,7 +63,6 @@ public class OrderListEndoreFragment extends BaseFragment {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
                 initData();
-                adater.notifyDataSetChanged();
                 pull.finishRefresh(1000);//加载时间，必须加这句
             }
         });
@@ -91,7 +90,7 @@ public class OrderListEndoreFragment extends BaseFragment {
         model.getData(getActivity(), new OnCallBack<String>() {
             @Override
             public void onSucess(String s) {
-                if (getActivity().isFinishing()) {
+                if (!getActivity().isFinishing()) {
                     OrderListResponse response = GsonUtils.fromJson(s, OrderListResponse.class);
                     List<OrderListBean> orderInfoList = response.getOrderInfoList();
                     if (orderInfoList != null) {

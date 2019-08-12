@@ -84,11 +84,13 @@ public class OrderListNormalFragment extends BaseFragment {
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        initData();
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        initData();
+//    }
+
+
 
     //获取数据
     private void initData() {

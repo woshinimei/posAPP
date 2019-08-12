@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.example.onedream.flightapp.R;
 import com.example.onedream.flightapp.base.BaseFragment;
 import com.example.onedream.flightapp.bean.DeliveryAndInvoiceInfo;
+import com.example.onedream.flightapp.bean.OrderDetail;
 import com.example.onedream.flightapp.response.OrderDetailResponse;
 
 import butterknife.BindView;
@@ -41,15 +42,18 @@ public class OrderDetailDeliveryFragment extends BaseFragment {
     }
 
     public void refreshData(OrderDetailResponse response) {
-        if (response.isSuccess()){
-            DeliveryAndInvoiceInfo info = response.getFppsxx();
-            if (info!=null){
-               tvGetName.setText(info.getSjr()+"");
-               tvAdress.setText(info.getSjdz()+"");
-               tvPhone.setText(info.getSjrdh()+"");
-               tvType.setText(info.getPsfs()+"");
-                tvCompany.setText(info.getKd()+"");
-                tvSendCount.setText(info.getYjpsf()+"");
+        if (response.isSuccess()) {
+            OrderDetail detail = response.getDetail();
+            if (detail != null) {
+                DeliveryAndInvoiceInfo info = detail.getFppsxx();
+                if (info != null) {
+                    tvGetName.setText(info.getSjr() + "");
+                    tvAdress.setText(info.getSjdz() + "");
+                    tvPhone.setText(info.getSjrdh() + "");
+                    tvType.setText(info.getPsfs() + "");
+                    tvCompany.setText(info.getKd() + "");
+                    tvSendCount.setText(info.getYjpsf() + "");
+                }
             }
         }
     }

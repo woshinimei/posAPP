@@ -15,7 +15,7 @@ public class PayModel extends BaseModel {
             case 0:
                 baseUrl  =BaseHttp.ORDER_NORMA_LPAY;
                 break;
-            case 1:
+            case 2:
                 baseUrl  =BaseHttp.ORDER_ENDORE_LPAY;
                 break;
         }

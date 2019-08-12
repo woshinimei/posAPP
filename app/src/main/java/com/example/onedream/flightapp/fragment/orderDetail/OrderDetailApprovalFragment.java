@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.example.onedream.flightapp.R;
 import com.example.onedream.flightapp.base.BaseFragment;
 import com.example.onedream.flightapp.bean.JbInfo;
+import com.example.onedream.flightapp.bean.OrderDetail;
 import com.example.onedream.flightapp.response.OrderDetailResponse;
 
 import butterknife.BindView;
@@ -40,9 +41,12 @@ public class OrderDetailApprovalFragment extends BaseFragment {
 
     public void refreshData(OrderDetailResponse response) {
         if (response.isSuccess()){
-            JbInfo jbxx = response.getJbxx();
-            if (jbxx!=null){
+            OrderDetail detail = response.getDetail();
+            if (detail!=null) {
+                JbInfo jbxx = detail.getJbxx();
+                if (jbxx != null) {
 
+                }
             }
         }
     }

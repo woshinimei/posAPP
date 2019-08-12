@@ -2,6 +2,7 @@ package com.example.onedream.flightapp.model;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.example.onedream.flightapp.constant.AppLocal;
 import com.example.onedream.flightapp.intefaces.OnCallBack;
@@ -15,14 +16,14 @@ import com.example.onedream.flightapp.utils.SignUtils;
 public class OrderListNormalModel extends BaseModel {
 
     public void getData(Context context, OnCallBack<String> callBack){
-        Shelper shelper =new Shelper(context);
-        String key = shelper.getString(AppLocal.USERKEY);
+        String key =AppLocal.USERKEY;
         String sign  =SignUtils.getSign();
         OrderListRequest request = new OrderListRequest();
       getCacheRequest(request);
         request.setUserKey(key);
         request.setSign(sign);
         String json =GsonUtils.getJson(request);
+        Log.e("-----key---",request.getUserKey()+"---");
        doRequest(context,true, BaseHttp.ORDERLIST_NORMAL, json,callBack);
     }
     //从缓存中拿数据

@@ -1,5 +1,6 @@
 package com.example.onedream.flightapp.fragment.orderDetail;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,30 +36,33 @@ public class OrderDetailTravelFragment extends BaseFragment {
 
     @Override
     public void initView() {
-
+        Log.e("--initView---","-----------");
     }
 
     public void refreshData(OrderDetailResponse response) {
+        Log.e("--refreshData---","-----------");
         if (response.isSuccess()) {
-            TravelInfo clxx = response.getClxx();
-            List<PassengerInfo> cjrjh = response.getCjrjh();
-            if (cjrjh != null) {
+            if (response.getDetail() != null) {
+                TravelInfo clxx = response.getDetail().getClxx();
+                List<PassengerInfo> cjrjh = response.getDetail().getCjrjh();
+                if (cjrjh != null) {
 
-                llLx.removeAllViews();
-                for (PassengerInfo info : cjrjh) {
-                    View view = View.inflate(getActivity(), R.layout.item_travel_costcenter_view, null);
-                    ViewHolder holder = new ViewHolder(view);
-                    holder.tvCbCm.setText(info.getCjrxm()+"");
-                    holder.tvCb.setText(info.getCbzxmc()+"");
-                    llLx.addView(view);
+                    llLx.removeAllViews();
+                    for (PassengerInfo info : cjrjh) {
+                        View view = View.inflate(getActivity(), R.layout.item_travel_costcenter_view, null);
+                        ViewHolder holder = new ViewHolder(view);
+                        holder.tvCbCm.setText(info.getCjrxm() + "");
+                        holder.tvCb.setText(info.getCbzxmc() + "");
+                        llLx.addView(view);
+                    }
+
                 }
-
-            }
-            if (clxx != null) {
-                    tvNo.setText(clxx.getQysph()+"");
-                    tvReson.setText(clxx.getWbyysm()+"");
-                    tvThing.setText(clxx.getXmdh()+"");
+                if (clxx != null) {
+                    tvNo.setText(clxx.getQysph() + "");
+                    tvReson.setText(clxx.getWbyysm() + "");
+                    tvThing.setText(clxx.getXmdh() + "");
                     tvXm.setText(clxx.getXmmc());
+                }
             }
         }
     }

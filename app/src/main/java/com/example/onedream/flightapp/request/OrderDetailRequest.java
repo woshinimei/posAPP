@@ -5,7 +5,16 @@ import com.example.onedream.flightapp.network.BaseRequest;
 public class OrderDetailRequest extends BaseRequest {
     private String userKey;//用户唯一标识（必传）
     private String sign;//签名（必传）
+    private String ddbh;//订单编号（非必传）
     private String orderNo;//订单编号（非必传）
+
+    public String getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
+    }
 
     public String getUserKey() {
         return userKey;
@@ -23,11 +32,11 @@ public class OrderDetailRequest extends BaseRequest {
         this.sign = sign;
     }
 
-    public String getOrderNo() {
-        return orderNo;
+    public String getDdbh() {
+        return ddbh;
     }
 
-    public void setOrderNo(String orderNo) {
-        this.orderNo = orderNo;
+    public void setDdbh(String ddbh) {
+        this.ddbh = ddbh;
     }
 }

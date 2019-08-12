@@ -112,6 +112,8 @@
         </LinearLayout>
 
         <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_hc_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/dp_10"
@@ -131,6 +133,8 @@
         <!--<include layout="@layout/item_base_airtravel_view" />-->
 
         <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_passenger_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
@@ -150,6 +154,7 @@
         <!--<include layout="@layout/item_base_passenger_view" />-->
 
         <TextView
+            android:id="@+id/tv_concact_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/dp_10"

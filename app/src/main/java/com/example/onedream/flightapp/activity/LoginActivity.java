@@ -102,8 +102,10 @@ public class LoginActivity extends BaseActivity {
                     Shelper shelper = new Shelper(getActivity());
                    shelper.save(new Shelper.Contanvlues(AppLocal.USER_NAME,userName));
                    shelper.save(new Shelper.Contanvlues(AppLocal.USER_PWD,pwd));
-                  if (TextUtils.isEmpty(response.getUserKey())){
-                      AppLocal.USERKEY = response.getUserKey();
+                    String userKey = response.getUserKey();
+                    Log.e("---userKey---",userKey+"----");
+                    if (!TextUtils.isEmpty(userKey)){
+                      AppLocal.USERKEY = userKey;
                   }
                 }
 

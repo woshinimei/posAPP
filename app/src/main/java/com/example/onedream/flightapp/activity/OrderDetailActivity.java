@@ -1,11 +1,11 @@
 package com.example.onedream.flightapp.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
@@ -17,8 +17,11 @@ import com.example.onedream.flightapp.adapter.OrderDetailTopAdapter;
 import com.example.onedream.flightapp.adapter.VpFragmentAdapter;
 import com.example.onedream.flightapp.base.BaseActivity;
 import com.example.onedream.flightapp.bean.FlightPayInfo;
-import com.example.onedream.flightapp.bean.PriceChildInfo;
-import com.example.onedream.flightapp.bean.PriceGroupInfo;
+import com.example.onedream.flightapp.bean.FlightTicketDetailPrice;
+import com.example.onedream.flightapp.bean.JbInfo;
+import com.example.onedream.flightapp.bean.OrderDetail;
+import com.example.onedream.flightapp.bean.PriceItem;
+import com.example.onedream.flightapp.bean.PriceInfo;
 import com.example.onedream.flightapp.bean.TopBarBean;
 import com.example.onedream.flightapp.constant.OrderType;
 import com.example.onedream.flightapp.fragment.orderDetail.OrderDetailApprovalFragment;
@@ -27,7 +30,11 @@ import com.example.onedream.flightapp.fragment.orderDetail.OrderDetailDeliveryFr
 import com.example.onedream.flightapp.fragment.orderDetail.OrderDetailTravelFragment;
 import com.example.onedream.flightapp.intefaces.OnCallBack;
 import com.example.onedream.flightapp.model.OrderDetailModel;
+import com.example.onedream.flightapp.model.RefundModel;
+import com.example.onedream.flightapp.request.RefundRequest;
 import com.example.onedream.flightapp.response.OrderDetailResponse;
+import com.example.onedream.flightapp.response.RefundResponse;
+import com.example.onedream.flightapp.utils.FlightComomLogic;
 import com.example.onedream.flightapp.utils.GsonUtils;
 import com.example.onedream.flightapp.view.MyDialog;
 
@@ -35,7 +42,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class OrderDetailActivity extends BaseActivity {
@@ -49,7 +55,7 @@ public class OrderDetailActivity extends BaseActivity {
     VpFragmentAdapter vpAdater;
     List<TopBarBean> topList = new ArrayList<>();
     DialogPriceDetailAdapter priceAdapter;
-    List<PriceGroupInfo> priceList = new ArrayList<>();
+    List<PriceInfo> priceList = new ArrayList<>();
     String orderNo;
     OrderDetailResponse response;//返回的接口数据
     OrderDetailBaseFragment baseFragment = new OrderDetailBaseFragment();
@@ -88,15 +94,36 @@ public class OrderDetailActivity extends BaseActivity {
     private void initData() {
 
         OrderDetailModel model = new OrderDetailModel();
-        model.getData(type, "", getActivity(), new OnCallBack<String>() {
+
+        model.getData(type, orderNo, getActivity(), new OnCallBack<String>() {
             @Override
             public void onSucess(String s) {
-                response = GsonUtils.fromJson(s, OrderDetailResponse.class);
-                baseFragment.refreshData(response);
-                deliveryFragment.refreshData(response);
-                travelFragment.refreshData(response);
-                approvalFragment.refreshData(response);
-                initBottomPrice();
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+                        response = GsonUtils.fromJson(s, OrderDetailResponse.class);
+                        baseFragment.refreshData(response);
+                        deliveryFragment.refreshData(response);
+                        travelFragment.refreshData(response);
+                        approvalFragment.refreshData(response);
+                        if (response.getDetail()!=null){
+                            JbInfo jbxx = response.getDetail().getJbxx();
+                            if (jbxx!=null){
+                                String sfkzf = jbxx.getZfzt();//是否可支付
+                                if (type!=1) {
+                                    if (!TextUtils.isEmpty(sfkzf) && sfkzf.equals("未付")) {
+                                        tvPay.setVisibility(View.VISIBLE);
+                                    } else {
+                                        tvPay.setVisibility(View.GONE);
+                                    }
+                                }
+                            }
+                        }
+                        initBottomPrice();
+                        initPriceDetail();
+//                    }
+//                },1000);
+
             }
 
             @Override
@@ -106,13 +133,26 @@ public class OrderDetailActivity extends BaseActivity {
         });
     }
 
-    //初始化顶部价格数据
+    //初始化价格明细
+    private void initPriceDetail() {
+        if (response!=null&&response.getDetail()!=null){
+            OrderDetail detail = response.getDetail();
+            FlightTicketDetailPrice detailPrice = new FlightTicketDetailPrice();
+            FlightComomLogic.initDetailPriceInfo(detailPrice,detail);
+
+        }
+    }
+
+    //初始化底部价格数据
     private void initBottomPrice() {
         if (response != null && response.isSuccess()) {
-            FlightPayInfo payInfo = response.getGjhcxx();
-            if (payInfo!=null){
-                String ddje = payInfo.getDdje();
-                tvDdje.setText(ddje+"");
+            OrderDetail detail = response.getDetail();
+            if (detail!=null) {
+                JbInfo jbxx = detail.getJbxx();
+                if (jbxx != null) {
+                    String ddje = jbxx.getDdje();
+                    tvDdje.setText(ddje + "");
+                }
             }
         }
     }
@@ -124,6 +164,7 @@ public class OrderDetailActivity extends BaseActivity {
         fragList.add(deliveryFragment);
         fragList.add(travelFragment);
         fragList.add(approvalFragment);
+        vp.setOffscreenPageLimit(fragList.size());
         vpAdater = new VpFragmentAdapter(getSupportFragmentManager(), fragList);
         vp.setAdapter(vpAdater);
         vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -188,8 +229,8 @@ public class OrderDetailActivity extends BaseActivity {
                     Intent payIntent = new Intent(getActivity(), PayTypeActivity.class);
                     payIntent.putExtra(OrderType.ORDER_TYPE,type);
                     payIntent.putExtra(OrderType.ORDER_NO,orderNo);
-                    if (response!=null){
-                        FlightPayInfo payInfo = response.getGjhcxx();
+                    if (response!=null&&response.getDetail()!=null){
+                        FlightPayInfo payInfo = response.getDetail().getGjhcxx();
                         if (payInfo!=null){
                             String ddje = payInfo.getDdje();
                             payIntent.putExtra(OrderType.ORDER_AMOUNT,ddje);
@@ -206,7 +247,21 @@ public class OrderDetailActivity extends BaseActivity {
 
     //退废单退款
     private void doRefund() {
+        RefundModel model = new RefundModel();
+        RefundRequest request = new RefundRequest();
+        request.setTkdh(orderNo);
+        model.getData(getActivity(), request, new OnCallBack<String>() {
+            @Override
+            public void onSucess(String s) {
+                RefundResponse response = GsonUtils.fromJson(s,RefundResponse.class);
+                showToast(response.getMessage()+"");
+            }
 
+            @Override
+            public void onError(String msg) {
+                showToast(msg);
+            }
+        });
     }
 
     //展示明细
@@ -223,29 +278,13 @@ public class OrderDetailActivity extends BaseActivity {
     }
 
     private void initPriceAdapter(ExpandableListView exListView) {
-        priceList.clear();
-        PriceGroupInfo groupInfo = new PriceGroupInfo();
-        groupInfo.setTitle("票价");
-        groupInfo.setTotalPrice(1050);
-        PriceChildInfo childInfo1 = new PriceChildInfo();
-        childInfo1.setName("机建");
-        childInfo1.setItemPrice(1030);
-        PriceChildInfo childInfo2 = new PriceChildInfo();
-        childInfo2.setName("优惠券");
-        childInfo2.setItemPrice(20);
-        List<PriceChildInfo> childList = new ArrayList<>();
-        childList.add(childInfo1);
-        childList.add(childInfo2);
-        childList.add(childInfo2);
-        childList.add(childInfo2);
-        childList.add(childInfo2);
-        groupInfo.setItemlist(childList);
-        priceList.add(groupInfo);
-        priceAdapter = new DialogPriceDetailAdapter(priceList, getActivity());
-        exListView.setAdapter(priceAdapter);
-        for (int i = 0; i < priceAdapter.getGroupCount(); i++) {
-            exListView.expandGroup(i);
-        }
+//        priceList.clear();
+//
+//        priceAdapter = new DialogPriceDetailAdapter(priceList, getActivity());
+//        exListView.setAdapter(priceAdapter);
+//        for (int i = 0; i < priceAdapter.getGroupCount(); i++) {
+//            exListView.expandGroup(i);
+//        }
     }
 
     MyDialog dialog;

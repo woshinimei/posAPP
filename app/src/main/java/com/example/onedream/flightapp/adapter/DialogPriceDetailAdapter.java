@@ -9,8 +9,8 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import com.example.onedream.flightapp.R;
-import com.example.onedream.flightapp.bean.PriceChildInfo;
-import com.example.onedream.flightapp.bean.PriceGroupInfo;
+import com.example.onedream.flightapp.bean.PriceItem;
+import com.example.onedream.flightapp.bean.PriceInfo;
 
 import java.util.List;
 
@@ -18,10 +18,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class DialogPriceDetailAdapter extends BaseExpandableListAdapter {
-    List<PriceGroupInfo> list;
+    List<PriceInfo> list;
     Context context;
 
-    public DialogPriceDetailAdapter(List<PriceGroupInfo> list, Context context) {
+    public DialogPriceDetailAdapter(List<PriceInfo> list, Context context) {
         this.list = list;
         this.context = context;
     }
@@ -33,8 +33,8 @@ public class DialogPriceDetailAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        if (list != null && list.get(groupPosition).getItemlist() != null) {
-            return list.get(groupPosition).getItemlist().size();
+        if (list != null && list.get(groupPosition).getFjjh() != null) {
+            return list.get(groupPosition).getFjjh().size();
         }
         return 0;
     }
@@ -74,8 +74,8 @@ public class DialogPriceDetailAdapter extends BaseExpandableListAdapter {
         } else {
             holder = (GroupViewHolder) convertView.getTag();
         }
-        PriceGroupInfo bean = list.get(groupPosition);
-        holder.tvName.setText(setNullText(bean.getTitle()));
+        PriceInfo bean = list.get(groupPosition);
+        holder.tvName.setText(setNullText(bean.getName()));
         holder.tvCount.setText("￥" + bean.getTotalPrice());
         return convertView;
     }
@@ -90,9 +90,9 @@ public class DialogPriceDetailAdapter extends BaseExpandableListAdapter {
         }else {
            holder = (ChildViewHolder) convertView.getTag();
         }
-        PriceChildInfo bean = list.get(groupPosition).getItemlist().get(childPosition);
+        PriceItem bean = list.get(groupPosition).getFjjh().get(childPosition);
         holder.tvName.setText(setNullText(bean.getName()));
-        holder.tvCount.setText("￥" + bean.getItemPrice());
+        holder.tvCount.setText("￥" + bean.getUnitPrice());
         return convertView;
     }
 

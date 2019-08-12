@@ -22,6 +22,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = View.inflate(getContext(), getlayout(), null);
+
          bind = ButterKnife.bind(this, layout);
         return layout;
     }

@@ -1,6 +1,7 @@
 package com.example.onedream.flightapp.model;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.onedream.flightapp.constant.AppLocal;
 import com.example.onedream.flightapp.constant.OrderType;
@@ -9,24 +10,28 @@ import com.example.onedream.flightapp.network.BaseHttp;
 import com.example.onedream.flightapp.network.BaseModel;
 import com.example.onedream.flightapp.request.OrderDetailRequest;
 import com.example.onedream.flightapp.utils.GsonUtils;
-import com.example.onedream.flightapp.utils.Shelper;
 import com.example.onedream.flightapp.utils.SignUtils;
 
 public class OrderDetailModel extends BaseModel {
     public void getData(int type, String orderNo,Context context, OnCallBack<String> callBack){
+        OrderDetailRequest request = new OrderDetailRequest();
         String baseUrl =BaseHttp.ORDERDETAIL_NORMAL;
         if (type==OrderType.NORMAL){
+            request.setDdbh(orderNo);
             baseUrl =BaseHttp.ORDERDETAIL_NORMAL;
         }else if (type==OrderType.REFUND){
             baseUrl =BaseHttp.ORDERDETAIL_REFUEND;
+            request.setOrderNo(orderNo);
         }else {
+            request.setOrderNo(orderNo);
             baseUrl =BaseHttp.ORDERDETAIL_ENDORE;
         }
-        Shelper shelper =new Shelper(context);
-        String key = shelper.getString(AppLocal.USERKEY);
+        Log.e("--type---",type+"");
+        Log.e("--orderNo---",orderNo+"");
+        String key = AppLocal.USERKEY;
         String sign =SignUtils.getSign();
-        OrderDetailRequest request = new OrderDetailRequest();
-        request.setOrderNo(orderNo);
+
+
         request.setSign(sign);
         request.setUserKey(key);
         String json =GsonUtils.getJson(request);

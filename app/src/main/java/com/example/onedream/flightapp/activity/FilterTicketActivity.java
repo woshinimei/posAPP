@@ -59,7 +59,7 @@ public class FilterTicketActivity extends BaseActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        AppLocal.listRequest = request;
+
     }
 
     @OnClick({R.id.tv_back, R.id.tv_reset, R.id.tv_date_type, R.id.tv_date_start, R.id.tv_date_end, R.id.tv_order_status, R.id.tv_cl_type, R.id.btn_search})
@@ -99,6 +99,8 @@ public class FilterTicketActivity extends BaseActivity {
                 initAllType();
                 break;
             case R.id.btn_search:
+                AppLocal.listRequest = request;
+                finish();
                 break;
         }
     }
