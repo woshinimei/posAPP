@@ -9,6 +9,7 @@ import com.example.onedream.flightapp.R;
 import com.example.onedream.flightapp.adapter.RvPayListAdapter;
 import com.example.onedream.flightapp.base.BaseActivity;
 import com.example.onedream.flightapp.bean.PayTypeBean;
+import com.example.onedream.flightapp.bean.PosPayInfo;
 import com.example.onedream.flightapp.constant.OrderType;
 import com.example.onedream.flightapp.intefaces.OnCallBack;
 import com.example.onedream.flightapp.model.PayModel;
@@ -108,15 +109,25 @@ public class PayTypeActivity extends BaseActivity {
     private void orderPay() {
         PayModel model = new PayModel();
         PayRequest request = new PayRequest();
+        request.setDdbh(orderNo);
+        request.setPayResult("0");
+        request.setPayType("0");
+        PosPayInfo info = new PosPayInfo();
+        info.setAmount("0");
+        info.setBatchNo("4234324");
+        info.setCardNo("4234322222");
+        info.setDate("2019-12-1");
+        info.setMerchantId("32132");
+        request.setPosPayInfo(info);
         model.getData(getActivity(), type, request, new OnCallBack<String>() {
             @Override
             public void onSucess(String s) {
-
+                showToast(s);
             }
 
             @Override
             public void onError(String msg) {
-
+                showToast(msg);
             }
         });
     }

@@ -23,7 +23,7 @@
             <TextView
                 android:text="出差申请单号"
                 android:textColor="@color/colorT3"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/sp_13" />
 
             <TextView
                 android:id="@+id/tv_no"
@@ -31,7 +31,7 @@
                 android:layout_weight="1"
                 android:text="无"
                 android:textColor="@color/colorT3"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/sp_13" />
         </TableRow>
 
         <View
@@ -44,7 +44,7 @@
             <TextView
                 android:text="差旅事项"
                 android:textColor="@color/colorT3"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/sp_13" />
 
             <TextView
                 android:id="@+id/tv_thing"
@@ -52,7 +52,7 @@
                 android:layout_weight="1"
                 android:text="无"
                 android:textColor="@color/colorT3"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/sp_13" />
         </TableRow>
         <View
             android:background="@color/colorLine"
@@ -63,7 +63,7 @@
             <TextView
                 android:text="项目"
                 android:textColor="@color/colorT3"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/sp_13" />
 
             <TextView
                 android:id="@+id/tv_xm"
@@ -71,7 +71,7 @@
                 android:layout_weight="1"
                 android:text=""
                 android:textColor="@color/colorT3"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/sp_13" />
         </TableRow>
         <View
             android:background="@color/colorLine"
@@ -90,7 +90,7 @@
                 android:layout_weight="1"
                 android:text=""
                 android:textColor="@color/colorT3"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/sp_13" />
         </TableRow>
 
     </TableLayout>

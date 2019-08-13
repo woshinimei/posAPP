@@ -16,15 +16,16 @@ import com.example.onedream.flightapp.adapter.DialogPriceDetailAdapter;
 import com.example.onedream.flightapp.adapter.OrderDetailTopAdapter;
 import com.example.onedream.flightapp.adapter.VpFragmentAdapter;
 import com.example.onedream.flightapp.base.BaseActivity;
-import com.example.onedream.flightapp.bean.FlightPayInfo;
+import com.example.onedream.flightapp.base.BaseFragment;
 import com.example.onedream.flightapp.bean.FlightTicketDetailPrice;
 import com.example.onedream.flightapp.bean.JbInfo;
 import com.example.onedream.flightapp.bean.OrderDetail;
-import com.example.onedream.flightapp.bean.PriceItem;
+import com.example.onedream.flightapp.bean.PosPayInfo;
+import com.example.onedream.flightapp.bean.PriceDetailedBen;
 import com.example.onedream.flightapp.bean.PriceInfo;
+import com.example.onedream.flightapp.bean.PriceItem;
 import com.example.onedream.flightapp.bean.TopBarBean;
 import com.example.onedream.flightapp.constant.OrderType;
-import com.example.onedream.flightapp.fragment.orderDetail.OrderDetailApprovalFragment;
 import com.example.onedream.flightapp.fragment.orderDetail.OrderDetailBaseFragment;
 import com.example.onedream.flightapp.fragment.orderDetail.OrderDetailDeliveryFragment;
 import com.example.onedream.flightapp.fragment.orderDetail.OrderDetailTravelFragment;
@@ -61,7 +62,7 @@ public class OrderDetailActivity extends BaseActivity {
     OrderDetailBaseFragment baseFragment = new OrderDetailBaseFragment();
     OrderDetailDeliveryFragment deliveryFragment = new OrderDetailDeliveryFragment();
     OrderDetailTravelFragment travelFragment = new OrderDetailTravelFragment();
-    OrderDetailApprovalFragment approvalFragment = new OrderDetailApprovalFragment();
+    //    OrderDetailApprovalFragment approvalFragment = new OrderDetailApprovalFragment();
     @BindView(R.id.tv_back)
     TextView tvBack;
     @BindView(R.id.tv_mingxi)
@@ -72,7 +73,8 @@ public class OrderDetailActivity extends BaseActivity {
     TextView tvPay;
     @BindView(R.id.tv_ddje)
     TextView tvDdje;
-    int type =0;
+    int type = 0;
+
     @Override
     public int getLayout() {
         return R.layout.activity_order_normal_detail;
@@ -83,12 +85,18 @@ public class OrderDetailActivity extends BaseActivity {
         Intent intent = getIntent();
         type = intent.getIntExtra(OrderType.ORDER_TYPE, 0);
         orderNo = intent.getStringExtra(OrderType.ORDER_NO);
-        if (type==1){
+        if (type == 1) {
             tvPay.setText("退款");
         }
         initTopView();
         initVp();
         initData();
+        baseFragment.setOnGetDataListener(new BaseFragment.OnGetDataListener() {
+            @Override
+            public void getData() {
+                initData();
+            }
+        });
     }
 
     private void initData() {
@@ -101,26 +109,17 @@ public class OrderDetailActivity extends BaseActivity {
 //                new Handler().postDelayed(new Runnable() {
 //                    @Override
 //                    public void run() {
-                        response = GsonUtils.fromJson(s, OrderDetailResponse.class);
-                        baseFragment.refreshData(response);
-                        deliveryFragment.refreshData(response);
-                        travelFragment.refreshData(response);
-                        approvalFragment.refreshData(response);
-                        if (response.getDetail()!=null){
-                            JbInfo jbxx = response.getDetail().getJbxx();
-                            if (jbxx!=null){
-                                String sfkzf = jbxx.getZfzt();//是否可支付
-                                if (type!=1) {
-                                    if (!TextUtils.isEmpty(sfkzf) && sfkzf.equals("未付")) {
-                                        tvPay.setVisibility(View.VISIBLE);
-                                    } else {
-                                        tvPay.setVisibility(View.GONE);
-                                    }
-                                }
-                            }
-                        }
-                        initBottomPrice();
-                        initPriceDetail();
+                response = GsonUtils.fromJson(s, OrderDetailResponse.class);
+                if (response.isSuccess()) {
+                    OrderDetail orderDetail;
+                    if (type == OrderType.REFUND) {
+                        orderDetail = response.getTfOrderDetail();
+                    } else {
+                        orderDetail = response.getDetail();
+                    }
+                    refreshView(orderDetail);
+                }
+
 //                    }
 //                },1000);
 
@@ -133,17 +132,55 @@ public class OrderDetailActivity extends BaseActivity {
         });
     }
 
+    private void refreshView(OrderDetail orderDetail) {
+        baseFragment.refreshData(orderDetail);
+        deliveryFragment.refreshData(orderDetail);
+        travelFragment.refreshData(orderDetail);
+//        approvalFragment.refreshData(orderDetail);
+        if (orderDetail != null) {
+            JbInfo jbxx = orderDetail.getJbxx();
+            if (jbxx != null) {
+                String sfkzf = jbxx.getZfzt();//是否可支付
+                if (type == 0) {
+                    if (!TextUtils.isEmpty(sfkzf) && sfkzf.equals("未付")) {
+                        tvPay.setVisibility(View.VISIBLE);
+                    } else {
+                        tvPay.setVisibility(View.GONE);
+                    }
+                }else if (type==1){
+                    String zfzt = jbxx.getZfzt();
+                    if (!TextUtils.isEmpty(zfzt)&&zfzt.equals("已退")){
+                        tvPay.setVisibility(View.GONE);
+                    }else {
+                        tvPay.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        }
+        initBottomPrice();
+        initPriceDetail();
+    }
 
 
     //初始化底部价格数据
     private void initBottomPrice() {
         if (response != null && response.isSuccess()) {
-            OrderDetail detail = response.getDetail();
-            if (detail!=null) {
+            OrderDetail detail;
+            if (type == 1) {
+                detail = response.getTfOrderDetail();
+            } else {
+                detail = response.getDetail();
+            }
+            if (detail != null) {
                 JbInfo jbxx = detail.getJbxx();
                 if (jbxx != null) {
-                    String ddje = jbxx.getDdje();
-                    tvDdje.setText(ddje + "");
+                    if (type == 0) {
+                        String ddje = jbxx.getDdje();
+                        tvDdje.setText(ddje + "");
+                    } else {
+                        String ytje = jbxx.getYtje();
+                        tvDdje.setText(ytje + "");
+                    }
                 }
             }
         }
@@ -155,7 +192,7 @@ public class OrderDetailActivity extends BaseActivity {
         fragList.add(baseFragment);
         fragList.add(deliveryFragment);
         fragList.add(travelFragment);
-        fragList.add(approvalFragment);
+//        fragList.add(approvalFragment);
         vp.setOffscreenPageLimit(fragList.size());
         vpAdater = new VpFragmentAdapter(getSupportFragmentManager(), fragList);
         vp.setAdapter(vpAdater);
@@ -187,7 +224,7 @@ public class OrderDetailActivity extends BaseActivity {
         topList.add(new TopBarBean("基本信息", true));
         topList.add(new TopBarBean("配送信息", false));
         topList.add(new TopBarBean("差旅信息", false));
-        topList.add(new TopBarBean("审批信息", false));
+//        topList.add(new TopBarBean("审批信息", false));
         topAdater = new OrderDetailTopAdapter(topList, getActivity());
         recyTop.setAdapter(topAdater);
         topAdater.setListener(new OrderDetailTopAdapter.OnSelectListener() {
@@ -199,7 +236,7 @@ public class OrderDetailActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.tv_back, R.id.tv_mingxi, R.id.tv_cancel, R.id.tv_pay})
+    @OnClick({R.id.tv_back, R.id.tv_mingxi, R.id.tv_cancel, R.id.tv_control, R.id.tv_pay})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_back:
@@ -212,24 +249,25 @@ public class OrderDetailActivity extends BaseActivity {
                 showNoteDialog();
                 break;
             case R.id.tv_control:
-                Intent conIntent = new Intent(getActivity(),ControlDepartmentActivity.class);
-                conIntent.putExtra(OrderType.ORDER_NO,orderNo);
+                Intent conIntent = new Intent(getActivity(), ControlDepartmentActivity.class);
+                conIntent.putExtra(OrderType.ORDER_NO, orderNo);
+                conIntent.putExtra(OrderType.ORDER_TYPE, type);
                 startActivity(conIntent);
                 break;
             case R.id.tv_pay:
-                if (type!=1){
+                if (type != 1) {
                     Intent payIntent = new Intent(getActivity(), PayTypeActivity.class);
-                    payIntent.putExtra(OrderType.ORDER_TYPE,type);
-                    payIntent.putExtra(OrderType.ORDER_NO,orderNo);
-                    if (response!=null&&response.getDetail()!=null){
-                        FlightPayInfo payInfo = response.getDetail().getGjhcxx();
-                        if (payInfo!=null){
-                            String ddje = payInfo.getDdje();
-                            payIntent.putExtra(OrderType.ORDER_AMOUNT,ddje);
+                    payIntent.putExtra(OrderType.ORDER_TYPE, type);
+                    payIntent.putExtra(OrderType.ORDER_NO, orderNo);
+                    if (response != null && response.getDetail() != null) {
+                        JbInfo jbInfo = response.getDetail().getJbxx();
+                        if (jbInfo != null) {
+                            String ddje = jbInfo.getDdje();
+                            payIntent.putExtra(OrderType.ORDER_AMOUNT, ddje);
                         }
                     }
                     startActivity(payIntent);
-                }else {
+                } else {
                     doRefund();
                 }
 
@@ -242,11 +280,19 @@ public class OrderDetailActivity extends BaseActivity {
         RefundModel model = new RefundModel();
         RefundRequest request = new RefundRequest();
         request.setTkdh(orderNo);
+        request.setRefundResult("1");
+        PosPayInfo info = new PosPayInfo();
+        info.setAmount("0");
+        info.setBatchNo("4234324");
+        info.setCardNo("4234322222");
+        info.setDate("2019-12-1");
+        info.setMerchantId("32132");
+        request.setPosPayInfo(info);
         model.getData(getActivity(), request, new OnCallBack<String>() {
             @Override
             public void onSucess(String s) {
-                RefundResponse response = GsonUtils.fromJson(s,RefundResponse.class);
-                showToast(response.getMessage()+"");
+                RefundResponse response = GsonUtils.fromJson(s, RefundResponse.class);
+                showToast(response.getMessage() + "");
             }
 
             @Override
@@ -259,31 +305,61 @@ public class OrderDetailActivity extends BaseActivity {
 
     //初始化价格明细
     private void initPriceDetail() {
-        if (response!=null&&response.getDetail()!=null){
-            OrderDetail detail = response.getDetail();
-            FlightTicketDetailPrice detailPrice = new FlightTicketDetailPrice();
-            FlightComomLogic.initDetailPriceInfo(detailPrice,detail);
-            ArrayList<PriceInfo> priceInfos = FlightComomLogic.getOrderDetailPriceDatas(detailPrice);
-            if (priceInfos!=null&&priceInfos.size()>0){
-                priceList.clear();
-                priceList.addAll(priceInfos);
+        if (response != null) {
+            OrderDetail detail;
+            if (type ==1) {
+                detail = response.getTfOrderDetail();
+            } else {
+                detail = response.getDetail();
+            }
+            if (detail != null) {
+                if (type == 0) {
+                    FlightTicketDetailPrice detailPrice = new FlightTicketDetailPrice();
+                    FlightComomLogic.initDetailPriceInfo(detailPrice, detail);
+                    ArrayList<PriceInfo> priceInfos = FlightComomLogic.getOrderDetailPriceDatas(detailPrice);
+                    if (priceInfos != null && priceInfos.size() > 0) {
+                        priceList.clear();
+                        priceList.addAll(priceInfos);
+                    }
+                } else if (type == 1) {
+                    PriceDetailedBen priceben = new PriceDetailedBen();
+                    FlightComomLogic.initRefundDetailPriceInfo(detail, priceben);
+                    List<PriceInfo> refundInfo = FlightComomLogic.initDetailPriceRefundInfo(priceben);
+                    if (refundInfo != null && refundInfo.size() > 0) {
+                        priceList.clear();
+                        priceList.addAll(refundInfo);
+                    }
+                } else {
+
+                }
             }
         }
     }
+
     //展示明细
     MyDialog priceDialog;
+
     private void showPopPriceDetail() {
         View layout = View.inflate(getActivity(), R.layout.pop_price_detail, null);
         ExpandableListView exListView = layout.findViewById(R.id.elv_content);
         LinearLayout llContent = layout.findViewById(R.id.ll_content);
+        TextView tvTotal = layout.findViewById(R.id.tv_total);
         initPriceAdapter(exListView);
+        if (priceList!=null){
+            double totalCount =0;
+            for (PriceInfo group : priceList) {
+                double addPrice = group.getTotalPrice();
+                totalCount+=addPrice;
+            }
+            tvTotal.setText(totalCount+"");
+        }
+
         priceDialog = new MyDialog(getActivity(), layout);
         priceDialog.showFullScreen();
     }
 
     private void initPriceAdapter(ExpandableListView exListView) {
-
-     priceAdapter = new DialogPriceDetailAdapter(priceList, getActivity());
+        priceAdapter = new DialogPriceDetailAdapter(priceList, getActivity());
         exListView.setAdapter(priceAdapter);
         for (int i = 0; i < priceAdapter.getGroupCount(); i++) {
             exListView.expandGroup(i);

@@ -18,16 +18,19 @@ public class OrderDetailModel extends BaseModel {
         String baseUrl =BaseHttp.ORDERDETAIL_NORMAL;
         if (type==OrderType.NORMAL){
             request.setDdbh(orderNo);
+            request.setOrderNo(orderNo);
             baseUrl =BaseHttp.ORDERDETAIL_NORMAL;
         }else if (type==OrderType.REFUND){
             baseUrl =BaseHttp.ORDERDETAIL_REFUEND;
             request.setOrderNo(orderNo);
+            request.setDdbh(orderNo);
         }else {
             request.setOrderNo(orderNo);
+            request.setDdbh(orderNo);
             baseUrl =BaseHttp.ORDERDETAIL_ENDORE;
         }
-        Log.e("--type---",type+"");
-        Log.e("--orderNo---",orderNo+"");
+//        Log.e("--type---",type+"");
+//        Log.e("--orderNo---",orderNo+"");
         String key = AppLocal.USERKEY;
         String sign =SignUtils.getSign();
 

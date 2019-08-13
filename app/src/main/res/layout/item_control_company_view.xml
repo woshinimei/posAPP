@@ -2,28 +2,86 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="@dimen/dp_5">
+    android:background="@android:color/white"
+    android:orientation="horizontal"
+    android:padding="@dimen/dp_10">
+
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <TableRow>
+
+            <TextView
+                android:text="编号："
+                android:textColor="@color/colorT3"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:id="@+id/tv_bh"
+                android:layout_weight="1"
+                android:padding="@dimen/dp_5"
+                android:textSize="@dimen/sp_13" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:text="所属公司："
+                android:textColor="@color/colorT3"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:id="@+id/tv_company"
+                android:layout_weight="1"
+                android:padding="@dimen/dp_5"
+                android:textSize="@dimen/sp_13" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:text="部门名称："
+                android:textColor="@color/colorT3"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:id="@+id/tv_mc"
+                android:layout_weight="1"
+                android:padding="@dimen/dp_5"
+                android:textSize="@dimen/sp_13" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:text="联系人："
+                android:textColor="@color/colorT3"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:id="@+id/tv_lxr"
+                android:layout_weight="1"
+                android:padding="@dimen/dp_5"
+                android:textSize="@dimen/sp_13" />
+        </TableRow>
+    </TableLayout>
 
     <TextView
-        android:id="@+id/tv_company"
+        android:id="@+id/tv_control"
+        android:layout_marginLeft="@dimen/dp_5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/dp_5"
-        android:textColor="@color/colorT3"
-        android:textSize="@dimen/sp_13" />
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/btn_control"
+        android:paddingLeft="@dimen/dp_5"
+        android:paddingTop="@dimen/dp_3"
+        android:paddingRight="@dimen/dp_5"
+        android:paddingBottom="@dimen/dp_3"
+        android:text="立即调度"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp_14" />
 
-    <TextView
-        android:id="@+id/tv_mc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/dp_5"
-        android:textSize="@dimen/sp_13" />
-
-    <TextView
-        android:id="@+id/tv_lxr"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/dp_5"
-        android:textSize="@dimen/sp_13" />
 </LinearLayout>

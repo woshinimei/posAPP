@@ -1,11 +1,13 @@
 package com.example.onedream.flightapp.utils;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.example.onedream.flightapp.bean.FlightTicketDetailPrice;
 import com.example.onedream.flightapp.bean.JbInfo;
 import com.example.onedream.flightapp.bean.OrderDetail;
 import com.example.onedream.flightapp.bean.PassengerInfo;
+import com.example.onedream.flightapp.bean.PriceDetailedBen;
 import com.example.onedream.flightapp.bean.PriceItem;
 import com.example.onedream.flightapp.bean.PriceInfo;
 import com.example.onedream.flightapp.constant.CacheFlightCommonData;
@@ -16,7 +18,339 @@ import java.util.List;
 public class FlightComomLogic {
 
     /**
-     * 初始化详细价格信息展示S
+     * 初始化 退票订单详的价格明细
+     * @param parserefundJson
+     * @param priceben
+     */
+    public static void initRefundDetailPriceInfo(OrderDetail parserefundJson, PriceDetailedBen priceben) {
+
+        double xsj = 0;
+        double jpjl = 0;
+        double jj = 0;
+        double jec = 0;
+        double sf = 0;
+        double qtsx = 0;
+        double sxf = 0;
+        double sfwf = 0;
+        double ytje = 0;
+        double     tjpbxje = 0;
+        int tjpbxfs = 0;
+        double couponCost = 0;
+        double flightCouponsCost = 0;
+        if(parserefundJson!=null){
+
+
+
+
+
+            List<PassengerInfo> cjrjh = parserefundJson.getCjrjh();
+            if(cjrjh!=null&&!cjrjh.isEmpty()){
+
+
+
+                for (int i = 0; i <cjrjh.size() ; i++) {
+                    PassengerInfo flightGetRefundDetailPassengerInfoResponse = cjrjh.get(i);
+
+                    String pj = flightGetRefundDetailPassengerInfoResponse.getXsj();    //票价
+                    try {
+                        Double aDouble = Double.valueOf(pj);
+                        xsj  =     Arith.add(xsj,aDouble);
+                    }catch (Exception ption){
+
+                    }
+                /*    String ry = flightGetRefundDetailPassengerInfoResponse.getRy();   //燃油
+                    try {
+                        Double aDouble = Double.valueOf(ry);
+                        tjprys  =     Arith.add(tjprys,aDouble);
+                    }catch (Exception ption){
+                    }*/
+
+                    String jpjltv =    flightGetRefundDetailPassengerInfoResponse.getJpjl();  //机票奖励
+
+                    try {
+                        Double aDouble = Double.valueOf(jpjltv);
+                        jpjl  =     Arith.add(jpjl,aDouble);
+
+                    }catch (Exception ption){
+
+                    }
+
+
+                    double  jjtv= flightGetRefundDetailPassengerInfoResponse.getJj();   //机建费
+                        jj  =     Arith.add(jj,jjtv);
+
+
+                    String jec1 = flightGetRefundDetailPassengerInfoResponse.getJec();   //接车
+
+                    try {
+                        Double aDouble = Double.valueOf(jec1);
+                        jec  =     Arith.add(jec,aDouble);
+
+                    }catch (Exception ption){
+
+                    }
+
+                    String sf1 = flightGetRefundDetailPassengerInfoResponse.getSf();   //税费
+
+                    try {
+                        Double aDouble = Double.valueOf(sf1);
+                        sf  =     Arith.add(sf,aDouble);
+
+                    }catch (Exception ption){
+
+                    }
+                    String qtfx = flightGetRefundDetailPassengerInfoResponse.getQtfx();  //其他
+                    try {
+                        Double aDouble = Double.valueOf(qtfx);
+                        qtsx  =     Arith.add(qtsx,aDouble);
+
+                    }catch (Exception ption){
+
+                    }
+
+                    String sxf1 = flightGetRefundDetailPassengerInfoResponse.getSxf();  //手续费
+                    try {
+                        Double aDouble = Double.valueOf(sxf1);
+                        sxf  =     Arith.add(sxf,aDouble);
+
+                    }catch (Exception ption){
+
+                    }
+                    String sfwf1 = flightGetRefundDetailPassengerInfoResponse.getSfwf();  //收服务费
+                    try {
+                        Double aDouble = Double.valueOf(sfwf1);
+                        sfwf  =     Arith.add(sfwf,aDouble);
+
+                    }catch (Exception ption){
+
+                    }
+
+
+
+                    double bxdj = flightGetRefundDetailPassengerInfoResponse.getBxdj();//保险单价
+                    //深圳航空G+S+X对接start
+//                    int bxfs = flightGetRefundDetailPassengerInfoResponse.getBxfs();
+                    int bxfs = 1;//默认勾选1份
+                    //深圳航空G+S+X对接end
+                        if(bxfs!=0){
+                            double mul = Arith.mul(bxdj, bxfs);
+                            tjpbxje = Arith.add(tjpbxje,mul);
+                            tjpbxfs = tjpbxfs+bxfs;
+                        }
+
+
+                    //深圳航空G+S+X对接start
+//                    String couponFee = parserefundJson.getCouponCost();
+//                    try {
+//                        if (!TextUtils.isEmpty(couponFee)) {
+//                            couponCost = Double.valueOf(couponFee);
+//                            priceben.setCouponCost(couponCost);
+//                        }
+//                    } catch (Exception e) {
+//                    }
+                    //深圳航空G+S+X对接end
+
+                }
+//                try{
+//                    String jpyhje = parserefundJson.getJbxx().getJpyhje();
+//                    if (!TextUtils.isEmpty(jpyhje)){
+//                        flightCouponsCost = Double.valueOf(jpyhje);
+//                        priceben.setJpyhje(flightCouponsCost);
+//                    }
+//                }catch (Exception e){
+//
+//                }
+//
+            }
+
+
+            priceben.setTjpxsj(xsj);
+
+            priceben.setTjpjpjl(jpjl);
+            priceben.setTjpjj(jj);
+            priceben.setTjpjec(jec);
+
+            priceben.setTjpsf(sf);
+            priceben.setTjpqtsx(qtsx);
+            priceben.setTjpsxf(sxf);
+            priceben.setTjpsfwf(sfwf);
+            priceben.setTjpbxje(tjpbxje);
+
+
+
+
+
+
+        }
+
+
+
+    }
+
+    public static  List<PriceInfo>  initDetailPriceRefundInfo(PriceDetailedBen priceben){
+        List<PriceInfo>  priceinfos = new ArrayList<PriceInfo>();
+        double tjpxsj = priceben.getTjpxsj();
+
+        if(!"0".equals(FormatUtils.formatPrice(tjpxsj))){
+            PriceInfo tjpxsjinfo = new PriceInfo();
+            tjpxsjinfo.setName("票价");
+            tjpxsjinfo.setTotalPrice(Double.valueOf(tjpxsj));
+            priceinfos.add(tjpxsjinfo);
+        }
+        double tjpjpjl = priceben.getTjpjpjl();
+        if(!"0".equals(FormatUtils.formatPrice(tjpjpjl))){
+            PriceInfo tjprysinfo  = new PriceInfo();
+            tjprysinfo.setName("机票奖励");
+            tjprysinfo.setTotalPrice(Double.valueOf(tjpjpjl));
+            priceinfos.add(tjprysinfo);
+        }
+
+        double tjpjj = priceben.getTjpjj();
+
+
+        if(!"0".equals(FormatUtils.formatPrice(tjpjj))){
+            PriceInfo tjpjjandsfinfo = new PriceInfo();
+            tjpjjandsfinfo.setName("机建");
+            tjpjjandsfinfo.setTotalPrice(Double.valueOf(tjpjj));
+            priceinfos.add(tjpjjandsfinfo);
+            //退机建/税费
+        }
+        double tjpjec = priceben.getTjpjec();
+
+        if(!"0".equals(FormatUtils.formatPrice(tjpjec))){
+            PriceInfo tjpjjandsfinfo = new PriceInfo();
+            tjpjjandsfinfo.setName("接车");
+            tjpjjandsfinfo.setTotalPrice(Double.valueOf(tjpjec));
+            priceinfos.add(tjpjjandsfinfo);
+
+
+        }
+        double tjpsf = priceben.getTjpsf();
+        if(!"0".equals(FormatUtils.formatPrice(tjpsf))){
+            PriceInfo tjpjjandsfinfo = new PriceInfo();
+            tjpjjandsfinfo.setName("税费");
+            tjpjjandsfinfo.setTotalPrice(Double.valueOf(tjpsf));
+            priceinfos.add(tjpjjandsfinfo);
+
+
+        }
+        double tjpqtsx = priceben.getTjpqtsx();
+
+        if(!"0".equals(FormatUtils.formatPrice(tjpqtsx))){
+            PriceInfo tjpjjandsfinfo = new PriceInfo();
+            tjpjjandsfinfo.setName("其他费用");
+            tjpjjandsfinfo.setTotalPrice(Double.valueOf(tjpqtsx));
+            priceinfos.add(tjpjjandsfinfo);
+
+
+        }
+        // 商旅产品平台机+S+X对接 START
+        //添加优惠券
+        double couponCost = priceben.getCouponCost();
+        if (couponCost!=0){
+            PriceInfo couponInfo  = new PriceInfo();
+            couponInfo.setName("产品服务费");
+            couponInfo.setTotalPrice(couponCost);
+            priceinfos.add(couponInfo);
+        }
+        // 商旅产品平台机+S+X对接 end
+        double tjpsxf = priceben.getTjpsxf();
+        if(!"0".equals(FormatUtils.formatPrice(tjpsxf))){
+            PriceInfo tjpjjandsfinfo = new PriceInfo();
+            tjpjjandsfinfo.setName("手续费");
+            tjpjjandsfinfo.setTotalPrice(Double.valueOf(tjpsxf));
+            priceinfos.add(tjpjjandsfinfo);
+        }
+        double tjpsfwf = priceben.getTjpsfwf();
+
+
+        if(!"0".equals(FormatUtils.formatPrice(tjpsfwf))){
+            PriceInfo tjpjjandsfinfo = new PriceInfo();
+            tjpjjandsfinfo.setName("收服务费");
+            tjpjjandsfinfo.setTotalPrice(Double.valueOf(tjpsfwf));
+            priceinfos.add(tjpjjandsfinfo);
+
+
+        }
+
+
+        double tjpbxje = priceben.getTjpbxje();
+        if(!"0".equals(FormatUtils.formatPrice(tjpbxje))){
+            PriceInfo tjpnxje = new PriceInfo();
+            tjpnxje.setName("保险金额");
+            tjpnxje.setTotalPrice(Double.valueOf(tjpbxje));
+
+
+
+
+				/*	String tjpbxfs = priceben.getTjpbxfs();
+
+					if(!TextUtils.isEmpty(tjpbxfs)&&!"0".equals(FormatUtils.formatPrice(tjpbxfs))){
+
+						ArrayList<PriceItem>  tjpbxjejh = new ArrayList<PriceItem>();
+
+						PriceItem  tbxfs = new PriceItem();
+						tbxfs.setName("退机票保险分数");
+						//	tbxfs.setUnitPrice();
+						tbxfs.setNumber(Integer.parseInt(tjpbxfs));
+
+						tjpbxjejh.add(tbxfs);
+						tjpnxje.setFjjh(tjpbxjejh);
+					}*/
+
+
+
+            priceinfos.add(tjpnxje);
+
+
+
+
+
+
+        }
+        //机票优惠券金额
+        double jpyhje = priceben.getJpyhje();
+        if (jpyhje!=0){
+            PriceInfo jpyhInfo = new PriceInfo();
+            jpyhInfo.setName("优惠券");
+            jpyhInfo.setTotalPrice(jpyhje);
+            priceinfos.add(jpyhInfo);
+        }
+        return priceinfos;
+		/*		String tjpxsfwf = priceben.getTjpxsfwf();
+				if(!TextUtils.isEmpty(tjpxsfwf)&&!"0".equals(FormatUtils.formatPrice(tjpxsfwf))){
+					PriceInfo tjpxsfwfinfo = new PriceInfo();
+					tjpxsfwfinfo.setName("退机票销售服务费");
+
+					tjpxsfwfinfo.setTotoalPrice(Double.valueOf(tjpxsfwf));
+
+					priceinfos.add(tjpxsfwfinfo);
+
+				}
+				String tjptpfwf = priceben.getTjptpfwf();
+				if(!TextUtils.isEmpty(tjptpfwf)&&!"0".equals(FormatUtils.formatPrice(tjptpfwf))){
+
+					PriceInfo tjptpfwfinfo = new PriceInfo();
+					tjptpfwfinfo.setName("收退票服务费");
+					tjptpfwfinfo.setTotoalPrice(Double.valueOf(tjptpfwf));
+
+					priceinfos.add(tjptpfwfinfo);
+
+				}
+				String tjptpsxf = priceben.getTjptpsxf();
+				if(!TextUtils.isEmpty(tjptpsxf)&&!"0".equals(FormatUtils.formatPrice(tjptpsxf))){
+
+					PriceInfo tjptpsxfinfo = new PriceInfo();
+					tjptpsxfinfo.setName("收退票服务费");
+					tjptpsxfinfo.setTotoalPrice(Double.valueOf(tjptpfwf));
+
+					priceinfos.add(tjptpsxfinfo);
+
+				}*/
+
+    }
+    /**
+     * 初始化详细价格信息展示(普通订单详情)
      * @param goTicketDetailPrice2
      * @param goresponse2
      */
@@ -456,7 +790,10 @@ public class FlightComomLogic {
 
         goadultitem.setType(1);
         goadultitem.setName(name);
-        goadultitem.setUnitPrice(unitPrice);
+        if (!TextUtils.isEmpty(unitPrice)){
+            Double aDouble = Double.valueOf(unitPrice);
+            goadultitem.setUnitPrice(aDouble);
+        }
         goadultitem.setNumber(goadultCount);
         try{
             Double aDouble = Double.valueOf(unitPrice);

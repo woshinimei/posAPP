@@ -45,8 +45,25 @@ public class HbInfo {
     private String sfgzhbdt;
     private String nextDay;//是否第二天
     private  String jj;      //是否可以 接机和送机
-
+    private String cfcity;
+    private String ddcity;
     private String sj;      //
+
+    public String getCfcity() {
+        return cfcity;
+    }
+
+    public void setCfcity(String cfcity) {
+        this.cfcity = cfcity;
+    }
+
+    public String getDdcity() {
+        return ddcity;
+    }
+
+    public void setDdcity(String ddcity) {
+        this.ddcity = ddcity;
+    }
 
     public String getHdid() {
         return hdid;

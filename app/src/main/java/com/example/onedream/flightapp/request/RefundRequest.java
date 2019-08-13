@@ -1,5 +1,6 @@
 package com.example.onedream.flightapp.request;
 
+import com.example.onedream.flightapp.bean.PosPayInfo;
 import com.example.onedream.flightapp.network.BaseRequest;
 
 public class RefundRequest extends BaseRequest {
@@ -10,7 +11,15 @@ public class RefundRequest extends BaseRequest {
     private String tkdh;//订单编号
     private String cldh;//处理编号
     private String jylsh;//交易流水号
+    private PosPayInfo posPayInfo;//
 
+    public PosPayInfo getPosPayInfo() {
+        return posPayInfo;
+    }
+
+    public void setPosPayInfo(PosPayInfo posPayInfo) {
+        this.posPayInfo = posPayInfo;
+    }
     public String getUserKey() {
         return userKey;
     }

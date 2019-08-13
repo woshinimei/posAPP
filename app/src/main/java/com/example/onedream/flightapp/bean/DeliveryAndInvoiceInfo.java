@@ -21,6 +21,15 @@ public class DeliveryAndInvoiceInfo {
     private String  psfs;
     private String  kd	 ;
     private String  yjpsf;
+    private String nsrsbh;//纳税人识别号（发票有）
+
+    public String getNsrsbh() {
+        return nsrsbh;
+    }
+
+    public void setNsrsbh(String nsrsbh) {
+        this.nsrsbh = nsrsbh;
+    }
 
     public String getFptt() {
         return fptt;

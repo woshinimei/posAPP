@@ -21,6 +21,24 @@ public class OrderListBean {
     private String flightNo;//航班号
     private String takeOffTime;//起飞时间
     private String orderPirce;//订单金额
+    private String cfcity;//出发城市
+    private String ddcity;//到达城市
+
+    public String getCfcity() {
+        return cfcity;
+    }
+
+    public void setCfcity(String cfcity) {
+        this.cfcity = cfcity;
+    }
+
+    public String getDdcity() {
+        return ddcity;
+    }
+
+    public void setDdcity(String ddcity) {
+        this.ddcity = ddcity;
+    }
 
     public String getOrderNo() {
         return orderNo;

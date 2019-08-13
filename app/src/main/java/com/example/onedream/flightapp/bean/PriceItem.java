@@ -15,7 +15,7 @@ public class PriceItem {
     private int persionNum;//人数，目前 保险有用到
     private boolean isOrderInsurance;  //保险是否跟订单走 true是 false不是
     private boolean isTitle;//是否小标题
-    private String unitPrice;//单价
+    private double unitPrice;//单价
     private boolean isPriceAbs;//是否对价格进行取整，显示（取整结果不参数计算）,true取整显示
     //-------
     private String explain;//价格说明 备用
@@ -68,11 +68,11 @@ public class PriceItem {
         isTitle = title;
     }
 
-    public String getUnitPrice() {
+    public double getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(String unitPrice) {
+    public void setUnitPrice(double unitPrice) {
         this.unitPrice = unitPrice;
     }
 

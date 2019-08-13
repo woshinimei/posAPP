@@ -11,7 +11,7 @@ public class ControlBean {
     TravelInfo clxx;//差旅信息
     FlightPayInfo gjhcxx;//支付信息
     List<InterHbInfo> jgzcjh;//国际航班信息
-    List<CouponInfo> coupon;//卡券信息
+    List<CouponBean> coupon;//卡券信息
 
     public String getBh() {
         return bh;
@@ -77,11 +77,11 @@ public class ControlBean {
         this.jgzcjh = jgzcjh;
     }
 
-    public List<CouponInfo> getCoupon() {
+    public List<CouponBean> getCoupon() {
         return coupon;
     }
 
-    public void setCoupon(List<CouponInfo> coupon) {
+    public void setCoupon(List<CouponBean> coupon) {
         this.coupon = coupon;
     }
 }

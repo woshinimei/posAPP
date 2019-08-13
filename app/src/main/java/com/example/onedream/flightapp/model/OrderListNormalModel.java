@@ -15,7 +15,7 @@ import com.example.onedream.flightapp.utils.SignUtils;
 
 public class OrderListNormalModel extends BaseModel {
 
-    public void getData(Context context, OnCallBack<String> callBack){
+    public void getData(Context context, boolean showDialog,OnCallBack<String> callBack){
         String key =AppLocal.USERKEY;
         String sign  =SignUtils.getSign();
         OrderListRequest request = new OrderListRequest();
@@ -24,7 +24,7 @@ public class OrderListNormalModel extends BaseModel {
         request.setSign(sign);
         String json =GsonUtils.getJson(request);
         Log.e("-----key---",request.getUserKey()+"---");
-       doRequest(context,true, BaseHttp.ORDERLIST_NORMAL, json,callBack);
+       doRequest(context,showDialog, BaseHttp.ORDERLIST_NORMAL, json,callBack);
     }
     //从缓存中拿数据
     private void getCacheRequest(OrderListRequest request) {

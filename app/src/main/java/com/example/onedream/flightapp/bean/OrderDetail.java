@@ -6,15 +6,20 @@ public class OrderDetail {
     JbInfo jbxx;//基本信息
     List<HbInfo> hdjh;//航程信息集合
     List<PassengerInfo> cjrjh;//乘机人信息集合
+
+
     List<PayInfo> zfxxjh;//支付集合
     FlightPayInfo gjhcxx;//支付信息
     TravelInfo clxx;//差旅信息
     DeliveryAndInvoiceInfo fppsxx;//发票和配送信息对象
     List<InterHbInfo> jgzcjh;//国际航班信息
-    List<CouponInfo> coupon;//卡券信息
+    List<CouponBean> coupon;//卡券信息
 
     public void setZfxxjh(List<PayInfo> zfxxjh) {
         this.zfxxjh = zfxxjh;
+    }
+    public List<PayInfo> getZfxxjh() {
+        return zfxxjh;
     }
 
     public FlightPayInfo getGjhcxx() {
@@ -73,11 +78,11 @@ public class OrderDetail {
         this.jgzcjh = jgzcjh;
     }
 
-    public List<CouponInfo> getCoupon() {
+    public List<CouponBean> getCoupon() {
         return coupon;
     }
 
-    public void setCoupon(List<CouponInfo> coupon) {
+    public void setCoupon(List<CouponBean> coupon) {
         this.coupon = coupon;
     }
 }

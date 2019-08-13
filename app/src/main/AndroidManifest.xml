@@ -29,6 +29,7 @@
         <activity android:name=".activity.OrderDetailActivity" />
         <activity android:name=".activity.PayTypeActivity" />
         <activity android:name=".activity.ControlDepartmentActivity" />
+        <activity android:name=".activity.WebActivity" />
     </application>
 
 </manifest>

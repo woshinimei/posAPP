@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="@dimen/dp_20"
             android:layout_height="wrap_content"
-            android:text="1"
+            android:text=""
             android:textColor="@color/colorT3"
             android:textSize="@dimen/sp_15" />
 
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:text="测试吴敏霞"
             android:textColor="@color/colorT3"
-            android:textSize="@dimen/sp_15" />
+            android:textSize="@dimen/sp_13" />
     </LinearLayout>
 
     <LinearLayout
@@ -39,7 +39,7 @@
             android:layout_marginLeft="@dimen/dp_20"
             android:text="成本中心"
             android:textColor="@color/colorT3"
-            android:textSize="@dimen/sp_15" />
+            android:textSize="@dimen/sp_13" />
 
         <TextView
             android:id="@+id/tv_cb"
@@ -48,7 +48,7 @@
             android:layout_marginLeft="@dimen/dp_20"
             android:text="无"
             android:textColor="@color/colorT3"
-            android:textSize="@dimen/sp_15" />
+            android:textSize="@dimen/sp_13" />
     </LinearLayout>
 <View
     android:layout_width="match_parent"

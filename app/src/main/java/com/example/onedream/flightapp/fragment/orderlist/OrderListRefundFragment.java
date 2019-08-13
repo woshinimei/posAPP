@@ -2,6 +2,9 @@ package com.example.onedream.flightapp.fragment.orderlist;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.onedream.flightapp.R;
 import com.example.onedream.flightapp.adapter.OrderListAdapter;
@@ -33,6 +36,8 @@ public class OrderListRefundFragment extends BaseFragment {
     SmartRefreshLayout pull;
     @BindView(R.id.recy)
     RecyclerView recyView;
+    @BindView(R.id.tv_error)
+    TextView tvError;
     OrderListAdapter adater;
     List<OrderListBean> list = new ArrayList<>();
 
@@ -62,9 +67,9 @@ public class OrderListRefundFragment extends BaseFragment {
         pull.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
-                initData();
+                initData(true);
                 adater.notifyDataSetChanged();
-                pull.finishRefresh(1000);//加载时间，必须加这句
+                pull.finishRefresh(300);//加载时间，必须加这句
             }
         });
 //        pull.setEnableLoadmore(false);
@@ -80,30 +85,39 @@ public class OrderListRefundFragment extends BaseFragment {
     }
 
     @Override
+    public void lazyData() {
+
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        initData();
+        initData(false);
     }
 
     //获取数据
-    private void initData() {
+    private void initData(boolean showDialog) {
         OrderListRefundModel model = new OrderListRefundModel();
-        model.getData(getActivity(), new OnCallBack<String>() {
+        model.getData(getActivity(),showDialog, new OnCallBack<String>() {
             @Override
             public void onSucess(String s) {
                 if (!getActivity().isFinishing()) {
                     OrderListResponse response = GsonUtils.fromJson(s, OrderListResponse.class);
                     List<OrderListBean> orderInfoList = response.getOrderInfoList();
                     if (orderInfoList != null) {
+                        tvError.setVisibility(View.GONE);
                         list.clear();
                         list.addAll(orderInfoList);
                         adater.notifyDataSetChanged();
+                    }else {
+                        tvError.setVisibility(View.VISIBLE);
                     }
                 }
             }
 
             @Override
             public void onError(String msg) {
+                tvError.setVisibility(View.VISIBLE);
                 showToast(msg);
             }
         });

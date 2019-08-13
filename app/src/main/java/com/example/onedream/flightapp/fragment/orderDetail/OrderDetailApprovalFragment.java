@@ -30,6 +30,11 @@ public class OrderDetailApprovalFragment extends BaseFragment {
 
 
     @Override
+    public void lazyData() {
+
+    }
+
+    @Override
     public int getlayout() {
         return R.layout.fragment_order_detail_approval;
     }
@@ -39,16 +44,14 @@ public class OrderDetailApprovalFragment extends BaseFragment {
 
     }
 
-    public void refreshData(OrderDetailResponse response) {
-        if (response.isSuccess()){
-            OrderDetail detail = response.getDetail();
+    public void refreshData(OrderDetail detail) {
             if (detail!=null) {
                 JbInfo jbxx = detail.getJbxx();
                 if (jbxx != null) {
 
                 }
             }
-        }
+
     }
 
 

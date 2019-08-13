@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/ll_content"
+    android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/dp_10"
+            android:id="@+id/ll_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_insurance_bg"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/dp_5"
+            android:paddingTop="@dimen/dp_6"
+            android:paddingRight="@dimen/dp_10"
+            android:paddingBottom="@dimen/dp_6">
+
+            <TextView
+                android:drawablePadding="@dimen/dp_7"
+                android:drawableLeft="@mipmap/icon_quanyi"
+                android:id="@+id/tv_head_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="尊享权益"
+                android:textColor="@color/topview_bg"
+                android:textSize="@dimen/sp_14" />
+
+            <ImageView
+                android:id="@+id/iv_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/icon_arrow_up" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:background="@color/white"
+            android:id="@+id/ll_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/dp_5">
+
+
+                <View
+                    android:background="#f2e9d0"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="@dimen/dp_110"
+                    android:layout_height="@dimen/dp_1"/>
+                <ImageView
+                    android:visibility="visible"
+                    android:layout_width="@dimen/dp_25"
+                    android:layout_height="@dimen/dp_25"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/icon_act_gif" />
+
+                <TextView
+                    android:textColor="#bd9f57"
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:layout_marginRight="@dimen/dp_8"
+                    android:text=""
+                    android:textSize="@dimen/sp_13" />
+
+                <ImageView
+                    android:id="@+id/iv_img"
+                    android:layout_width="@dimen/dp_18"
+                    android:layout_height="@dimen/dp_18"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dp_5"
+                    android:src="@mipmap/icon_zj_note" />
+                <View
+                    android:background="#f2e9d0"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="@dimen/dp_110"
+                    android:layout_height="@dimen/dp_1"/>
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_10"></android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+
+
+
+
+</LinearLayout>

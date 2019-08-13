@@ -39,7 +39,8 @@ public class ControlDepartmentActivity extends BaseActivity {
     RecyclerView recy;
     @BindView(R.id.pull)
     SmartRefreshLayout pull;
-    String orderNo;
+    private String orderNo;//订单编号
+    private int type =0;//订单类型（0普通单  1退废单 2改签单）
     List<ControlBean> list = new ArrayList<>();
     ControlCompanyAdapter adapter;
 
@@ -51,9 +52,16 @@ public class ControlDepartmentActivity extends BaseActivity {
     @Override
     public void initView() {
         orderNo = getIntent().getStringExtra(OrderType.ORDER_NO);
+        type = getIntent().getIntExtra(OrderType.ORDER_TYPE,0);
         initAdapter();
         initPull();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initData();
     }
 
     private void initAdapter() {
@@ -62,8 +70,9 @@ public class ControlDepartmentActivity extends BaseActivity {
             manager.setOrientation(LinearLayoutManager.VERTICAL);
             recy.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.VERTICAL, 1, getResources().getColor(R.color.colorLine)));
             recy.setLayoutManager(manager);
-            adapter = new ControlCompanyAdapter(list, getActivity());
+            adapter = new ControlCompanyAdapter(list, getActivity(),type,orderNo);
             recy.setAdapter(adapter);
+
         }
     }
 
@@ -77,15 +86,7 @@ public class ControlDepartmentActivity extends BaseActivity {
                 pull.finishRefresh(1000);//加载时间，必须加这句
             }
         });
-//        pull.setEnableLoadmore(false);
-//       pull.setOnLoadmoreListener(new OnLoadmoreListener() {
-//           @Override
-//           public void onLoadmore(RefreshLayout refreshlayout) {
-//
-//               adater.notifyDataSetChanged();
-//               pull.finishLoadmore(1000);
-//           }
-//       });
+
 
     }
 
@@ -95,12 +96,14 @@ public class ControlDepartmentActivity extends BaseActivity {
         model.getData(getActivity(), new OnCallBack<String>() {
             @Override
             public void onSucess(String s) {
-                ControlCompanyResponse response = GsonUtils.fromJson(s, ControlCompanyResponse.class);
-                List<ControlBean> deptInfoList = response.getDeptInfoList();
-                if (deptInfoList != null) {
-                    list.clear();
-                    list.addAll(deptInfoList);
-                    adapter.notifyDataSetChanged();
+                if (!getActivity().isFinishing()) {
+                    ControlCompanyResponse response = GsonUtils.fromJson(s, ControlCompanyResponse.class);
+                    List<ControlBean> deptInfoList = response.getDeptInfoList();
+                    if (deptInfoList != null) {
+                        list.clear();
+                        list.addAll(deptInfoList);
+                        adapter.notifyDataSetChanged();
+                    }
                 }
             }
 

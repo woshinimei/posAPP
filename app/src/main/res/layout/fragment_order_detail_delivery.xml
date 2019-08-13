@@ -1,123 +1,655 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <LinearLayout
         android:background="@android:color/white"
-        android:padding="@dimen/dp_10">
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TableRow android:padding="@dimen/dp_10">
-
-            <TextView
-                android:text="配送方式"
-                android:textColor="@color/colorT3"
-                android:textSize="@dimen/sp_14" />
-
-            <TextView
-                android:id="@+id/tv_type"
-                android:layout_marginLeft="@dimen/dp_20"
-                android:text=""
-                android:textColor="@color/colorT6"
-                android:textSize="@dimen/sp_14" />
-        </TableRow>
-        <TableRow android:padding="@dimen/dp_10">
-
-            <TextView
-                android:text="快递公司"
-                android:textColor="@color/colorT3"
-                android:textSize="@dimen/sp_14" />
-
-            <TextView
-                android:id="@+id/tv_company"
-                android:layout_marginLeft="@dimen/dp_20"
-                android:text=""
-                android:textColor="@color/colorT6"
-                android:textSize="@dimen/sp_14" />
-        </TableRow>
-
-        <View
+        <LinearLayout
+            android:id="@+id/order_detail_distribution_invoice_layout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_1"
-            android:background="@color/colorLine"></View>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TableRow android:padding="@dimen/dp_10">
+            <LinearLayout
+                android:id="@+id/order_detail_distribution_fragment_first_lly"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
 
-            <TextView
-                android:text="收件人"
-                android:textColor="@color/colorT3"
-                android:textSize="@dimen/sp_14" />
+                android:background="@android:color/white"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_get_name"
-                android:layout_marginLeft="@dimen/dp_20"
-                android:text=""
-                android:textColor="@color/colorT6"
-                android:textSize="@dimen/sp_14" />
-        </TableRow>
+                <LinearLayout
+                    android:padding="@dimen/dp_10"
+                    android:id="@+id/order_detail_distribution_fragment_first_distribution_lly"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="horizontal">
 
-        <View
+                    <TextView
+                        android:layout_width="@dimen/dp_80"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="发票抬头"
+                        android:textColor="@color/colorT3"
+                        android:textSize="@dimen/sp_13" />
+
+                    <TextView
+                        android:textSize="@dimen/sp_13"
+                        android:id="@+id/order_detail_distribution_fragment_rise"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textColor="@color/colorT6" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:background="@color/colorLine" />
+
+                <LinearLayout
+                    android:padding="@dimen/dp_10"
+                    android:id="@+id/order_detail_distribution_fragment_first_type_lly"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dp_80"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="发票类型"
+                        android:textColor="@color/colorT3"
+                        android:textSize="@dimen/sp_13" />
+
+                    <TextView
+                        android:textSize="@dimen/sp_13"
+                        android:id="@+id/order_detail_distribution_fragment_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textColor="@color/colorT6" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/order_detail_distribution_fragment_first_split_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:background="@color/colorLine" />
+
+                <LinearLayout
+                    android:padding="@dimen/dp_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="@dimen/dp_100"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="发票明细" />
+
+                    <TextView
+                        android:id="@+id/order_detail_distribution_fragment_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="代办签证费" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="@dimen/dp_100"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="纳税人标识号" />
+
+                <TextView
+                    android:id="@+id/order_detail_distribution_fragment_identification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="20170254626465865" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:padding="@dimen/dp_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dp_80"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="配送方式"
+                        android:textColor="@color/colorT3"
+                        android:textSize="@dimen/sp_13" />
+
+                    <TextView
+                        android:textSize="@dimen/sp_13"
+                        android:id="@+id/order_detail_distribution_fragment_distribution_model"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textColor="@color/colorT6" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:background="@color/colorLine" />
+
+                <LinearLayout
+                    android:padding="@dimen/dp_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dp_80"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="收件人"
+                        android:textColor="@color/colorT3"
+                        android:textSize="@dimen/sp_13" />
+
+                    <TextView
+                        android:textSize="@dimen/sp_13"
+                        android:id="@+id/order_detail_distribution_fragment_recipients"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textColor="@color/colorT6" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:background="@color/colorLine" />
+
+                <LinearLayout
+                    android:padding="@dimen/dp_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dp_80"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="手机号码"
+                        android:textColor="@color/colorT3"
+                        android:textSize="@dimen/sp_13" />
+
+                    <TextView
+                        android:textSize="@dimen/sp_13"
+                        android:id="@+id/order_detail_distribution_fragment_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textColor="@color/colorT6" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:background="@color/colorLine" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:padding="@dimen/dp_10"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dp_80"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="收件地址"
+                        android:textColor="@color/colorT3"
+                        android:textSize="@dimen/sp_13" />
+
+                    <TextView
+                        android:textSize="@dimen/sp_13"
+                        android:id="@+id/order_detail_distribution_fragment_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textColor="@color/colorT6" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:background="@color/colorLine" />
+
+                <LinearLayout
+                    android:padding="@dimen/dp_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dp_80"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="发票配送费"
+                        android:textColor="@color/colorT3"
+                        android:textSize="@dimen/sp_13" />
+
+                    <TextView
+                        android:textSize="@dimen/sp_14"
+                        android:id="@+id/order_detail_distribution_fragment_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/price_color"
+                      />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_1"
-            android:background="@color/colorLine"></View>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TableRow android:padding="@dimen/dp_10">
+            <!--材料寄送区域-->
+            <LinearLayout
+                android:id="@+id/order_detail_distribution_fragment_pf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-            <TextView
-                android:text="手机号码"
-                android:textColor="@color/colorT3"
-                android:textSize="@dimen/sp_14" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_40"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dp_10"
+                    android:text="签证材料寄送"
+                    android:textColor="@color/colorT3" />
 
-            <TextView
-                android:id="@+id/tv_phone"
-                android:layout_marginLeft="@dimen/dp_20"
-                android:text=""
-                android:textColor="@color/colorT6"
-                android:textSize="@dimen/sp_14" />
-        </TableRow>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="vertical">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorLine"></View>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-        <TableRow android:padding="@dimen/dp_10">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:textColor="@color/colorT3"
+                            android:textSize="@dimen/sp_13"
+                            android:text="快递公司" />
 
-            <TextView
-                android:text="收货地址"
-                android:textColor="@color/colorT3"
-                android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/order_detail_distribution_fragment_send_company_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical" />
 
-            <TextView
-                android:id="@+id/tv_adress"
-                android:layout_marginLeft="@dimen/dp_20"
-                android:text=""
-                android:textColor="@color/colorT6"
-                android:textSize="@dimen/sp_14" />
-        </TableRow>
+                    </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_1"
-            android:background="@color/colorLine"></View>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_1"
+                        android:background="@color/colorLine" />
 
-        <TableRow android:padding="@dimen/dp_10">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-            <TextView
-                android:text="发票配送费"
-                android:textColor="@color/colorT3"
-                android:textSize="@dimen/sp_14" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorT3"
+                            android:textSize="@dimen/sp_13"
+                            android:layout_gravity="center_vertical"
+                            android:text="快递单号" />
 
-            <TextView
-                android:id="@+id/tv_send_count"
-                android:layout_marginLeft="@dimen/dp_20"
-                android:text=""
-                android:textColor="@color/price_color"
-                android:textSize="@dimen/sp_14" />
-        </TableRow>
+                        <TextView
+                            android:id="@+id/order_detail_distribution_fragment_send_companynum_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_1"
+                        android:background="@color/colorLine" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="@dimen/dp_10"
+                        android:paddingRight="@dimen/dp_10"
+                        android:paddingBottom="@dimen/dp_10">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorT3"
+                            android:textSize="@dimen/sp_13"
+                            android:layout_gravity="center_vertical"
+                            android:paddingRight="@dimen/dp_40"
+                            android:text="服务商收件地址" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/order_detail_distribution_fragment_send_address_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:id="@+id/order_detail_distribution_fragment_send_tel_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!--快递返还信息-->
+            <LinearLayout
+                android:id="@+id/order_detail_distribution_fragment_distribution_goback_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_40"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dp_10"
+                    android:text="护照返还信息"
+                    android:textColor="@color/colorT3" />
 
 
-    </TableLayout>
-</FrameLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorT3"
+                        android:textSize="@dimen/sp_13"
+                        android:layout_gravity="center_vertical"
+                        android:text="快递公司" />
+
+                    <TextView
+                        android:id="@+id/order_detail_distribution_fragment_distribution_back_company_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:background="@color/colorLine" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorT3"
+                        android:textSize="@dimen/sp_13"
+                        android:layout_gravity="center_vertical"
+                        android:text="快递单号" />
+
+                    <TextView
+                        android:id="@+id/order_detail_distribution_fragment_distribution_back_num_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:background="@color/colorLine" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/dp_10"
+                    android:paddingRight="@dimen/dp_10"
+                    android:paddingBottom="@dimen/dp_10">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorT3"
+                        android:textSize="@dimen/sp_13"
+                        android:layout_gravity="center_vertical"
+                        android:paddingRight="@dimen/dp_40"
+                        android:text="护照返还地址" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/order_detail_distribution_fragment_distribution_back_drress_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/order_detail_distribution_fragment_distribution_back_tel_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <!--<TableLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@android:color/white"-->
+        <!--android:padding="@dimen/dp_10">-->
+
+        <!--<TableRow android:padding="@dimen/dp_10" android:id="@+id/tr_type">-->
+
+            <!--<TextView-->
+                <!--android:text="配送方式"-->
+                <!--android:textColor="@color/colorT3"-->
+                <!--android:textSize="@dimen/sp_14" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_type"-->
+                <!--android:layout_marginLeft="@dimen/dp_20"-->
+                <!--android:text=""-->
+                <!--android:textColor="@color/colorT6"-->
+                <!--android:textSize="@dimen/sp_14" />-->
+        <!--</TableRow>-->
+        <!--<View-->
+            <!--android:id="@+id/line_type"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/dp_1"-->
+            <!--android:background="@color/colorLine"></View>-->
+        <!--<TableRow android:padding="@dimen/dp_10" android:id="@+id/tr_company">-->
+
+            <!--<TextView-->
+                <!--android:text="快递公司"-->
+                <!--android:textColor="@color/colorT3"-->
+                <!--android:textSize="@dimen/sp_14" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_company"-->
+                <!--android:layout_marginLeft="@dimen/dp_20"-->
+                <!--android:text=""-->
+                <!--android:textColor="@color/colorT6"-->
+                <!--android:textSize="@dimen/sp_14" />-->
+        <!--</TableRow>-->
+
+        <!--<View-->
+            <!--android:id="@+id/line_company"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/dp_1"-->
+            <!--android:background="@color/colorLine"></View>-->
+
+        <!--<TableRow android:padding="@dimen/dp_10" android:id="@+id/tr_get_name">-->
+
+            <!--<TextView-->
+                <!--android:text="收件人"-->
+                <!--android:textColor="@color/colorT3"-->
+                <!--android:textSize="@dimen/sp_14" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_get_name"-->
+                <!--android:layout_marginLeft="@dimen/dp_20"-->
+                <!--android:text=""-->
+                <!--android:textColor="@color/colorT6"-->
+                <!--android:textSize="@dimen/sp_14" />-->
+        <!--</TableRow>-->
+
+        <!--<View-->
+            <!--android:id="@+id/line_get_name"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/dp_1"-->
+            <!--android:background="@color/colorLine"></View>-->
+
+        <!--<TableRow android:padding="@dimen/dp_10" android:id="@+id/tr_phone">-->
+
+            <!--<TextView-->
+                <!--android:text="手机号码"-->
+                <!--android:textColor="@color/colorT3"-->
+                <!--android:textSize="@dimen/sp_14" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_phone"-->
+                <!--android:layout_marginLeft="@dimen/dp_20"-->
+                <!--android:text=""-->
+                <!--android:textColor="@color/colorT6"-->
+                <!--android:textSize="@dimen/sp_14" />-->
+        <!--</TableRow>-->
+
+        <!--<View-->
+            <!--android:id="@+id/line_phone"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:background="@color/colorLine"></View>-->
+
+        <!--<TableRow android:padding="@dimen/dp_10" android:id="@+id/tr_adress">-->
+
+            <!--<TextView-->
+                <!--android:text="收货地址"-->
+                <!--android:textColor="@color/colorT3"-->
+                <!--android:textSize="16sp" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_adress"-->
+                <!--android:layout_marginLeft="@dimen/dp_20"-->
+                <!--android:text=""-->
+                <!--android:textColor="@color/colorT6"-->
+                <!--android:textSize="@dimen/sp_14" />-->
+        <!--</TableRow>-->
+
+        <!--<View-->
+            <!--android:id="@+id/line_adress"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/dp_1"-->
+            <!--android:background="@color/colorLine"></View>-->
+
+        <!--<TableRow android:padding="@dimen/dp_10" android:id="@+id/tr_send_count">-->
+
+            <!--<TextView-->
+                <!--android:text="发票配送费"-->
+                <!--android:textColor="@color/colorT3"-->
+                <!--android:textSize="@dimen/sp_14" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_send_count"-->
+                <!--android:layout_marginLeft="@dimen/dp_20"-->
+                <!--android:text=""-->
+                <!--android:textColor="@color/price_color"-->
+                <!--android:textSize="@dimen/sp_14" />-->
+        <!--</TableRow>-->
+
+
+    <!--</TableLayout>-->
+</ScrollView>

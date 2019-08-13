@@ -24,7 +24,29 @@
         android:id="@+id/elv_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></ExpandableListView>
+<LinearLayout
+    android:layout_gravity="end"
+    android:layout_marginTop="@dimen/dp_3"
+    android:layout_marginBottom="@dimen/dp_3"
+    android:layout_marginRight="@dimen/dp_10"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:text="合计："
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_total"
+        android:textColor="@color/price_color"
+        android:textSize="@dimen/sp_14"
+        android:layout_gravity="end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
+</LinearLayout>
 
     <ImageView
         android:id="@+id/iv_del"

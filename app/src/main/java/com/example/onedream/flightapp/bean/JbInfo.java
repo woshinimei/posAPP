@@ -36,12 +36,13 @@ public class JbInfo {
     private String yfje;
     private double psf	 ;
     private String yhje;
+    private String ytje;
     private String sfkzf;
     private String sfktp;
     private String sfkgq;
     private String sfkqx;
     private String ydsj;
-
+    private String sqsj;
     //-------------------------------------B2G信息 专用字段
     private String  cllx;
     private String  spzt;
@@ -52,6 +53,22 @@ public class JbInfo {
     //直加产品说明    zjcpsm
     private String zjcpmc;
     private String zjcpsm;
+
+    public String getYtje() {
+        return ytje;
+    }
+
+    public void setYtje(String ytje) {
+        this.ytje = ytje;
+    }
+
+    public String getSqsj() {
+        return sqsj;
+    }
+
+    public void setSqsj(String sqsj) {
+        this.sqsj = sqsj;
+    }
 
     public String getDdzt() {
         return ddzt;

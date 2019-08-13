@@ -2,11 +2,13 @@ package com.example.onedream.flightapp.model;
 
 import android.content.Context;
 
+import com.example.onedream.flightapp.constant.AppLocal;
 import com.example.onedream.flightapp.intefaces.OnCallBack;
 import com.example.onedream.flightapp.network.BaseHttp;
 import com.example.onedream.flightapp.network.BaseModel;
 import com.example.onedream.flightapp.request.ControlRequest;
 import com.example.onedream.flightapp.utils.GsonUtils;
+import com.example.onedream.flightapp.utils.SignUtils;
 
 public class ControlModel  extends BaseModel {
 
@@ -23,6 +25,9 @@ public class ControlModel  extends BaseModel {
                 baseUrl = BaseHttp.CONTROL_ORDER_ENDORE;
                 break;
         }
+        String sign = SignUtils.getSign();
+        request.setUserKey(AppLocal.USERKEY);
+        request.setSign(sign);
         String json = GsonUtils.getJson(request);
         doRequest(context,true,baseUrl,json,callBack);
     }

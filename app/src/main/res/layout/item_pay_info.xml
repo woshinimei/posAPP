@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginBottom="@dimen/dp_5"
+    android:background="@android:color/white"
+    android:paddingLeft="@dimen/dp_5"
+    android:paddingRight="@dimen/dp_5">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow android:padding="@dimen/dp_10">
+
+            <TextView
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/dp_20"
+                android:text="支付方式"
+                android:textColor="@color/colorT3"
+                android:textSize="@dimen/sp_13" />
+
+            <TextView
+                android:id="@+id/tv_type"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text=""
+                android:textColor="@color/colorT9"
+                android:textSize="@dimen/sp_13" />
+        </TableRow>
+    </TableLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:background="@color/colorLine"></View>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow android:padding="@dimen/dp_10">
+
+            <TextView
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/dp_20"
+                android:text="支付金额"
+                android:textColor="@color/colorT3"
+                android:textSize="@dimen/sp_13" />
+
+            <TextView
+                android:id="@+id/tv_amount"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text=""
+                android:textColor="@color/price_color"
+                android:textSize="@dimen/sp_13" />
+        </TableRow>
+    </TableLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:background="@color/colorLine"></View>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow android:padding="@dimen/dp_10">
+
+            <TextView
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/dp_20"
+                android:text="支付时间"
+                android:textColor="@color/colorT3"
+                android:textSize="@dimen/sp_13" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text=""
+                android:textColor="@color/colorT9"
+                android:textSize="@dimen/sp_13" />
+        </TableRow>
+    </TableLayout>
+
+    <View
+
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:background="@color/colorLine"></View>
+
+</LinearLayout>

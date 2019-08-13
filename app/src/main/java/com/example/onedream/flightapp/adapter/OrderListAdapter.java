@@ -78,7 +78,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
             statusColor = R.color.colorBlue;
         }
         holder.tvName.setText(setNullText(bean.getDepartment()));
-        holder.tvCity.setText(setNullText(bean.getFlight()));
+        holder.tvCity.setText(setNullText(bean.getCfcity())+"-"+setNullText(bean.getDdcity()));
         holder.tvStatus.setText(content);
         holder.tvPrice.setText(setNullText(bean.getOrderPirce()));
         holder.tvTime.setText(setNullText(bean.getTakeOffTime())+"     起飞");

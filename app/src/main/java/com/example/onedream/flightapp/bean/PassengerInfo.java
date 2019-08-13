@@ -47,6 +47,67 @@ public class PassengerInfo {
     private String hccbzxmc;
 
     private String csrq;  //出生日期
+    private String xsj;  //退销售价
+    private String jpjl;//机票奖励
+
+    private String jec;//接车
+
+
+    private String sf;//税费
+
+    private String sxf;//手续费
+
+    private String sfwf;//收服务费
+
+    public String getXsj() {
+        return xsj;
+    }
+
+    public void setXsj(String xsj) {
+        this.xsj = xsj;
+    }
+
+    public String getJpjl() {
+        return jpjl;
+    }
+
+    public void setJpjl(String jpjl) {
+        this.jpjl = jpjl;
+    }
+
+
+
+    public String getJec() {
+        return jec;
+    }
+
+    public void setJec(String jec) {
+        this.jec = jec;
+    }
+
+    public String getSf() {
+        return sf;
+    }
+
+    public void setSf(String sf) {
+        this.sf = sf;
+    }
+
+    public String getSxf() {
+        return sxf;
+    }
+
+    public void setSxf(String sxf) {
+        this.sxf = sxf;
+    }
+
+    public String getSfwf() {
+        return sfwf;
+    }
+
+    public void setSfwf(String sfwf) {
+        this.sfwf = sfwf;
+    }
 
     public String getCjrid() {
         return cjrid;
