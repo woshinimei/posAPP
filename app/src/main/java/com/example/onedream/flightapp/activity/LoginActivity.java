@@ -18,7 +18,7 @@ import com.example.onedream.flightapp.request.OrderListRequest;
 import com.example.onedream.flightapp.response.LoginResponse;
 import com.example.onedream.flightapp.utils.DateUtils;
 import com.example.onedream.flightapp.utils.GsonUtils;
-import com.example.onedream.flightapp.utils.RsaUtil;
+import com.example.onedream.flightapp.utils.OrderListFliterUtils;
 import com.example.onedream.flightapp.utils.Shelper;
 
 import butterknife.BindView;
@@ -133,13 +133,12 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void setOrderListRequest() {
-        OrderListRequest listRequest = new OrderListRequest();
-        String[] timeArr = DateUtils.getBeforeMonthTime(-1);
-        String startTime = timeArr[0];
-        String endTime = timeArr[1];
-        listRequest.setDateStart(startTime);
-        listRequest.setDateEnd(endTime);
-        AppLocal.listRequest = listRequest;
+        //普通订单
+        OrderListFliterUtils.resetData(0);
+        //退废单
+        OrderListFliterUtils.resetData(1);
+        //改签单
+        OrderListFliterUtils.resetData(2);
     }
 
 //    private void getSign() {

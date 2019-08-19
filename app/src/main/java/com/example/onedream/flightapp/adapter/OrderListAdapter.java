@@ -49,37 +49,69 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
         String content = "";
         int statusColor = R.color.colorT9;
         //0：申请中    1：已订座   2：已调度   3：已出票   4：配送中   5：部分出票  7：客户消   8：已取消  9：完成 A:未审核
-        if (status.equals("0")){
-            content ="申请中";
-             statusColor = R.color.colorT9;
-        }else if(status.equals("1")){
-            content ="已订座";
-            statusColor = R.color.colorT9;
-        }else if (status.equals("2")){
-            content ="已调度";
-            statusColor = R.color.colorT9;
-        }else if (status.equals("3")){
-            content ="已出票";
-            statusColor = R.color.colorT9;
-        }else if (status.equals("4")){
-            content ="配送中";
-            statusColor = R.color.colorT9;
-        }else if (status.equals("5")){
-            content ="申请中";
-            statusColor = R.color.colorT9;
-        }else if (status.equals("7")){
-            content ="部分出票";
-            statusColor = R.color.colorT9;
-        }else if (status.equals("8")){
-            content ="已取消";
-            statusColor = R.color.colorT9;
-        }else if (status.equals("9")){
-            content ="已完成";
-            statusColor = R.color.colorBlue;
-        }else if (status.equals("A")){
-            content ="未审核";
-            statusColor = R.color.colorT9;
+        if (type!=1){
+            if (status.equals("0")){
+                content ="申请中";
+                statusColor = R.color.colorT9;
+            }else if(status.equals("1")){
+                content ="已订座";
+                statusColor = R.color.colorT9;
+            }else if (status.equals("2")){
+                content ="已调度";
+                statusColor = R.color.colorT9;
+            }else if (status.equals("3")){
+                content ="已出票";
+                statusColor = R.color.colorT9;
+            }else if (status.equals("4")){
+                content ="配送中";
+                statusColor = R.color.colorT9;
+            }else if (status.equals("5")){
+                content ="申请中";
+                statusColor = R.color.colorT9;
+            }else if (status.equals("7")){
+                content ="部分出票";
+                statusColor = R.color.colorT9;
+            }else if (status.equals("8")){
+                content ="已取消";
+                statusColor = R.color.colorT9;
+            }else if (status.equals("9")){
+                content ="已完成";
+                statusColor = R.color.colorBlue;
+            }else if (status.equals("A")){
+                content ="未审核";
+                statusColor = R.color.colorT9;
+            }
+        }else {
+            if (status.equals("A")){
+                content ="未审核";
+                statusColor = R.color.colorT9;
+            }else if(status.equals("0")){
+                content ="待确认";
+                statusColor = R.color.colorT9;
+            }else if (status.equals("1")){
+                content ="已申请";
+                statusColor = R.color.colorT9;
+            }else if (status.equals("2")){
+                content ="已审核";
+                statusColor = R.color.colorT9;
+            }else if (status.equals("3")){
+                content ="已调度";
+                statusColor = R.color.colorT9;
+            }else if (status.equals("4")){
+                content ="配送中";
+                statusColor = R.color.colorT9;
+            }else if (status.equals("5")){
+                content ="已完成";
+                statusColor = R.color.colorBlue;
+            }else if (status.equals("6")){
+                content ="已打单";
+                statusColor = R.color.colorT9;
+            }else if (status.equals("7")){
+                content ="已取消";
+                statusColor = R.color.colorT9;
+            }
         }
+
         holder.tvName.setText(setNullText(bean.getDepartment()));
         holder.tvCity.setText(setNullText(bean.getCfcity())+"-"+setNullText(bean.getDdcity()));
         holder.tvStatus.setText(content);

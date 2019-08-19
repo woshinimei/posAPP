@@ -1,7 +1,7 @@
 package com.example.onedream.flightapp.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -13,7 +13,7 @@ import com.example.onedream.flightapp.constant.AppLocal;
 import com.example.onedream.flightapp.constant.OrderType;
 import com.example.onedream.flightapp.intefaces.OnChoiceListener;
 import com.example.onedream.flightapp.request.OrderListRequest;
-import com.example.onedream.flightapp.utils.VeDate;
+import com.example.onedream.flightapp.utils.OrderListFliterUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,11 +36,13 @@ public class FilterTicketActivity extends BaseActivity {
     TextView tvDateEnd;
     @BindView(R.id.tv_order_status)
     TextView tvOrderStatus;
-    @BindView(R.id.tv_cl_type)
-    TextView tvClType;
+//    @BindView(R.id.tv_cl_type)
+//    TextView tvClType;
     OrderListRequest request;
-    String startTime ="";
-    String endTime ="";
+    String startTime = "";
+    String endTime = "";
+    private int type = 0;
+
     @Override
     public int getLayout() {
         return R.layout.acitivity_filter_ticket;
@@ -48,24 +50,54 @@ public class FilterTicketActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        type = getIntent().getIntExtra(OrderType.ORDER_TYPE, 0);//订单类型
         initCalendar();
-        initFirstShow();
+        initFilter();
     }
 
-    private void initFirstShow() {
-        if (AppLocal.listRequest!=null){
-
+    private void initFilter() {
+        Log.e("-----type---",type+"");
+        if (type ==0) {
+            OrderListRequest normalRequest = AppLocal.normalRequest;
+            setFirstRequest(normalRequest);
+        }else if (type==1){
+            OrderListRequest refundRequest = AppLocal.refundRequest;
+            setFirstRequest(refundRequest);
+        }else {
+            OrderListRequest endoreRequest = AppLocal.endoreRequest;
+            setFirstRequest(endoreRequest);
         }
-        tvDateStart.setText(startTime);
-        tvDateEnd.setText(endTime);
-        edName.setText("");
-        tvClType.setText("不限");
-        tvOrderStatus.setText("全部");
-        tvDateType.setText("调度日期");
-        request = new OrderListRequest();
-        request.setDateStart(startTime);
-        request.setDateEnd(endTime);
     }
+
+    private void setFirstRequest(OrderListRequest baseRequest) {
+        if (baseRequest==null){
+            baseRequest = new OrderListRequest();
+            OrderListFliterUtils.setTimeforRequest(baseRequest);
+        }
+        tvDateStart.setText(baseRequest.getDateStart());
+        tvDateEnd.setText(baseRequest.getDateEnd());
+        if (!TextUtils.isEmpty(baseRequest.getName())) {
+            edName.setText(baseRequest.getName());
+        }
+        if (TextUtils.isEmpty(baseRequest.getOrderStatus())) {
+            tvOrderStatus.setText("全部");
+        }else {
+            tvOrderStatus.setText(baseRequest.getOrderStatus());
+        }
+
+        if (TextUtils.isEmpty(baseRequest.getDateType())) {
+            if (type==1){
+                tvDateType.setText("办理日期");
+            }else {
+                tvDateType.setText("预订日期");
+            }
+
+        }else {
+            tvDateType.setText(baseRequest.getDateType());
+        }
+        request = baseRequest;
+    }
+
 
     @Override
     protected void onStop() {
@@ -80,26 +112,26 @@ public class FilterTicketActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_reset:
-                initFirstShow();
+                resetData();
                 break;
             case R.id.tv_date_type:
                 initDateType();
                 break;
             case R.id.tv_date_start:
-                showDatePicker("开始日期", "0",new OnChoiceListener() {
+                showDatePicker("开始日期", "0", new OnChoiceListener() {
                     @Override
                     public void onOption(String content) {
-                        Log.e("-开始日期--",content+"");
+                        Log.e("-开始日期--", content + "");
                         request.setDateStart(content);
                         tvDateStart.setText(content);
                     }
                 });
                 break;
             case R.id.tv_date_end:
-                showDatePicker("截止日期","1", new OnChoiceListener() {
+                showDatePicker("截止日期", "1", new OnChoiceListener() {
                     @Override
                     public void onOption(String content) {
-                        Log.e("-截止日期--",content+"");
+                        Log.e("-截止日期--", content + "");
                         request.setDateEnd(content);
                         tvDateEnd.setText(content);
                     }
@@ -109,7 +141,7 @@ public class FilterTicketActivity extends BaseActivity {
                 initStatus();
                 break;
             case R.id.tv_cl_type:
-                initAllType();
+//                initAllType();
                 break;
             case R.id.btn_search:
                 doSearch();
@@ -118,10 +150,31 @@ public class FilterTicketActivity extends BaseActivity {
         }
     }
 
+    private void resetData() {
+        OrderListFliterUtils.resetData(type);
+        initFilter();
+    }
+
     private void doSearch() {
-        AppLocal.listRequest =request;
+        String name = edName.getText().toString();
+        if (!TextUtils.isEmpty(name)) {
+            if (request != null) {
+                request.setName(name);
+            }
+        }else {
+            if (request != null) {
+                request.setName("");
+            }
+        }
+        if (type==0){
+            AppLocal.normalRequest =request;
+        }else if (type==1){
+            AppLocal.refundRequest =request;
+        }else {
+            AppLocal.endoreRequest =request;
+        }
         Intent intent = getIntent();
-        setResult(RESULT_OK,intent);
+        setResult(RESULT_OK, intent);
         finish();
     }
 
@@ -133,9 +186,18 @@ public class FilterTicketActivity extends BaseActivity {
     private void initDateType() {
         List<String> strList = new ArrayList<>();
         strList.clear();
-        strList.add("调度日期");
-        strList.add("预订日期");
-        strList.add("起飞日期");
+        if (type==1){
+            String[] orderTimeStatusOfRefund = AppLocal.orderTimeStatusOfRefund;
+            for (String s : orderTimeStatusOfRefund) {
+                strList.add(s);
+            }
+        }else {
+            String[] orderTimeStatus = AppLocal.orderTimeStatus;
+            for (String s : orderTimeStatus) {
+                strList.add(s);
+            }
+        }
+
         showOptionDialog("日期类型选择", strList, new OnChoiceListener() {
             @Override
             public void onOption(String content) {
@@ -145,43 +207,35 @@ public class FilterTicketActivity extends BaseActivity {
         });
     }
 
-    private void initAllType() {
-        List<String> strList = new ArrayList<>();
-        strList.add("不限");
-        strList.add("因公");
-        strList.add("因私");
-        showOptionDialog("差旅类型选择", strList, new OnChoiceListener() {
-            @Override
-            public void onOption(String content) {
-                tvClType.setText(content);
-            }
-        });
-    }
+//    private void initAllType() {
+//        List<String> strList = new ArrayList<>();
+//        strList.add("不限");
+//        strList.add("因公");
+//        strList.add("因私");
+//        showOptionDialog("差旅类型选择", strList, new OnChoiceListener() {
+//            @Override
+//            public void onOption(String content) {
+//                tvClType.setText(content);
+//            }
+//        });
+//    }
 
-    /*
-    * 0：申请中
-    1：已订座
-    2：已调度
-    3：已出票
-    4：配送中
-    5：部分出票
-    7：客户消
-    8：已取消
-    9：完成
-    * */
+
     private void initStatus() {
         List<String> strList = new ArrayList<>();
         strList.clear();
-        strList.add("全部");
-        strList.add("申请中");
-        strList.add("已订座");
-        strList.add("已调度");
-        strList.add("已出票");
-        strList.add("配送中");
-        strList.add("部分出票");
-        strList.add("客户消");
-        strList.add("已取消");
-        strList.add("完成");
+        if (type!=1) {
+            String[] orderStatus = AppLocal.orderStatus;
+            for (String s : orderStatus) {
+                strList.add(s);
+            }
+        }else {
+            String[] orderStatus = AppLocal.orderStatusOfRefund;
+            for (String s : orderStatus) {
+                strList.add(s);
+            }
+        }
+
         showOptionDialog("订单状态选择", strList, new OnChoiceListener() {
             @Override
             public void onOption(String content) {
@@ -221,7 +275,7 @@ public class FilterTicketActivity extends BaseActivity {
     }
 
     //展示日期选择器
-    private void showDatePicker(String title,String type,OnChoiceListener listener) {
+    private void showDatePicker(String title, String type, OnChoiceListener listener) {
 
         DatePicker picker = new DatePicker(getActivity(), DatePicker.YEAR_MONTH_DAY);
         View view = View.inflate(getActivity(), R.layout.picker_view, null);
@@ -237,7 +291,7 @@ public class FilterTicketActivity extends BaseActivity {
         picker.setTextSize(30);
         if (type.equals("1")) {
             picker.setSelectedItem(year, month, day);
-        }else {
+        } else {
             picker.setSelectedItem(lyear, lmonth, lday);
         }
         tvCancel.setOnClickListener(new View.OnClickListener() {
@@ -273,22 +327,21 @@ public class FilterTicketActivity extends BaseActivity {
 
     private void initCalendar() {
         c = Calendar.getInstance();
-        SimpleDateFormat format= new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         year = c.get(Calendar.YEAR);
         month = c.get(Calendar.MONTH) + 1;
         day = c.get(Calendar.DAY_OF_MONTH);
         endTime = format.format(c.getTime());
         //获取一个月后时间
-        c.add(Calendar.MONTH,-1);
-        lyear  = c.get(Calendar.YEAR);
+        c.add(Calendar.MONTH, -1);
+        lyear = c.get(Calendar.YEAR);
         lmonth = c.get(Calendar.MONTH) + 1;
         lday = c.get(Calendar.DAY_OF_MONTH);
 
 
-
-        startTime =format.format(c.getTime());
-        Log.e("--当前时间--",startTime);
-        Log.e("--一个月前--",endTime);
+        startTime = format.format(c.getTime());
+        Log.e("--当前时间--", startTime);
+        Log.e("--一个月前--", endTime);
     }
 
 }

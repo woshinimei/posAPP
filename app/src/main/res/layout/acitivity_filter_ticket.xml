@@ -70,7 +70,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/dp_12"
-                        android:text="旅客姓名"
+                        android:text="乘客姓名"
                         android:textColor="@color/colorT3"
                         android:textSize="@dimen/sp_15" />
 
@@ -116,7 +116,7 @@
                         android:background="@null"
                         android:drawableRight="@mipmap/arrow_more"
                         android:padding="@dimen/dp_13"
-                        android:text="申请始"
+                        android:text=""
                         android:textColor="@color/colorT3"
                         android:textSize="@dimen/sp_15" />
                 </LinearLayout>
@@ -137,8 +137,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/dp_12"
-                        android:text="开始日期"
+                        android:layout_marginRight="@dimen/dp_27"
+                        android:text="时间始"
                         android:textColor="@color/colorT3"
                         android:textSize="@dimen/sp_15" />
 
@@ -171,8 +171,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/dp_12"
-                        android:text="结束日期"
+                        android:layout_marginRight="@dimen/dp_27"
+                        android:text="时间止"
                         android:textColor="@color/colorT3"
                         android:textSize="@dimen/sp_15" />
 

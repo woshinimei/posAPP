@@ -50,7 +50,7 @@ public class OrderListActivity extends BaseActivity {
     OrderListNormalFragment normalFragment = new OrderListNormalFragment();
     OrderListRefundFragment refundFragment = new OrderListRefundFragment();
     OrderListEndoreFragment endoreFragment = new OrderListEndoreFragment();
-
+    private int type =0;
     @Override
     public int getLayout() {
         return R.layout.activity_hb_order_list;
@@ -84,6 +84,7 @@ public class OrderListActivity extends BaseActivity {
             @Override
             public void onPageSelected(int i) {
                 rg.check(rg.getChildAt(i).getId());
+                type =i;
             }
 
             @Override
@@ -152,7 +153,9 @@ public class OrderListActivity extends BaseActivity {
                 showMenuDialog();
                 break;
             case R.id.tv_filter:
-                startActivityForResult(new Intent(getActivity(), FilterTicketActivity.class), SEARCHCODE);
+                Intent intent = new Intent(getActivity(), FilterTicketActivity.class);
+                intent.putExtra(OrderType.ORDER_TYPE,type);
+                startActivityForResult(intent, SEARCHCODE);
                 break;
 
         }

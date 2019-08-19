@@ -14,6 +14,7 @@ import com.example.onedream.flightapp.intefaces.OnCallBack;
 import com.example.onedream.flightapp.model.LoginModel;
 import com.example.onedream.flightapp.response.LoginResponse;
 import com.example.onedream.flightapp.utils.GsonUtils;
+import com.example.onedream.flightapp.utils.OrderListFliterUtils;
 import com.example.onedream.flightapp.utils.Shelper;
 
 
@@ -56,6 +57,7 @@ public class SpalshActivity extends AppCompatActivity {
                             Shelper shelper = new Shelper(getBaseContext());
                             shelper.save(new Shelper.Contanvlues(AppLocal.USER_NAME, userName));
                             shelper.save(new Shelper.Contanvlues(AppLocal.USER_PWD, pwd));
+                            setOrderListRequest();
                             String userKey = response.getUserKey();
                             Log.e("---userKey---", userKey + "----");
                             if (!TextUtils.isEmpty(userKey)) {
@@ -85,5 +87,12 @@ public class SpalshActivity extends AppCompatActivity {
 
     }
 
-
+    private void setOrderListRequest() {
+        //普通订单
+        OrderListFliterUtils.resetData(0);
+        //退废单
+        OrderListFliterUtils.resetData(1);
+        //改签单
+        OrderListFliterUtils.resetData(2);
+    }
 }
