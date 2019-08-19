@@ -1,20 +1,18 @@
 package com.example.onedream.flightapp.network;
 
 import android.content.Context;
-import android.os.Handler;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.example.onedream.flightapp.activity.LoginActivity;
 import com.example.onedream.flightapp.intefaces.OnCallBack;
 import com.example.onedream.flightapp.utils.GsonUtils;
 import com.example.onedream.flightapp.view.ProgressDialog;
 
 import org.xutils.common.Callback;
-import org.xutils.common.util.KeyValue;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
-
-import java.util.List;
 
 public class BaseModel {
     ProgressDialog dialog;
@@ -27,7 +25,7 @@ public class BaseModel {
             entity.setAsJsonContent(true);
             entity.setBodyContent(json);
             Log.e("请求地址: ", url + "");
-            Log.e("请求参数: ：", json);
+            Log.e("请求参数: ", json);
 
         }
 
@@ -49,12 +47,15 @@ public class BaseModel {
                         callBack.onSucess(result);
                     }else {
                         String message = response.getMessage();
+
                         if (!TextUtils.isEmpty(message)){
                             callBack.onError(message);
                         }else {
                             callBack.onError(response.getEmg());
                         }
+                        isErrorKey(response,context);
                     }
+
                 }else {
                     callBack.onError("result 为空");
                 }
@@ -80,5 +81,32 @@ public class BaseModel {
             }
         });
 
+    }
+
+    //判断是否过期
+    private void isErrorKey(BaseResponse response, Context context) {
+        String rtnCode = response.getRtnCode();
+                        if (!TextUtils.isEmpty(rtnCode)&&rtnCode.equals("E003")){//登录过期
+                            context.startActivity(new Intent(context,LoginActivity.class));
+//        if (!TextUtils.isEmpty(rtnCode)&&rtnCode.equals("I000")){//登录过期
+//            MyDialog dialog = new MyDialog(context);
+//            dialog.setContent("当前登录信息已经过期，是否重新登录？");
+//            dialog.setLeftButtonClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    dialog.dismiss();
+//                }
+//            });
+//            dialog.setRightButtonClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    dialog.dismiss();
+//                    context.startActivity(new Intent(context,LoginActivity.class));
+//                }
+//            });
+//
+//            dialog.showPaddingScreen();
+
+        }
     }
 }

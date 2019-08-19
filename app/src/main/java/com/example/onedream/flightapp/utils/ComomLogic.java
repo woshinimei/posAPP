@@ -43,7 +43,7 @@ public class ComomLogic {
 //    public static String formatIDjiamiShow(String certType,String certNo) {
 //
 //
-//        if(TextUtils.isEmpty(certNo)){
+//        if(MyTextUtil.isEmpty(certNo)){
 //            return certNo;
 //        }
 //
@@ -55,7 +55,7 @@ public class ComomLogic {
 //            String checkSFZ = CheckColumn.checkSFZ(certNumber);
 //
 //
-//            if(!TextUtils.isEmpty(checkSFZ)){
+//            if(!MyTextUtil.isEmpty(checkSFZ)){
 //
 //                return certNumber;
 //            }else{

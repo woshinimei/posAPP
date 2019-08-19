@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/ll_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/dp_5">
+
+
+            <View
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_1"
+                android:layout_gravity="center_vertical"
+                android:background="#f2e9d0" />
+
+            <ImageView
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/icon_act_gif"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/dp_4"
+                android:layout_marginRight="@dimen/dp_8"
+                android:text=""
+                android:textColor="#bd9f57"
+                android:textSize="@dimen/sp_13" />
+
+            <ImageView
+                android:id="@+id/iv_img"
+                android:layout_width="@dimen/dp_15"
+                android:layout_height="@dimen/dp_15"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/dp_5"
+                android:src="@mipmap/icon_zj_note" />
+
+            <View
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_1"
+                android:layout_gravity="center_vertical"
+                android:background="#f2e9d0" />
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:paddingBottom="@dimen/dp_10"
+            android:id="@+id/recyview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"></android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+</FrameLayout>

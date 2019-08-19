@@ -23,9 +23,10 @@ import com.example.onedream.flightapp.constant.CacheData;
 import com.example.onedream.flightapp.constant.OrderType;
 import com.example.onedream.flightapp.utils.DisplayUtils;
 import com.example.onedream.flightapp.utils.FlightUtils;
+import com.example.onedream.flightapp.utils.MyTextUtil;
 import com.example.onedream.flightapp.utils.OrderLogic;
 import com.example.onedream.flightapp.utils.SetViewUtils;
-import com.example.onedream.flightapp.utils.VeDate;
+import com.example.onedream.flightapp.view.CouponView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
@@ -45,6 +46,8 @@ public class OrderDetailBaseFragment extends BaseFragment {
     TextView tvOrderNo;
     @BindView(R.id.tv_order_status)
     TextView tvOrderStatus;
+    @BindView(R.id.tv_si)
+    TextView tvSi;
     @BindView(R.id.tv_order_time_str)
     TextView tvOrderTimeStr;
     @BindView(R.id.tv_order_time)
@@ -111,7 +114,23 @@ public class OrderDetailBaseFragment extends BaseFragment {
             if (jbxx != null) {
                 //订单信息
                 tvOrderNo.setText(orderNo + "");
-                tvOrderStatus.setText(jbxx.getDdzt() + "|" + jbxx.getSpzt());
+                StringBuilder orderStatus = new StringBuilder();
+                if (!TextUtils.isEmpty(jbxx.getDdzt())) {
+                    orderStatus.append(jbxx.getDdzt());
+                }
+                if (!TextUtils.isEmpty(jbxx.getDdzt()) && !TextUtils.isEmpty(jbxx.getSpzt())) {
+                    orderStatus.append(" | ");
+                }
+                if (!TextUtils.isEmpty(jbxx.getSpzt())) {
+                    orderStatus.append(jbxx.getSpzt());
+                }
+                tvOrderStatus.setText(orderStatus);
+                String cllx = MyTextUtil.setNullText(jbxx.getCllx());
+                if (cllx.equals("1")){
+                    tvSi.setText("因公");
+                }else if (cllx.equals("2")){
+                    tvSi.setText("因私");
+                }
                 if (type == 0) {
                     tvOrderTimeStr.setText("预定时间：");
                     tvOrderTime.setText(jbxx.getYdsj() + "");
@@ -132,20 +151,30 @@ public class OrderDetailBaseFragment extends BaseFragment {
             if (hdjh != null && hdjh.size() > 0) {
                 tvHcTitle.setVisibility(View.VISIBLE);
                 llHb.removeAllViews();
-                for (HbInfo bean : hdjh) {
+
+                for (int i = 0; i < hdjh.size(); i++) {
+                    HbInfo bean = hdjh.get(i);
                     View view = View.inflate(getActivity(), R.layout.item_base_airtravel_view, null);
                     HbViewHolder holder = new HbViewHolder(view);
                     setLogo(holder.iconHk, bean.getHbh());
                     setDateWeek(holder.tvStartTimeWeek, bean.getCfsj());
                     setDateWeek(holder.tvEndTimeWeek, bean.getDdsj());
                     setHBTop(holder, bean);
-                    holder.tvHkName.setText(bean.getHkgs() + "");
+                    holder.tvHkName.setText(MyTextUtil.setNullText(bean.getHsjc()) + "");
                     holder.tvHkhbh.setText(bean.getHbh() + "");
                     holder.tvTimeStart.setText(bean.getCfsj().split(" ")[1] + "");
                     holder.tvTimeEnd.setText(bean.getDdsj().split(" ")[1] + "");
-                    holder.tvStartAdress.setText(bean.getCfcity() + bean.getCfjc() + bean.getCfhzl() + "");
-                    holder.tvEndAdress.setText(bean.getDdcity() + bean.getDdjc() + bean.getDdhzl() + "");
+
+                    holder.tvStartAdress.setText(MyTextUtil.setNullText(bean.getCfcity()) + MyTextUtil.setNullText(bean.getCfjc()) + MyTextUtil.setNullText(bean.getCfhzl()));
+                    holder.tvEndAdress.setText(MyTextUtil.setNullText(bean.getDdcity()) + MyTextUtil.setNullText(bean.getDdjc()) + MyTextUtil.setNullText(bean.getDdhzl()));
+
                     llHb.addView(view);
+                    if (type!=0) {//改签单和退票单的情况调用
+                        View couponView = CouponView.addCouponDetailView(getActivity(), orderDetail, i);
+                        if (couponView != null) {
+                            llHb.addView(couponView);
+                        }
+                    }
                 }
             } else {
                 tvHcTitle.setVisibility(View.GONE);
@@ -188,9 +217,9 @@ public class OrderDetailBaseFragment extends BaseFragment {
                 for (PayInfo bean : zfxxjh) {
                     View view = View.inflate(getActivity(), R.layout.item_pay_info, null);
                     PayViewHolder holder = new PayViewHolder(view);
-                    holder.tvType.setText(bean.getZffs() + "");
-                    holder.tvAmount.setText(bean.getZfje() + "");
-                    holder.tvTime.setText(bean.getZfsj() + "");
+                    holder.tvType.setText(MyTextUtil.setNullText(bean.getZffs()));
+                    holder.tvAmount.setText("¥" + MyTextUtil.setNullText(bean.getZfje()));
+                    holder.tvTime.setText(MyTextUtil.setNullText(bean.getZfsj()));
                     llPayInfo.addView(view);
                 }
             } else {
@@ -198,37 +227,46 @@ public class OrderDetailBaseFragment extends BaseFragment {
             }
 
             //添加礼包信息
-            List<CouponBean> couponList = orderDetail.getCoupon();
-            if (couponList != null && couponList.size() > 0) {
-                llCoupon.removeAllViews();
-                View view = View.inflate(getActivity(), R.layout.item_coupon_view, null);
-                CouponViewHolder holder = new CouponViewHolder(view);
-                CouponBean bean = couponList.get(0);
-                String couponPackageName = bean.getCouponPackageName();
-                if (!TextUtils.isEmpty(couponPackageName)) {
-                   holder.tvTitle.setText(couponPackageName);
-                }
-                holder.llTitle.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        CouponBean bean = couponList.get(0);
-                        String url = bean.getCouponPackageInfoUrl();
-                        Intent intent = new Intent(getActivity(), WebActivity.class);
-                        intent.putExtra("url", url);
-                        intent.putExtra("name",bean.getCouponPackageName()+"");
-                        startActivity(intent);
-                    }
-                });
-                LinearLayoutManager manager = new LinearLayoutManager(getActivity());
-                manager.setOrientation(LinearLayoutManager.HORIZONTAL);
-                holder.recyview.setLayoutManager(manager);
-                int widthPixels = getActivity().getResources().getDisplayMetrics().widthPixels - DisplayUtils.dip2px(getActivity(), 20);
-                CouponAdater actAdater = new CouponAdater(getActivity(), couponList, widthPixels);
-                holder.recyview.setAdapter(actAdater);
-                llCoupon.addView(view);
+            if (type == 0) {//其他情况在航班信息添加礼包
+                addCouponView(orderDetail);
             }
         }
 
+    }
+
+
+
+    //礼包信息(普通订单)
+    private void addCouponView(OrderDetail orderDetail) {
+        List<CouponBean> couponList = orderDetail.getCoupon();
+        if (couponList != null && couponList.size() > 0) {
+            llCoupon.removeAllViews();
+            View view = View.inflate(getActivity(), R.layout.item_coupon_view, null);
+            CouponViewHolder holder = new CouponViewHolder(view);
+            CouponBean bean = couponList.get(0);
+            String couponPackageName = bean.getCouponPackageName();
+            if (!TextUtils.isEmpty(couponPackageName)) {
+                holder.tvTitle.setText(couponPackageName);
+            }
+            holder.llTitle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    CouponBean bean = couponList.get(0);
+                    String url = bean.getCouponPackageInfoUrl();
+                    Intent intent = new Intent(getActivity(), WebActivity.class);
+                    intent.putExtra("url", url);
+                    intent.putExtra("name", bean.getCouponPackageName() + "");
+                    startActivity(intent);
+                }
+            });
+            LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+            manager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            holder.recyview.setLayoutManager(manager);
+            int widthPixels = getActivity().getResources().getDisplayMetrics().widthPixels - DisplayUtils.dip2px(getActivity(), 20);
+            CouponAdater actAdater = new CouponAdater(getActivity(), couponList, widthPixels);
+            holder.recyview.setAdapter(actAdater);
+            llCoupon.addView(view);
+        }
     }
 
     private void setHBTop(HbViewHolder holder, HbInfo bean) {
@@ -249,15 +287,6 @@ public class OrderDetailBaseFragment extends BaseFragment {
                 FlightUtils.getInstance().formatDateShwo(cfsj.split(" ")[0], CacheData.formattime, false, true, false, false));
     }
 
-    private void setStartTime(TextView tvStartTime, String cfsj) {
-        try {
-            SetViewUtils.setView(tvStartTime,
-                    VeDate.getYear(cfsj.substring(0, 4))
-                            + "年");
-        } catch (Exception ption) {
-
-        }
-    }
 
     //设置航班logo
     private void setLogo(ImageView iconHk, String hbh) {
@@ -343,10 +372,6 @@ public class OrderDetailBaseFragment extends BaseFragment {
     static class CouponViewHolder {
         @BindView(R.id.tv_head_title)
         TextView tvHeadTitle;
-        @BindView(R.id.iv_up)
-        ImageView ivUp;
-        @BindView(R.id.ll_top)
-        LinearLayout llTop;
         @BindView(R.id.tv_title)
         TextView tvTitle;
         @BindView(R.id.iv_img)

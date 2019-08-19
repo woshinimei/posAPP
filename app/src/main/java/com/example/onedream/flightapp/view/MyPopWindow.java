@@ -55,12 +55,31 @@ public class MyPopWindow extends PopupWindow {
             }
         });
     }
+public MyPopWindow(){
+    setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+    setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+    //设置触摸
+    setTouchable(true);
+    //点击popwindow以外的布局让pop消失
+    setOutsideTouchable(true);
+    //设置焦点
+    setFocusable(true);
 
+    setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+}
     //自定义高宽
     public MyPopWindow(int width, int height) {
         super(width, height);
-        setTouchable(true);
+        //设置触摸
+        setTouchable(false);
+        //点击popwindow以外的布局让pop消失
         setOutsideTouchable(true);
+        //设置焦点
+        setFocusable(true);
+        //设置动画
+        setAnimationStyle(R.style.pop_anim);
         setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 }

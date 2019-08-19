@@ -14,7 +14,7 @@ import com.example.onedream.flightapp.utils.GsonUtils;
 import com.example.onedream.flightapp.utils.SignUtils;
 
 public class LoginModel extends BaseModel {
-    public void setLogin(Context context,String username, String password, OnCallBack<String> callBack){
+    public void setLogin(Context context,boolean showDialog,String username, String password, OnCallBack<String> callBack){
 
         String pwd  = DesUtils.encode(Signature.DSE_KEY,password);
 //        Log.e("--pwd--",pwd+"");
@@ -24,7 +24,7 @@ public class LoginModel extends BaseModel {
         bean.setPassword(pwd);
         bean.setSign(sign);
         String json= GsonUtils.getJson(bean);
-        doRequest(context,true,BaseHttp.LOGIN,json,callBack);
+        doRequest(context,showDialog,BaseHttp.LOGIN,json,callBack);
 
     }
 

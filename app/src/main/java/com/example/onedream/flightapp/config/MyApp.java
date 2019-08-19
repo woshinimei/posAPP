@@ -31,6 +31,10 @@ public class MyApp extends Application {
 
     private Set<Activity> set = new HashSet<>();
 
+    public Set<Activity> getSet() {
+        return set;
+    }
+
     public void addActivity(Activity act) {
         set.add(act);
     }

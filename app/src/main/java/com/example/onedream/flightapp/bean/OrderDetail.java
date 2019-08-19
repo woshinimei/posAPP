@@ -14,6 +14,15 @@ public class OrderDetail {
     DeliveryAndInvoiceInfo fppsxx;//发票和配送信息对象
     List<InterHbInfo> jgzcjh;//国际航班信息
     List<CouponBean> coupon;//卡券信息
+    String couponCost ;//优惠券金额
+
+    public String getCouponCost() {
+        return couponCost;
+    }
+
+    public void setCouponCost(String couponCost) {
+        this.couponCost = couponCost;
+    }
 
     public void setZfxxjh(List<PayInfo> zfxxjh) {
         this.zfxxjh = zfxxjh;

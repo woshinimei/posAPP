@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorGray"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -11,10 +12,15 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tv_back"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/sp_12"
+            android:textColor="@color/white"
+            android:text=""
+            android:id="@+id/tv_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/btn_back_arrow_img"
+            android:drawableLeft="@mipmap/icon_menu"
             android:padding="@dimen/dp_12" />
 
         <TextView
@@ -54,12 +60,14 @@
             android:background="@drawable/rb_bg"
             android:button="@null"
             android:gravity="center"
+            android:minWidth="@dimen/dp_100"
             android:padding="@dimen/dp_5"
             android:text="普通订单"
             android:textColor="@color/rb_text"
             android:textSize="@dimen/sp_15" />
 
         <RadioButton
+            android:minWidth="@dimen/dp_100"
             android:id="@+id/rb2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -73,6 +81,7 @@
             android:textSize="@dimen/sp_15" />
 
         <RadioButton
+            android:minWidth="@dimen/dp_100"
             android:id="@+id/rb3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -80,7 +89,7 @@
             android:button="@null"
             android:gravity="center"
             android:padding="@dimen/dp_5"
-            android:text="改签订单"
+            android:text="改期订单"
             android:textColor="@color/rb_text"
             android:textSize="@dimen/sp_15" />
     </RadioGroup>

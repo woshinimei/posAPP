@@ -1,6 +1,7 @@
 package com.example.onedream.flightapp.activity;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,6 +38,7 @@ import com.example.onedream.flightapp.response.OrderDetailResponse;
 import com.example.onedream.flightapp.response.RefundResponse;
 import com.example.onedream.flightapp.utils.FlightComomLogic;
 import com.example.onedream.flightapp.utils.GsonUtils;
+import com.example.onedream.flightapp.utils.MyTextUtil;
 import com.example.onedream.flightapp.view.MyDialog;
 
 import java.util.ArrayList;
@@ -48,6 +50,20 @@ import butterknife.OnClick;
 public class OrderDetailActivity extends BaseActivity {
     @BindView(R.id.ll_content)
     LinearLayout llContent;
+    @BindView(R.id.tv_back)
+    TextView tvBack;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.tv_mingxi)
+    TextView tvMingxi;
+    @BindView(R.id.tv_cancel)
+    TextView tvCancel;
+    @BindView(R.id.tv_control)
+    TextView tvControl;
+    @BindView(R.id.tv_pay)
+    TextView tvPay;
+    @BindView(R.id.tv_ddje)
+    TextView tvDdje;
     @BindView(R.id.recy_top)
     RecyclerView recyTop;
     @BindView(R.id.vp)
@@ -63,16 +79,7 @@ public class OrderDetailActivity extends BaseActivity {
     OrderDetailDeliveryFragment deliveryFragment = new OrderDetailDeliveryFragment();
     OrderDetailTravelFragment travelFragment = new OrderDetailTravelFragment();
     //    OrderDetailApprovalFragment approvalFragment = new OrderDetailApprovalFragment();
-    @BindView(R.id.tv_back)
-    TextView tvBack;
-    @BindView(R.id.tv_mingxi)
-    TextView tvMingxi;
-    @BindView(R.id.tv_cancel)
-    TextView tvCancel;
-    @BindView(R.id.tv_pay)
-    TextView tvPay;
-    @BindView(R.id.tv_ddje)
-    TextView tvDdje;
+
     int type = 0;
 
     @Override
@@ -86,11 +93,16 @@ public class OrderDetailActivity extends BaseActivity {
         type = intent.getIntExtra(OrderType.ORDER_TYPE, 0);
         orderNo = intent.getStringExtra(OrderType.ORDER_NO);
         if (type == 1) {
+            tvTitle.setText("退票详情");
             tvPay.setText("退款");
+        } else if (type == 2) {
+            tvTitle.setText("改期详情");
+        } else {
+            tvTitle.setText("订单详情");
         }
         initTopView();
         initVp();
-        initData();
+
         baseFragment.setOnGetDataListener(new BaseFragment.OnGetDataListener() {
             @Override
             public void getData() {
@@ -109,17 +121,18 @@ public class OrderDetailActivity extends BaseActivity {
 //                new Handler().postDelayed(new Runnable() {
 //                    @Override
 //                    public void run() {
-                response = GsonUtils.fromJson(s, OrderDetailResponse.class);
-                if (response.isSuccess()) {
-                    OrderDetail orderDetail;
-                    if (type == OrderType.REFUND) {
-                        orderDetail = response.getTfOrderDetail();
-                    } else {
-                        orderDetail = response.getDetail();
+                if (!isFinishing()) {
+                    response = GsonUtils.fromJson(s, OrderDetailResponse.class);
+                    if (response.isSuccess()) {
+                        OrderDetail orderDetail;
+                        if (type == OrderType.REFUND) {
+                            orderDetail = response.getTfOrderDetail();
+                        } else {
+                            orderDetail = response.getDetail();
+                        }
+                        refreshView(orderDetail);
                     }
-                    refreshView(orderDetail);
                 }
-
 //                    }
 //                },1000);
 
@@ -140,19 +153,30 @@ public class OrderDetailActivity extends BaseActivity {
         if (orderDetail != null) {
             JbInfo jbxx = orderDetail.getJbxx();
             if (jbxx != null) {
-                String sfkzf = jbxx.getZfzt();//是否可支付
+                String zfzt = MyTextUtil.setNullText(jbxx.getZfzt());//是否可支付
+                String ddzt = MyTextUtil.setNullText(jbxx.getDdzt());
+                 if (ddzt.equals("已取消")||ddzt.equals("已完成")){
+                     tvControl.setVisibility(View.GONE);
+                 }else {
+                     tvControl.setVisibility(View.VISIBLE);
+                 }
                 if (type == 0) {
-                    if (!TextUtils.isEmpty(sfkzf) && sfkzf.equals("未付")) {
+                    if (zfzt.equals("未付") && !ddzt.equals("已取消")) {
                         tvPay.setVisibility(View.VISIBLE);
                     } else {
                         tvPay.setVisibility(View.GONE);
                     }
-                }else if (type==1){
-                    String zfzt = jbxx.getZfzt();
-                    if (!TextUtils.isEmpty(zfzt)&&zfzt.equals("已退")){
+                } else if (type == 1) {
+                    if (zfzt.equals("已退")) {
                         tvPay.setVisibility(View.GONE);
-                    }else {
+                    } else {
                         tvPay.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    if (zfzt.equals("未付") && (!ddzt.equals("已取消") || !ddzt.equals("已完成") || !ddzt.equals("待支付"))) {
+                        tvPay.setVisibility(View.VISIBLE);
+                    } else {
+                        tvPay.setVisibility(View.GONE);
                     }
                 }
             }
@@ -177,9 +201,12 @@ public class OrderDetailActivity extends BaseActivity {
                     if (type == 0) {
                         String ddje = jbxx.getDdje();
                         tvDdje.setText(ddje + "");
-                    } else {
+                    } else if (type == 1) {
                         String ytje = jbxx.getYtje();
                         tvDdje.setText(ytje + "");
+                    } else {
+                        String yfje = jbxx.getYfje();
+                        tvDdje.setText(yfje + "");
                     }
                 }
             }
@@ -262,13 +289,27 @@ public class OrderDetailActivity extends BaseActivity {
                     if (response != null && response.getDetail() != null) {
                         JbInfo jbInfo = response.getDetail().getJbxx();
                         if (jbInfo != null) {
-                            String ddje = jbInfo.getDdje();
-                            payIntent.putExtra(OrderType.ORDER_AMOUNT, ddje);
+                            String amount = "";
+                            if (type == 0) {
+                                amount = jbInfo.getDdje();
+                            } else if (type == 1) {
+                                amount = jbInfo.getYtje();
+                            } else {
+                                amount = jbInfo.getYfje();
+                            }
+                            payIntent.putExtra(OrderType.ORDER_AMOUNT, amount);
                         }
                     }
                     startActivity(payIntent);
                 } else {
-                    doRefund();
+                    if (response != null && response.getTfOrderDetail() != null) {
+                        JbInfo jbInfo = response.getTfOrderDetail().getJbxx();
+                        if (jbInfo != null) {
+                            String amount = jbInfo.getYtje();
+                            doRefund(amount);
+                        }
+                    }
+
                 }
 
                 break;
@@ -276,17 +317,19 @@ public class OrderDetailActivity extends BaseActivity {
     }
 
     //退废单退款
-    private void doRefund() {
+    private void doRefund(String amount) {
         RefundModel model = new RefundModel();
         RefundRequest request = new RefundRequest();
         request.setTkdh(orderNo);
         request.setRefundResult("1");
+        request.setJylsh("213214");
         PosPayInfo info = new PosPayInfo();
-        info.setAmount("0");
+        info.setAmount(amount);
         info.setBatchNo("4234324");
         info.setCardNo("4234322222");
         info.setDate("2019-12-1");
         info.setMerchantId("32132");
+        info.setTraceNo("34222");
         request.setPosPayInfo(info);
         model.getData(getActivity(), request, new OnCallBack<String>() {
             @Override
@@ -307,7 +350,7 @@ public class OrderDetailActivity extends BaseActivity {
     private void initPriceDetail() {
         if (response != null) {
             OrderDetail detail;
-            if (type ==1) {
+            if (type == 1) {
                 detail = response.getTfOrderDetail();
             } else {
                 detail = response.getDetail();
@@ -330,7 +373,13 @@ public class OrderDetailActivity extends BaseActivity {
                         priceList.addAll(refundInfo);
                     }
                 } else {
-
+                    PriceDetailedBen priceben = new PriceDetailedBen();
+                    FlightComomLogic.initEndorseDetailPriceInfo(detail, priceben);
+                    List<PriceInfo> endoreInfo = FlightComomLogic.initEndorePriceInfo(detail, priceben);
+                    if (endoreInfo != null && endoreInfo.size() > 0) {
+                        priceList.clear();
+                        priceList.addAll(endoreInfo);
+                    }
                 }
             }
         }
@@ -345,13 +394,13 @@ public class OrderDetailActivity extends BaseActivity {
         LinearLayout llContent = layout.findViewById(R.id.ll_content);
         TextView tvTotal = layout.findViewById(R.id.tv_total);
         initPriceAdapter(exListView);
-        if (priceList!=null){
-            double totalCount =0;
+        if (priceList != null) {
+            double totalCount = 0;
             for (PriceInfo group : priceList) {
                 double addPrice = group.getTotalPrice();
-                totalCount+=addPrice;
+                totalCount += addPrice;
             }
-            tvTotal.setText(totalCount+"");
+            tvTotal.setText("¥" + totalCount);
         }
 
         priceDialog = new MyDialog(getActivity(), layout);
@@ -361,6 +410,7 @@ public class OrderDetailActivity extends BaseActivity {
     private void initPriceAdapter(ExpandableListView exListView) {
         priceAdapter = new DialogPriceDetailAdapter(priceList, getActivity());
         exListView.setAdapter(priceAdapter);
+        exListView.setGroupIndicator(null);
         for (int i = 0; i < priceAdapter.getGroupCount(); i++) {
             exListView.expandGroup(i);
         }
@@ -398,5 +448,9 @@ public class OrderDetailActivity extends BaseActivity {
         }
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initData();
+    }
 }

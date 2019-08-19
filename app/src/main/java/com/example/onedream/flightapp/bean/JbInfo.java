@@ -53,6 +53,60 @@ public class JbInfo {
     //直加产品说明    zjcpsm
     private String zjcpmc;
     private String zjcpsm;
+    private String jpyhje;
+    private String cpfwf;//产品服务费
+    private String wjf;//误机费
+    private String gqf;
+    private String cj;
+    private String gqfwf;
+
+    public String getGqfwf() {
+        return gqfwf;
+    }
+
+    public void setGqfwf(String gqfwf) {
+        this.gqfwf = gqfwf;
+    }
+
+    public String getCj() {
+        return cj;
+    }
+
+    public void setCj(String cj) {
+        this.cj = cj;
+    }
+
+    public String getGqf() {
+        return gqf;
+    }
+
+    public void setGqf(String gqf) {
+        this.gqf = gqf;
+    }
+
+    public String getWjf() {
+        return wjf;
+    }
+
+    public void setWjf(String wjf) {
+        this.wjf = wjf;
+    }
+
+    public String getCpfwf() {
+        return cpfwf;
+    }
+
+    public void setCpfwf(String cpfwf) {
+        this.cpfwf = cpfwf;
+    }
+
+    public String getJpyhje() {
+        return jpyhje;
+    }
+
+    public void setJpyhje(String jpyhje) {
+        this.jpyhje = jpyhje;
+    }
 
     public String getYtje() {
         return ytje;

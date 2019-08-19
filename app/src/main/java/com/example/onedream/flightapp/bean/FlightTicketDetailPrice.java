@@ -43,12 +43,20 @@ public class FlightTicketDetailPrice {
 	private double ServicePriceTal;      //服务费总价
 	private double journeyPrice;            //行程单价格
 	private double FandianPriceTal;          //返点奖励总金额
-
+	private double jcount;//机票优惠券
 
 
 	public FlightTicketDetailPrice() {
 		super();
 		
+	}
+
+	public double getJcount() {
+		return jcount;
+	}
+
+	public void setJcount(double jcount) {
+		this.jcount = jcount;
 	}
 
 	public String getTitlevalue() {

@@ -40,7 +40,7 @@ public class OrderListRefundFragment extends BaseFragment {
     TextView tvError;
     OrderListAdapter adater;
     List<OrderListBean> list = new ArrayList<>();
-
+    private  boolean isFirst =true;
     @Override
     public int getlayout() {
         return R.layout.fragment_orderlist_refund;
@@ -55,7 +55,7 @@ public class OrderListRefundFragment extends BaseFragment {
         LinearLayoutManager manger = new LinearLayoutManager(getActivity());
         manger.setOrientation(LinearLayoutManager.VERTICAL);
         recyView.setLayoutManager(manger);
-        recyView.addItemDecoration(new RecycleViewDivider(getActivity(),LinearLayoutManager.VERTICAL,10,getResources().getColor(R.color.colorLine)));
+        recyView.addItemDecoration(new RecycleViewDivider(getActivity(),LinearLayoutManager.VERTICAL,10,getResources().getColor(R.color.colorGray)));
         adater = new OrderListAdapter(list,getActivity(),OrderType.REFUND);
         recyView.setAdapter(adater);
         initPull();
@@ -86,17 +86,14 @@ public class OrderListRefundFragment extends BaseFragment {
 
     @Override
     public void lazyData() {
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        initData(false);
+        if (isFirst&&(list==null||list.size()==0)){
+            initData(true);
+        }
     }
 
     //获取数据
-    private void initData(boolean showDialog) {
+    public void initData(boolean showDialog) {
+        isFirst =false;
         OrderListRefundModel model = new OrderListRefundModel();
         model.getData(getActivity(),showDialog, new OnCallBack<String>() {
             @Override
@@ -108,6 +105,9 @@ public class OrderListRefundFragment extends BaseFragment {
                         tvError.setVisibility(View.GONE);
                         list.clear();
                         list.addAll(orderInfoList);
+                        if (totalListener!=null){
+                            totalListener.getNum(list.size());
+                        }
                         adater.notifyDataSetChanged();
                     }else {
                         tvError.setVisibility(View.VISIBLE);
@@ -117,9 +117,27 @@ public class OrderListRefundFragment extends BaseFragment {
 
             @Override
             public void onError(String msg) {
-                tvError.setVisibility(View.VISIBLE);
+                if (!getActivity().isFinishing()) {
+                    list.clear();
+                    adater.notifyDataSetChanged();
+                    tvError.setVisibility(View.VISIBLE);
+                }
                 showToast(msg);
             }
         });
+    }
+    //获取总数
+    public interface OnTotalListener {
+        void getNum(int total);
+    }
+
+    OrderListNormalFragment.OnTotalListener totalListener;
+
+    public OrderListNormalFragment.OnTotalListener getTotalListener() {
+        return totalListener;
+    }
+
+    public void setTotalListener(OrderListNormalFragment.OnTotalListener totalListener) {
+        this.totalListener = totalListener;
     }
 }

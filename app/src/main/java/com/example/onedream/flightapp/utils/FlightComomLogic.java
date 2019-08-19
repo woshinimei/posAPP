@@ -3,6 +3,7 @@ package com.example.onedream.flightapp.utils;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.example.onedream.flightapp.bean.DeliveryAndInvoiceInfo;
 import com.example.onedream.flightapp.bean.FlightTicketDetailPrice;
 import com.example.onedream.flightapp.bean.JbInfo;
 import com.example.onedream.flightapp.bean.OrderDetail;
@@ -16,6 +17,114 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FlightComomLogic {
+    /**
+     * 初始化改签明细
+     * */
+    public   static void initEndorseDetailPriceInfo(OrderDetail parseendorseorderJson, PriceDetailedBen priceben) {
+
+        if(parseendorseorderJson!=null){
+            JbInfo jbxx = parseendorseorderJson.getJbxx();
+            if(jbxx!=null){
+                String cj = jbxx.getCj();
+                if(!TextUtils.isEmpty(cj)){
+                    priceben.setGqjpcj(cj);
+                }
+
+
+                String gqf = jbxx.getGqf();
+                if(!TextUtils.isEmpty(gqf)){
+                    priceben.setGqjpgqf(gqf);
+                }
+                String gqfwf = jbxx.getGqfwf();
+                if(!TextUtils.isEmpty(gqfwf)){
+                    priceben.setGqjpfwf(gqfwf);
+                }
+               /* String gqsxf = jbxx.getGqsxf();
+                if(!TextUtils.isEmpty(gqsxf)){
+                    priceben.setGqjpsxf(gqsxf);
+                }*/
+
+
+            }
+
+        }
+
+
+    }
+    /**
+     * 初始化改签明细
+     * */
+    public static    List<PriceInfo> initEndorePriceInfo(OrderDetail orderDetail, PriceDetailedBen priceben){
+
+        List<PriceInfo>   priceInfos = new ArrayList<PriceInfo>();
+
+        String gqjpcj = priceben.getGqjpcj();
+        if(!TextUtils.isEmpty(gqjpcj)&&!"0".equals(FormatUtils.formatPrice(gqjpcj))){
+            PriceInfo gqjpsxfinfo  = new PriceInfo();
+            gqjpsxfinfo.setName("差价费");
+            gqjpsxfinfo.setTotalPrice(Double.valueOf(gqjpcj));
+            priceInfos.add(gqjpsxfinfo);
+
+        }
+
+        String gqjpgqf = priceben.getGqjpgqf();
+        if(!TextUtils.isEmpty(gqjpgqf)&&!"0".equals(FormatUtils.formatPrice(gqjpgqf))){
+            PriceInfo gqjpgqfinfo  = new PriceInfo();
+            gqjpgqfinfo.setName("改签费");
+            gqjpgqfinfo.setTotalPrice(Double.valueOf(gqjpgqf));
+            priceInfos.add(gqjpgqfinfo);
+
+
+        }
+        String gqjpfwf = priceben.getGqjpfwf();
+        if(!TextUtils.isEmpty(gqjpfwf)&&!"0".equals(FormatUtils.formatPrice(gqjpfwf))){
+            PriceInfo gqjpfwfinfo  = new PriceInfo();
+            gqjpfwfinfo.setName("服务费");
+            gqjpfwfinfo.setTotalPrice(Double.valueOf(gqjpfwf));
+            priceInfos.add(gqjpfwfinfo);
+
+
+        }
+
+        JbInfo baseinfo  = 	orderDetail.getJbxx();
+        if(baseinfo!=null){
+            String wjf = baseinfo.getWjf();
+            if(!TextUtils.isEmpty(wjf)&&!"0".equals(FormatUtils.formatPrice(wjf))){
+                PriceInfo wjfinfo  = new PriceInfo();
+                wjfinfo.setName("误机费");
+                wjfinfo.setTotalPrice(Double.valueOf(wjf));
+                priceInfos.add(wjfinfo);
+
+
+            }
+            String cpfwf = baseinfo.getCpfwf();
+            if (!TextUtils.isEmpty(cpfwf)){
+                PriceInfo cpInfo = new PriceInfo();
+                cpInfo.setName("产品服务费");
+                cpInfo.setTotalPrice(Double.valueOf(cpfwf));
+                priceInfos.add(cpInfo);
+            }
+
+
+        }
+
+
+
+        DeliveryAndInvoiceInfo info = 	orderDetail.getFppsxx();
+        if(info!=null){
+            String yjpsf = info.getYjpsf();
+            if(!TextUtils.isEmpty(yjpsf)&&!"0".equals(FormatUtils.formatPrice(yjpsf))){
+                PriceInfo gqjppsfinfo  = new PriceInfo();
+                gqjppsfinfo.setName("配送费");
+                gqjppsfinfo.setTotalPrice(Double.valueOf(yjpsf));
+                priceInfos.add(gqjppsfinfo);
+            }
+
+
+
+        }
+        return priceInfos;
+    }
 
     /**
      * 初始化 退票订单详的价格明细
@@ -139,28 +248,28 @@ public class FlightComomLogic {
                         }
 
 
-                    //深圳航空G+S+X对接start
-//                    String couponFee = parserefundJson.getCouponCost();
-//                    try {
-//                        if (!TextUtils.isEmpty(couponFee)) {
-//                            couponCost = Double.valueOf(couponFee);
-//                            priceben.setCouponCost(couponCost);
-//                        }
-//                    } catch (Exception e) {
-//                    }
-                    //深圳航空G+S+X对接end
+//                    深圳航空G+S+X对接start
+                    String couponFee = parserefundJson.getCouponCost();
+                    try {
+                        if (!TextUtils.isEmpty(couponFee)) {
+                            couponCost = Double.valueOf(couponFee);
+                            priceben.setCouponCost(couponCost);
+                        }
+                    } catch (Exception e) {
+                    }
+//                    深圳航空G+S+X对接end
 
                 }
-//                try{
-//                    String jpyhje = parserefundJson.getJbxx().getJpyhje();
-//                    if (!TextUtils.isEmpty(jpyhje)){
-//                        flightCouponsCost = Double.valueOf(jpyhje);
-//                        priceben.setJpyhje(flightCouponsCost);
-//                    }
-//                }catch (Exception e){
-//
-//                }
-//
+                try{
+                    String jpyhje = parserefundJson.getJbxx().getJpyhje();
+                    if (!TextUtils.isEmpty(jpyhje)){
+                        flightCouponsCost = Double.valueOf(jpyhje);
+                        priceben.setJpyhje(flightCouponsCost);
+                    }
+                }catch (Exception e){
+
+                }
+
             }
 
 
@@ -285,7 +394,7 @@ public class FlightComomLogic {
 
 				/*	String tjpbxfs = priceben.getTjpbxfs();
 
-					if(!TextUtils.isEmpty(tjpbxfs)&&!"0".equals(FormatUtils.formatPrice(tjpbxfs))){
+					if(!MyTextUtil.isEmpty(tjpbxfs)&&!"0".equals(FormatUtils.formatPrice(tjpbxfs))){
 
 						ArrayList<PriceItem>  tjpbxjejh = new ArrayList<PriceItem>();
 
@@ -318,7 +427,7 @@ public class FlightComomLogic {
         }
         return priceinfos;
 		/*		String tjpxsfwf = priceben.getTjpxsfwf();
-				if(!TextUtils.isEmpty(tjpxsfwf)&&!"0".equals(FormatUtils.formatPrice(tjpxsfwf))){
+				if(!MyTextUtil.isEmpty(tjpxsfwf)&&!"0".equals(FormatUtils.formatPrice(tjpxsfwf))){
 					PriceInfo tjpxsfwfinfo = new PriceInfo();
 					tjpxsfwfinfo.setName("退机票销售服务费");
 
@@ -328,7 +437,7 @@ public class FlightComomLogic {
 
 				}
 				String tjptpfwf = priceben.getTjptpfwf();
-				if(!TextUtils.isEmpty(tjptpfwf)&&!"0".equals(FormatUtils.formatPrice(tjptpfwf))){
+				if(!MyTextUtil.isEmpty(tjptpfwf)&&!"0".equals(FormatUtils.formatPrice(tjptpfwf))){
 
 					PriceInfo tjptpfwfinfo = new PriceInfo();
 					tjptpfwfinfo.setName("收退票服务费");
@@ -338,7 +447,7 @@ public class FlightComomLogic {
 
 				}
 				String tjptpsxf = priceben.getTjptpsxf();
-				if(!TextUtils.isEmpty(tjptpsxf)&&!"0".equals(FormatUtils.formatPrice(tjptpsxf))){
+				if(!MyTextUtil.isEmpty(tjptpsxf)&&!"0".equals(FormatUtils.formatPrice(tjptpsxf))){
 
 					PriceInfo tjptpsxfinfo = new PriceInfo();
 					tjptpsxfinfo.setName("收退票服务费");
@@ -518,7 +627,15 @@ public class FlightComomLogic {
         goTicketDetailPrice2.setFlightBadyBuliderAndFuelTal(flighBuliderAndFuelTal);     //设置基建税费的总价
         goTicketDetailPrice2.setInsurancePriceTal(insurancetal) ;      //设置保险的额总价格;
         goTicketDetailPrice2.setServicePriceTal(goServiceAdult);   // 服务费总价
-
+        //机票优惠券金额
+        if (goresponse2.getJbxx()!=null) {
+            String jpyhje = goresponse2.getJbxx().getJpyhje();
+            if (!TextUtils.isEmpty(jpyhje)) {
+                double jcount =0;
+                jcount = -Double.valueOf(jpyhje);
+                goTicketDetailPrice2.setJcount(jcount);
+            }
+        }
 
     }
     public static ArrayList<PriceInfo> getOrderDetailPriceDatas( FlightTicketDetailPrice goTicketDetailPrice) {
@@ -778,7 +895,14 @@ public class FlightComomLogic {
             fandianprice.setExplain("优惠 ¥"+ FormatUtils.formatPrice(fandianPriceTal));
             dataList.add(fandianprice);
         }
-
+        //机票优惠券金额
+        double jpyhje = goTicketDetailPrice.getJcount();
+        if (jpyhje!=0){
+            PriceInfo jpyhInfo = new PriceInfo();
+            jpyhInfo.setName("优惠券");
+            jpyhInfo.setTotalPrice(jpyhje);
+            dataList.add(jpyhInfo);
+        }
 
         return dataList;
 

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorGray"
     android:id="@+id/ll_content"
     android:orientation="vertical">
 
@@ -19,6 +20,7 @@
             android:padding="@dimen/dp_12" />
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -40,6 +42,7 @@
 
         <android.support.v4.view.ViewPager
             android:id="@+id/vp"
+            android:layout_above="@id/fl_bottom"
             android:layout_width="match_parent"
             android:layout_height="match_parent"></android.support.v4.view.ViewPager>
 
@@ -48,6 +51,7 @@
             android:layout_height="@dimen/dp_1"
             android:background="@color/colorLine"></View>
         <FrameLayout
+            android:id="@+id/fl_bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true">

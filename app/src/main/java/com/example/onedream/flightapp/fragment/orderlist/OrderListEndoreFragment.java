@@ -39,6 +39,7 @@ public class OrderListEndoreFragment extends BaseFragment {
     TextView tvError;
     OrderListAdapter adater;
     List<OrderListBean> list = new ArrayList<>();
+    boolean isFirst =true;
     @Override
     public int getlayout() {
         return R.layout.fragment_orderlist_endore;
@@ -53,8 +54,7 @@ public class OrderListEndoreFragment extends BaseFragment {
         LinearLayoutManager manger = new LinearLayoutManager(getActivity());
         manger.setOrientation(LinearLayoutManager.VERTICAL);
         recyView.setLayoutManager(manger);
-        recyView.addItemDecoration(new RecycleViewDivider(getActivity(),LinearLayoutManager.VERTICAL,10,getResources().getColor(R.color.colorLine)));
-        initData(false);
+        recyView.addItemDecoration(new RecycleViewDivider(getActivity(),LinearLayoutManager.VERTICAL,10,getResources().getColor(R.color.colorGray)));
         adater = new OrderListAdapter(list,getActivity(),OrderType.ENDORE);
         recyView.setAdapter(adater);
         initPull();
@@ -85,17 +85,15 @@ public class OrderListEndoreFragment extends BaseFragment {
 
     @Override
     public void lazyData() {
-
+        if (isFirst&&(list==null||list.size()==0)){
+            initData(true);
+        }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        initData(false);
-    }
 
     //获取数据
-    private void initData(boolean showDialog) {
+    public void initData(boolean showDialog) {
+        isFirst =false;
         OrderListEndoreModel model = new OrderListEndoreModel();
         model.getData(getActivity(),showDialog, new OnCallBack<String>() {
             @Override
@@ -107,6 +105,9 @@ public class OrderListEndoreFragment extends BaseFragment {
                         tvError.setVisibility(View.GONE);
                         list.clear();
                         list.addAll(orderInfoList);
+                        if (totalListener!=null){
+                            totalListener.getNum(list.size());
+                        }
                         adater.notifyDataSetChanged();
                     }else {
                         tvError.setVisibility(View.VISIBLE);
@@ -116,9 +117,27 @@ public class OrderListEndoreFragment extends BaseFragment {
 
             @Override
             public void onError(String msg) {
-                tvError.setVisibility(View.VISIBLE);
+                if (!getActivity().isFinishing()) {
+                    list.clear();
+                    adater.notifyDataSetChanged();
+                    tvError.setVisibility(View.VISIBLE);
+                }
                 showToast(msg);
             }
         });
+    }
+    //获取总数
+    public interface OnTotalListener {
+        void getNum(int total);
+    }
+
+    OrderListNormalFragment.OnTotalListener totalListener;
+
+    public OrderListNormalFragment.OnTotalListener getTotalListener() {
+        return totalListener;
+    }
+
+    public void setTotalListener(OrderListNormalFragment.OnTotalListener totalListener) {
+        this.totalListener = totalListener;
     }
 }

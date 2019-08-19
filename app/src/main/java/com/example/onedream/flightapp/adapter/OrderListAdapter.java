@@ -48,7 +48,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
         String status =setNullText(bean.getOrderStatus());
         String content = "";
         int statusColor = R.color.colorT9;
-        //0：申请中    1：已订座   2：已调度   3：已出票   4：配送中   5：部分出票  7：客户消   8：已取消  9：完成
+        //0：申请中    1：已订座   2：已调度   3：已出票   4：配送中   5：部分出票  7：客户消   8：已取消  9：完成 A:未审核
         if (status.equals("0")){
             content ="申请中";
              statusColor = R.color.colorT9;
@@ -76,6 +76,9 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
         }else if (status.equals("9")){
             content ="已完成";
             statusColor = R.color.colorBlue;
+        }else if (status.equals("A")){
+            content ="未审核";
+            statusColor = R.color.colorT9;
         }
         holder.tvName.setText(setNullText(bean.getDepartment()));
         holder.tvCity.setText(setNullText(bean.getCfcity())+"-"+setNullText(bean.getDdcity()));

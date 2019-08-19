@@ -153,39 +153,39 @@ public class OrderDetailDeliveryFragment extends BaseFragment {
                     }
                 }
 //                if (info != null) {
-//                    if (!TextUtils.isEmpty(info.getSjr())) {
+//                    if (!MyTextUtil.isEmpty(info.getSjr())) {
 //                        tvGetName.setText(info.getSjr() + "");
 //                    } else {
 //                        trGetName.setVisibility(View.GONE);
 //                        lineGetName.setVisibility(View.GONE);
 //                    }
 //
-//                    if (!TextUtils.isEmpty(info.getSjdz())) {
+//                    if (!MyTextUtil.isEmpty(info.getSjdz())) {
 //                        tvAdress.setText(info.getSjdz() + "");
 //                    } else {
 //                        trAdress.setVisibility(View.GONE);
 //                        lineAdress.setVisibility(View.GONE);
 //                    }
-//                    if (!TextUtils.isEmpty(info.getSjrdh())) {
+//                    if (!MyTextUtil.isEmpty(info.getSjrdh())) {
 //                        tvPhone.setText(info.getSjrdh() + "");
 //                    } else {
 //                        trPhone.setVisibility(View.GONE);
 //                        linePhone.setVisibility(View.GONE);
 //                    }
 //
-//                    if (!TextUtils.isEmpty(info.getPsfs())) {
+//                    if (!MyTextUtil.isEmpty(info.getPsfs())) {
 //                        tvType.setText(info.getPsfs() + "");
 //                    } else {
 //                        trType.setVisibility(View.GONE);
 //                        lineType.setVisibility(View.GONE);
 //                    }
-//                    if (!TextUtils.isEmpty(info.getKd())) {
+//                    if (!MyTextUtil.isEmpty(info.getKd())) {
 //                        tvCompany.setText(info.getKd() + "");
 //                    } else {
 //                        trCompany.setVisibility(View.GONE);
 //                        lineCompany.setVisibility(View.GONE);
 //                    }
-//                    if (!TextUtils.isEmpty(info.getYjpsf())) {
+//                    if (!MyTextUtil.isEmpty(info.getYjpsf())) {
 //                        tvSendCount.setText(info.getYjpsf() + "");
 //                    } else {
 //                        trSendCount.setVisibility(View.GONE);

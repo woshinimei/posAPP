@@ -76,7 +76,7 @@ public class DialogPriceDetailAdapter extends BaseExpandableListAdapter {
         }
         PriceInfo bean = list.get(groupPosition);
         holder.tvName.setText(setNullText(bean.getName()));
-        holder.tvCount.setText("￥" + bean.getTotalPrice());
+        holder.tvCount.setText("¥" + bean.getTotalPrice());
         return convertView;
     }
 
@@ -92,7 +92,7 @@ public class DialogPriceDetailAdapter extends BaseExpandableListAdapter {
         }
         PriceItem bean = list.get(groupPosition).getFjjh().get(childPosition);
         holder.tvName.setText(setNullText(bean.getName()));
-        holder.tvCount.setText("￥" + bean.getUnitPrice());
+        holder.tvCount.setText("¥" + bean.getUnitPrice());
         return convertView;
     }
 

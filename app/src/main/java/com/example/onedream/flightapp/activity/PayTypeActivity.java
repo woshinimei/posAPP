@@ -1,5 +1,8 @@
 package com.example.onedream.flightapp.activity;
 
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -10,14 +13,19 @@ import com.example.onedream.flightapp.adapter.RvPayListAdapter;
 import com.example.onedream.flightapp.base.BaseActivity;
 import com.example.onedream.flightapp.bean.PayTypeBean;
 import com.example.onedream.flightapp.bean.PosPayInfo;
+import com.example.onedream.flightapp.config.MyApp;
 import com.example.onedream.flightapp.constant.OrderType;
 import com.example.onedream.flightapp.intefaces.OnCallBack;
 import com.example.onedream.flightapp.model.PayModel;
 import com.example.onedream.flightapp.request.PayRequest;
+import com.example.onedream.flightapp.response.PayResponse;
+import com.example.onedream.flightapp.utils.GsonUtils;
+import com.example.onedream.flightapp.view.MyDialog;
 import com.example.onedream.flightapp.view.RecycleViewDivider;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -113,7 +121,7 @@ public class PayTypeActivity extends BaseActivity {
         request.setPayResult("0");
         request.setPayType("0");
         PosPayInfo info = new PosPayInfo();
-        info.setAmount("0");
+        info.setAmount(ddje+"");
         info.setBatchNo("4234324");
         info.setCardNo("4234322222");
         info.setDate("2019-12-1");
@@ -122,7 +130,10 @@ public class PayTypeActivity extends BaseActivity {
         model.getData(getActivity(), type, request, new OnCallBack<String>() {
             @Override
             public void onSucess(String s) {
-                showToast(s);
+                PayResponse response = GsonUtils.fromJson(s,PayResponse.class);
+                if (response.isSuccess()){
+                   showSuccessDialog();
+                }
             }
 
             @Override
@@ -130,6 +141,57 @@ public class PayTypeActivity extends BaseActivity {
                 showToast(msg);
             }
         });
+    }
+
+    MyDialog successDialog;
+    private void showSuccessDialog() {
+        View view = View.inflate(getActivity(),R.layout.pay_success_layout,null);
+        TextView tvOrder =view.findViewById(R.id.tv_order);
+        tvOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                successDialog.dismiss();
+            }
+        });
+        TextView tvList = view.findViewById(R.id.tv_list);
+        tvList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                successDialog.dismiss();
+                Set<Activity> set = MyApp.getInstance().getSet();
+                if (set!=null){
+                    for (int i = 0; i < set.size(); i++) {
+                        for (Activity activity : set) {
+                                if (!activity.isFinishing()&&activity.getClass().equals(OrderDetailActivity.class)){
+                                    activity.finish();
+                                }
+                            if (!activity.isFinishing()&&activity.getClass().equals(OrderListActivity.class)){
+                                activity.finish();
+                            }
+                        }
+                    }
+                }
+                startActivity(new Intent(getActivity(),OrderListActivity.class));
+
+            }
+        });
+
+         successDialog = new MyDialog(getActivity(),view);
+         successDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+             @Override
+             public void onDismiss(DialogInterface dialog) {
+                 finish();
+             }
+         });
+        successDialog.showPaddingScreen();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (successDialog!=null&&successDialog.isShowing()){
+            successDialog.dismiss();
+        }
     }
 
     //是否选择了支付方式

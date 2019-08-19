@@ -11,14 +11,14 @@ public class RefundRequest extends BaseRequest {
     private String tkdh;//订单编号
     private String cldh;//处理编号
     private String jylsh;//交易流水号
-    private PosPayInfo posPayInfo;//
+    private PosPayInfo posRefundInfo;//
 
     public PosPayInfo getPosPayInfo() {
-        return posPayInfo;
+        return posRefundInfo;
     }
 
     public void setPosPayInfo(PosPayInfo posPayInfo) {
-        this.posPayInfo = posPayInfo;
+        this.posRefundInfo = posPayInfo;
     }
     public String getUserKey() {
         return userKey;

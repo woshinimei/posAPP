@@ -2,7 +2,9 @@ package com.example.onedream.flightapp.request;
 
 import com.example.onedream.flightapp.network.BaseRequest;
 
-public class OrderListRequest extends BaseRequest {
+import java.io.Serializable;
+
+public class OrderListRequest extends BaseRequest implements Serializable {
     private String userKey;//用户唯一标识(必填)
     private String sign;//签名(必填)
     private String name;//乘客姓名

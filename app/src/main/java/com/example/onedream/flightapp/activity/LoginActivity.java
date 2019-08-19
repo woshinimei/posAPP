@@ -14,7 +14,9 @@ import com.example.onedream.flightapp.base.BaseActivity;
 import com.example.onedream.flightapp.constant.AppLocal;
 import com.example.onedream.flightapp.intefaces.OnCallBack;
 import com.example.onedream.flightapp.model.LoginModel;
+import com.example.onedream.flightapp.request.OrderListRequest;
 import com.example.onedream.flightapp.response.LoginResponse;
+import com.example.onedream.flightapp.utils.DateUtils;
 import com.example.onedream.flightapp.utils.GsonUtils;
 import com.example.onedream.flightapp.utils.RsaUtil;
 import com.example.onedream.flightapp.utils.Shelper;
@@ -34,7 +36,6 @@ public class LoginActivity extends BaseActivity {
     EditText edPassword;
 
 
-
     @Override
     public int getLayout() {
         return R.layout.activity_login;
@@ -42,15 +43,24 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        edUsername.setText("SHGMADMIN");
-        edPassword.setText("aA123456");
+        Shelper shelper = new Shelper(getActivity());
+//        edUsername.setText("SHGMADMIN");
+//        edPassword.setText("aA123456");
+        String userName = shelper.getString(AppLocal.USER_NAME);
+        String pwd = shelper.getString(AppLocal.USER_PWD);
+        if (!TextUtils.isEmpty(userName)) {
+            edUsername.setText(userName);
+        }
+        if (!TextUtils.isEmpty(pwd)) {
+            edPassword.setText(pwd);
+        }
         edPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         edPasswordModelBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
+                if (isChecked) {
                     edPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                }else {
+                } else {
                     edPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }
             }
@@ -84,29 +94,32 @@ public class LoginActivity extends BaseActivity {
         LoginModel model = new LoginModel();
         String userName = edUsername.getText().toString();
         String pwd = edPassword.getText().toString();
-        if (TextUtils.isEmpty(userName)){
+        if (TextUtils.isEmpty(userName)) {
             showToast("请输入账号");
             return;
         }
-        if (TextUtils.isEmpty(pwd)){
+        if (TextUtils.isEmpty(pwd)) {
             showToast("请输入密码");
             return;
         }
 
-        model.setLogin(getActivity(),userName, pwd,  new OnCallBack<String>() {
+        model.setLogin(getActivity(), true, userName, pwd, new OnCallBack<String>() {
             @Override
             public void onSucess(String s) {
-                LoginResponse response = GsonUtils.fromJson(s,LoginResponse.class);
-                if (response.isSuccess()){
-                    startActivity(new Intent(getActivity(),OrderListActivity.class));
+                LoginResponse response = GsonUtils.fromJson(s, LoginResponse.class);
+                if (response.isSuccess()) {
+                    //重新设置订单列表初始请求数据
+                    setOrderListRequest();
                     Shelper shelper = new Shelper(getActivity());
-                   shelper.save(new Shelper.Contanvlues(AppLocal.USER_NAME,userName));
-                   shelper.save(new Shelper.Contanvlues(AppLocal.USER_PWD,pwd));
+                    shelper.save(new Shelper.Contanvlues(AppLocal.USER_NAME, userName));
+                    shelper.save(new Shelper.Contanvlues(AppLocal.USER_PWD, pwd));
                     String userKey = response.getUserKey();
-                    Log.e("---userKey---",userKey+"----");
-                    if (!TextUtils.isEmpty(userKey)){
-                      AppLocal.USERKEY = userKey;
-                  }
+                    Log.e("---userKey---", userKey + "----");
+                    if (!TextUtils.isEmpty(userKey)) {
+                        AppLocal.USERKEY = userKey;
+                    }
+                    startActivity(new Intent(getActivity(), OrderListActivity.class));
+                    finish();
                 }
 
             }
@@ -117,6 +130,16 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
+    }
+
+    private void setOrderListRequest() {
+        OrderListRequest listRequest = new OrderListRequest();
+        String[] timeArr = DateUtils.getBeforeMonthTime(-1);
+        String startTime = timeArr[0];
+        String endTime = timeArr[1];
+        listRequest.setDateStart(startTime);
+        listRequest.setDateEnd(endTime);
+        AppLocal.listRequest = listRequest;
     }
 
 //    private void getSign() {

@@ -11,6 +11,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/ll_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -25,11 +26,12 @@
                 android:textSize="@dimen/sp_15" />
 
             <TextView
+                android:layout_marginRight="@dimen/dp_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="￥"
+                android:text="¥"
                 android:textColor="@color/price_color"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/sp_13" />
 
             <TextView
                 android:id="@+id/tv_ddje"
@@ -37,6 +39,16 @@
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:textColor="@color/price_color"
+                android:textSize="@dimen/sp_15" />
+            <TextView
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_10"
+                android:id="@+id/tv_mingxi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/mingxi"
+                android:textColor="@color/topview_bg"
                 android:textSize="@dimen/sp_15" />
         </LinearLayout>
 
@@ -47,14 +59,7 @@
             android:layout_centerVertical="true"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_mingxi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/mingxi"
-                android:textColor="@color/topview_bg"
-                android:textSize="@dimen/sp_15" />
+
 
             <TextView
                 android:visibility="gone"
@@ -72,10 +77,11 @@
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/sp_13" />
             <TextView
+                android:visibility="visible"
                 android:id="@+id/tv_control"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_5"
                 android:background="@drawable/btn_pay_cancel"
                 android:gravity="center"
                 android:paddingLeft="@dimen/dp_16"
@@ -89,7 +95,7 @@
                 android:id="@+id/tv_pay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_5"
+                android:visibility="visible"
                 android:background="@drawable/btn_pay_cancel"
                 android:gravity="center"
                 android:paddingLeft="@dimen/dp_16"

@@ -33,7 +33,7 @@ import butterknife.BindView;
  * 订单列表-----普通订单界面
  */
 public class OrderListNormalFragment extends BaseFragment {
-@BindView(R.id.pull)
+    @BindView(R.id.pull)
     SmartRefreshLayout pull;
     @BindView(R.id.recy)
     RecyclerView recyView;
@@ -41,6 +41,7 @@ public class OrderListNormalFragment extends BaseFragment {
     TextView tvError;
     OrderListAdapter adater;
     List<OrderListBean> list = new ArrayList<>();
+    private boolean isFirst = true;
 
     @Override
     public int getlayout() {
@@ -49,7 +50,7 @@ public class OrderListNormalFragment extends BaseFragment {
 
     @Override
     public void initView() {
-        Log.e("---initView----","----");
+        Log.e("---initView----", "----");
         initAdater();
     }
 
@@ -58,9 +59,9 @@ public class OrderListNormalFragment extends BaseFragment {
         LinearLayoutManager manger = new LinearLayoutManager(getActivity());
         manger.setOrientation(LinearLayoutManager.VERTICAL);
         recyView.setLayoutManager(manger);
-        recyView.addItemDecoration(new RecycleViewDivider(getActivity(),LinearLayoutManager.VERTICAL,10,getResources().getColor(R.color.colorLine)));
         initData(true);
-        adater = new OrderListAdapter(list,getActivity(),OrderType.NORMAL);
+        recyView.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.VERTICAL, 10, getResources().getColor(R.color.colorGray)));
+        adater = new OrderListAdapter(list, getActivity(), OrderType.NORMAL);
         recyView.setAdapter(adater);
         initPull();
     }
@@ -68,14 +69,14 @@ public class OrderListNormalFragment extends BaseFragment {
     private void initPull() {
         pull.setRefreshHeader(new ClassicsHeader(getActivity()));
 
-       pull.setOnRefreshListener(new OnRefreshListener() {
-           @Override
-           public void onRefresh(RefreshLayout refreshLayout) {
+        pull.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshLayout) {
                 initData(true);
-               adater.notifyDataSetChanged();
-               pull.finishRefresh(300);//加载时间，必须加这句
-           }
-       });
+                adater.notifyDataSetChanged();
+                pull.finishRefresh(300);//加载时间，必须加这句
+            }
+        });
 //        pull.setEnableLoadmore(false);
 //       pull.setOnLoadmoreListener(new OnLoadmoreListener() {
 //           @Override
@@ -88,27 +89,20 @@ public class OrderListNormalFragment extends BaseFragment {
 
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        initData();
-//    }
 
     @Override
     public void lazyData() {
-
+        if (isFirst && (list == null || list.size() == 0)) {
+            initData(true);
+        }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        initData(false);
-    }
 
     //获取数据
-    private void initData(boolean showDialog) {
+    public void initData(boolean showDialog) {
+        isFirst = false;
         OrderListNormalModel model = new OrderListNormalModel();
-        model.getData(getActivity(),showDialog, new OnCallBack<String>() {
+        model.getData(getActivity(), showDialog, new OnCallBack<String>() {
             @Override
             public void onSucess(String s) {
                 if (!getActivity().isFinishing()) {
@@ -118,8 +112,12 @@ public class OrderListNormalFragment extends BaseFragment {
                         tvError.setVisibility(View.GONE);
                         list.clear();
                         list.addAll(orderInfoList);
+                        int size = list.size();
+                        if (totalListener!=null){
+                            totalListener.getNum(size);
+                        }
                         adater.notifyDataSetChanged();
-                    }else {
+                    } else {
                         tvError.setVisibility(View.VISIBLE);
                     }
                 }
@@ -127,11 +125,28 @@ public class OrderListNormalFragment extends BaseFragment {
 
             @Override
             public void onError(String msg) {
-                tvError.setVisibility(View.VISIBLE);
+                if (!getActivity().isFinishing()) {
+                    list.clear();
+                    adater.notifyDataSetChanged();
+                    tvError.setVisibility(View.VISIBLE);
+                }
                 showToast(msg);
             }
         });
     }
 
+    //获取总数
+    public interface OnTotalListener {
+        void getNum(int total);
+    }
 
+    OnTotalListener totalListener;
+
+    public OnTotalListener getTotalListener() {
+        return totalListener;
+    }
+
+    public void setTotalListener(OnTotalListener totalListener) {
+        this.totalListener = totalListener;
+    }
 }

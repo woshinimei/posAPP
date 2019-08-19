@@ -30,10 +30,28 @@ public class DateUtils {
 	public DateUtils() {
 
 	}
-
+/**
+ * 获取n个月前时间
+ * */
+	public static String[] getBeforeMonthTime(int n) {
+		String [] timeArr = {"",""};
+		//获取当前时间
+		Calendar c;
+		c = Calendar.getInstance();
+		SimpleDateFormat format= new SimpleDateFormat("yyyy-MM-dd");
+		String endTime = format.format(c.getTime());
+		//获取n个月前时间
+		c.add(Calendar.MONTH,n);
+		String startTime =format.format(c.getTime());
+		Log.e("--当前时间--",endTime);
+		Log.e("--n个月前--",startTime);
+		timeArr[0] = startTime;
+		timeArr[1] = endTime;
+		return timeArr;
+	}
 	/**
 	 * 获取现在时间
-	 * 
+	 *
 	 * @return 返回时间类型 yyyy-MM-dd HH:mm:ss
 	 */
 
@@ -47,7 +65,7 @@ public class DateUtils {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return yyyy-MM-dd 获取现在时间
 	 * @return返回短时间格式 yyyy-MM-dd
 	 */
@@ -62,7 +80,7 @@ public class DateUtils {
 
 	/**
 	 * 获取现在时间
-	 * 
+	 *
 	 * @return返回字符串格式 yyyy-MM-dd HH:mm:ss
 	 */
 	public static String getStringDate() {
@@ -74,7 +92,7 @@ public class DateUtils {
 
 	/**
 	 * 获取现在时间
-	 * 
+	 *
 	 * @return 返回短时间字符串格式yyyy-MM-dd
 	 */
 	public static String getStringDateShort() {
@@ -86,7 +104,7 @@ public class DateUtils {
 
 	/**
 	 * 获取现在时间
-	 * 
+	 *
 	 * @return 返回短时间字符串格式yyyy-MM-dd HH:MM
 	 */
 	public static String getStringDateShortmm() {
@@ -98,7 +116,7 @@ public class DateUtils {
 
 	/**
 	 * 获取时间 小时:分;秒 HH:mm:ss
-	 * 
+	 *
 	 * @return
 	 */
 	public static String getTimeShort() {
@@ -110,7 +128,7 @@ public class DateUtils {
 
 	/**
 	 * 将长时间格式字符串转换为时间 yyyy-MM-dd HH:mm:ss
-	 * 
+	 *
 	 * @param strDate
 	 * @return
 	 */
@@ -123,7 +141,7 @@ public class DateUtils {
 
 	/**
 	 * 将长时间格式时间转换为字符串 yyyy-MM-dd HH:mm:ss
-	 * 
+	 *
 	 * @param dateDate
 	 * @return
 	 */
@@ -135,7 +153,7 @@ public class DateUtils {
 
 	/**
 	 * 将短时间格式时间转换为字符串 yyyy-MM-dd
-	 * 
+	 *
 	 * @param dateDate
 //	 * @param k
 	 * @return
@@ -148,7 +166,7 @@ public class DateUtils {
 
 	/**
 	 * 将短时间格式字符串转换为时间 yyyy-MM-dd HH:mm:ss
-	 * 
+	 *
 	 * @param strDate
 	 * @return
 	 */
@@ -161,7 +179,7 @@ public class DateUtils {
 
 	/**
 	 * 得到现在时间
-	 * 
+	 *
 	 * @return
 	 */
 	public static Date getNow() {
@@ -171,7 +189,7 @@ public class DateUtils {
 
 	/**
 	 * 提取一个月中的最后一天
-	 * 
+	 *
 	 * @param day
 	 * @return
 	 */
@@ -184,7 +202,7 @@ public class DateUtils {
 
 	/**
 	 * 得到现在时间
-	 * 
+	 *
 	 * @return 字符串 yyyyMMdd HHmmss
 	 */
 	public static String getStringToday() {
@@ -196,7 +214,7 @@ public class DateUtils {
 
 	/**
 	 * 得到现在时间
-	 * 
+	 *
 	 * @return 字符串 yyyyMMddHHmmss
 	 */
 	public static String getStringTodayA() {
@@ -220,7 +238,7 @@ public class DateUtils {
 
 	/**
 	 * 得到现在分钟
-	 * 
+	 *
 	 * @return
 	 */
 	public static String getTime() {
@@ -234,7 +252,7 @@ public class DateUtils {
 
 	/**
 	 * 根据用户传入的时间表示格式，返回当前时间的格式 如果是yyyyMMdd，注意字母y不能大写。
-	 * 
+	 *
 	 * @param sformat
 	 *            yyyyMMddhhmmss
 	 * @return
@@ -248,7 +266,7 @@ public class DateUtils {
 
 	/**
 	 * 传入的时间和时间表示格式，将时间转换为指定格式 如果是yyyyMMdd，注意字母y不能大写。
-	 * 
+	 *
 	 * @param sformat
 	 *            yyyyMMddhhmmss
 	 * @return
@@ -337,7 +355,7 @@ public class DateUtils {
 
 	/**
 	 * 将 80（分钟） 转换为 1小20分钟显示
-	 * 
+	 *
 	 * @param lon
 	 * @return
 	 */
@@ -359,7 +377,7 @@ public class DateUtils {
 
 	/**
 	 * 将 80（分钟） 转换为 1:20显示
-	 * 
+	 *
 	 * @param lon
 	 * @return
 	 */
@@ -433,7 +451,7 @@ public class DateUtils {
 
 	/**
 	 * 判断是否润年
-	 * 
+	 *
 	 * @param ddate
 	 * @return
 	 */
@@ -460,7 +478,7 @@ public class DateUtils {
 
 	/**
 	 * 返回美国时间格式 26 Apr 2006
-	 * 
+	 *
 	 * @param str
 	 * @return
 	 */
@@ -475,7 +493,7 @@ public class DateUtils {
 
 	/**
 	 * 获取一个月的最后一天
-	 * 
+	 *
 	 * @param dat
 	 * @return
 	 */
@@ -500,7 +518,7 @@ public class DateUtils {
 
 	/**
 	 * 取得指定月份的第一天
-	 * 
+	 *
 //	 * @param strdate
 	 *            String
 	 * @return String
@@ -512,7 +530,7 @@ public class DateUtils {
 
 	/**
 	 * 判断二个时间是否在同一个周
-	 * 
+	 *
 	 * @param date1
 	 * @param date2
 	 * @return
@@ -542,7 +560,7 @@ public class DateUtils {
 
 	/**
 	 * 产生周序列,即得到当前时间所在的年度是第几周
-	 * 
+	 *
 	 * @return
 	 */
 	public static String getSeqWeek() {
@@ -556,7 +574,7 @@ public class DateUtils {
 
 	/**
 	 * 获得一个日期所在的周的星期几的日期，如要找出2002年2月3日所在周的星期一是几号
-	 * 
+	 *
 	 * @param sdate
 	 * @param num
 	 * @return
@@ -585,7 +603,7 @@ public class DateUtils {
 
 	/**
 	 * 根据一个日期，返回是星期几的字符串
-	 * 
+	 *
 	 * @param sdate
 	 * @return
 	 */
@@ -608,7 +626,7 @@ public class DateUtils {
 
 	/**
 	 * 返回数字星期 星期天是0 星期一是1
-	 * 
+	 *
 	 * @param sdate
 	 * @return
 	 */
@@ -620,7 +638,7 @@ public class DateUtils {
 
 	/**
 	 * 返回日期的星期
-	 * 
+	 *
 	 * @param sdate
 	 * @return
 	 */
@@ -656,7 +674,7 @@ public class DateUtils {
 
 	/**
 	 * 返回日期的周几
-	 * 
+	 *
 	 * @param sdate
 	 * @return
 	 */
@@ -692,7 +710,7 @@ public class DateUtils {
 
 	/**
 	 * 两个时间之间的天数
-	 * 
+	 *
 	 * @param date1
 	 * @param date2
 	 * @return
@@ -717,7 +735,7 @@ public class DateUtils {
 
 	/**
 	 * 两个时间之间的天数
-	 * 
+	 *
 	 * @param date1
 	 * @param date2
 	 * @return
@@ -751,7 +769,7 @@ public class DateUtils {
 	/**
 	 * 形成如下的日历 ， 根据传入的一个时间返回一个结构 星期日 星期一 星期二 星期三 星期四 星期五 星期六 下面是当月的各个时间
 	 * 此函数返回该日历第一行星期日所在的日期
-	 * 
+	 *
 	 * @param sdate
 	 * @return
 	 */
@@ -813,7 +831,7 @@ public class DateUtils {
 
 	/**
 	 * 取得指定日期的下一个月
-	 * 
+	 *
 //	 * @param date
 	 *            指定日期。
 	 * @return 指定日期的下几个月
@@ -829,7 +847,7 @@ public class DateUtils {
 
 	/**
 	 * 毫秒转为时分秒
-	 * 
+	 *
 	 * @param l
 	 * @return
 	 */
@@ -861,7 +879,7 @@ public class DateUtils {
 
 	/**
 	 * 分转为时分秒
-	 * 
+	 *
 	 * @param l
 	 * @return
 	 */
@@ -885,7 +903,7 @@ public class DateUtils {
 
 	/**
 	 * 取得数据库主键 生成格式为yyyymmddhhmmss+k位随机数
-	 * 
+	 *
 	 * 表示是取几位随机数，可以自己定
 	 */
 
@@ -893,7 +911,7 @@ public class DateUtils {
 
 	/**
 	 * 返回一个随机数
-	 * 
+	 *
 	 * @param i
 	 * @return
 	 */
@@ -1003,7 +1021,7 @@ public class DateUtils {
 
 	/**
 	 * 传入当前客户的结算方式,得到当前时间的下一个帐期结束时间
-	 * 
+	 *
 	 * @param sJsfs
 	 * @return String
 	 */
@@ -1025,7 +1043,7 @@ public class DateUtils {
 
 	/**
 	 * 取当前的时间偏移时间的时分秒 与endTime成对使用
-	 * 
+	 *
 	 * @param date
 	 *            当前时间
 	 * @param unionMinute
@@ -1039,7 +1057,7 @@ public class DateUtils {
 
 	/**
 	 * 取当前的时间的时分秒 与endTime成对使用
-	 * 
+	 *
 	 * @param date
 	 *            当前时间
 //	 * @param unionMinute
@@ -1138,7 +1156,7 @@ public class DateUtils {
 
 	/**
 	 * 把一位月日时分秒格式化为2位
-	 * 
+	 *
 	 * @param date
 	 * @return
 	 */
@@ -1182,7 +1200,7 @@ public class DateUtils {
 
 	/**
 	 * 格式化时间.
-	 * 
+	 *
 	 * @param date
 	 *            时间.
 	 * @param pattern
@@ -1197,7 +1215,7 @@ public class DateUtils {
 
 	/**
 	 * 解析时间 .
-	 * 
+	 *
 	 * @param dateString
 	 *            日期字符串 .
 	 * @param pattern
@@ -1214,7 +1232,7 @@ public class DateUtils {
 	/**
 	 * 将时间字符串在两种格式之前转换. 例如:
 	 * fromatDate('2011-1-1','yyyy-MM-dd','yyyy年MM月dd日')返回2011年1月1日.
-	 * 
+	 *
 	 * @param date
 	 *            时间.
 	 * @param fromPattern
@@ -1242,7 +1260,7 @@ public class DateUtils {
 
 	/**
 	 * 获取n月前的1号日期
-	 * 
+	 *
 	 * @param n
 	 * @return
 	 */
@@ -1266,7 +1284,7 @@ public class DateUtils {
 
 	/**
 	 * 获取两个日期的月差
-	 * 
+	 *
 	 * @param start
 	 * @param end
 	 * @return
@@ -1306,7 +1324,7 @@ public class DateUtils {
 
 	/**
 	 * 判断日期是否过期 今天除外
-	 * 
+	 *
 	 * @param date
 	 * @return
 	 */
@@ -1320,7 +1338,7 @@ public class DateUtils {
 
 	/**
 	 * 获取格式化当前时间
-	 * 
+	 *
 	 * @param format
 	 * @return
 	 */
@@ -1332,7 +1350,7 @@ public class DateUtils {
 
 	/**
 	 * 获取n天前的日期 yyyy-MM-dd
-	 * 
+	 *
 	 * @param n
 	 * @return
 	 */
@@ -1344,7 +1362,7 @@ public class DateUtils {
 
 	/**
 	 * 获取今天和某个时间的差(分钟)
-	 * 
+	 *
 	 * @param time
 	 * @return
 	 */
@@ -1373,7 +1391,7 @@ public class DateUtils {
 
 	/**
 	 * 判断字符串是否为数字
-	 * 
+	 *
 	 * @param str
 	 * @return
 	 */
@@ -1385,8 +1403,8 @@ public class DateUtils {
 	/**
 	 *  判断date2 是否大于等于date1
 	 * @param date1
-	 * @param date2 
-	 * @return 
+	 * @param date2
+	 * @return
 	 */
 	public static boolean CheckDates(String date1, String date2) {
 		if (date1 == null || date1.equals(""))

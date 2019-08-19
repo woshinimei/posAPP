@@ -2,6 +2,7 @@ package com.example.onedream.flightapp.activity;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -30,7 +31,8 @@ import butterknife.OnClick;
  * 调度部门一览
  */
 public class ControlDepartmentActivity extends BaseActivity {
-
+    @BindView(R.id.tv_error)
+    TextView tvError;
     @BindView(R.id.tv_back)
     TextView tvBack;
     @BindView(R.id.rl_top)
@@ -56,6 +58,14 @@ public class ControlDepartmentActivity extends BaseActivity {
         initAdapter();
         initPull();
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (adapter!=null){
+            adapter.setDismiss();
+        }
     }
 
     @Override
@@ -100,15 +110,21 @@ public class ControlDepartmentActivity extends BaseActivity {
                     ControlCompanyResponse response = GsonUtils.fromJson(s, ControlCompanyResponse.class);
                     List<ControlBean> deptInfoList = response.getDeptInfoList();
                     if (deptInfoList != null) {
+                        tvError.setVisibility(View.GONE);
                         list.clear();
                         list.addAll(deptInfoList);
                         adapter.notifyDataSetChanged();
+                    }else {
+                        tvError.setVisibility(View.VISIBLE);
                     }
                 }
             }
 
             @Override
             public void onError(String msg) {
+                if (tvError!=null){
+                    tvError.setVisibility(View.VISIBLE);
+                }
                 showToast(msg);
             }
         });

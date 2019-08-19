@@ -1,5 +1,7 @@
 package com.example.onedream.flightapp.bean;
 
+import java.util.List;
+
 public class PassengerInfo {
     /*	cjrid	乘机人id	cjrdx	String	Y	乘机人id
 	cjrxm	乘机人姓名	cjrdx	String	Y	乘机人姓名
@@ -58,6 +60,67 @@ public class PassengerInfo {
     private String sxf;//手续费
 
     private String sfwf;//收服务费
+
+    //溢价集合（旧航程）
+    private List<CouponDetailBean> couponList;
+    //溢价集合（新航程）
+    private List<CouponDetailBean> tgqCouponList;
+    //活动礼包 （旧航程）
+    private List<CouponDetailBean> activeCouponList;
+    //活动礼包 （新航程）
+    private List<CouponDetailBean> tgqActiveCouponList;
+    //直加产品（旧航程）
+    private List<CouponDetailBean> directCouponList;
+    //直加产品（新航程）
+    private List<CouponDetailBean> tgqDirectCouponList;
+
+    public List<CouponDetailBean> getCouponList() {
+        return couponList;
+    }
+
+    public void setCouponList(List<CouponDetailBean> couponList) {
+        this.couponList = couponList;
+    }
+
+    public List<CouponDetailBean> getTgqCouponList() {
+        return tgqCouponList;
+    }
+
+    public void setTgqCouponList(List<CouponDetailBean> tgqCouponList) {
+        this.tgqCouponList = tgqCouponList;
+    }
+
+    public List<CouponDetailBean> getActiveCouponList() {
+        return activeCouponList;
+    }
+
+    public void setActiveCouponList(List<CouponDetailBean> activeCouponList) {
+        this.activeCouponList = activeCouponList;
+    }
+
+    public List<CouponDetailBean> getTgqActiveCouponList() {
+        return tgqActiveCouponList;
+    }
+
+    public void setTgqActiveCouponList(List<CouponDetailBean> tgqActiveCouponList) {
+        this.tgqActiveCouponList = tgqActiveCouponList;
+    }
+
+    public List<CouponDetailBean> getDirectCouponList() {
+        return directCouponList;
+    }
+
+    public void setDirectCouponList(List<CouponDetailBean> directCouponList) {
+        this.directCouponList = directCouponList;
+    }
+
+    public List<CouponDetailBean> getTgqDirectCouponList() {
+        return tgqDirectCouponList;
+    }
+
+    public void setTgqDirectCouponList(List<CouponDetailBean> tgqDirectCouponList) {
+        this.tgqDirectCouponList = tgqDirectCouponList;
+    }
 
     public String getXsj() {
         return xsj;

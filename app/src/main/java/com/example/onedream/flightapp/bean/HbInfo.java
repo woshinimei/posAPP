@@ -48,6 +48,15 @@ public class HbInfo {
     private String cfcity;
     private String ddcity;
     private String sj;      //
+    private String hsjc;//航空公司简称
+
+    public String getHsjc() {
+        return hsjc;
+    }
+
+    public void setHsjc(String hsjc) {
+        this.hsjc = hsjc;
+    }
 
     public String getCfcity() {
         return cfcity;
