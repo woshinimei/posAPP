@@ -36,6 +36,7 @@ public static void setTimeforRequest(OrderListRequest request){
             cacheRequest = AppLocal.endoreRequest;
         }
         if (cacheRequest != null) {
+
             String orderStatus = cacheRequest.getOrderStatus();
             if (!TextUtils.isEmpty(orderStatus)) {
                 if (type!=1){

@@ -19,7 +19,7 @@ import butterknife.Unbinder;
 public abstract class BaseFragment extends Fragment {
     Unbinder bind;
     private boolean isCreated = false;
-
+    public boolean isShowFragment;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -33,6 +33,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        isShowFragment = isVisibleToUser;
         if (isVisibleToUser) {
             String fragmentName = getClass().getSimpleName();
             Log.e("---当前frgment---", fragmentName + "");

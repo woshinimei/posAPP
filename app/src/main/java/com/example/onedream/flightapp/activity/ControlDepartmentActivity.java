@@ -106,7 +106,7 @@ public class ControlDepartmentActivity extends BaseActivity {
         model.getData(getActivity(), new OnCallBack<String>() {
             @Override
             public void onSucess(String s) {
-                if (!getActivity().isFinishing()) {
+                if (getActivity()!=null&&!getActivity().isFinishing()) {
                     ControlCompanyResponse response = GsonUtils.fromJson(s, ControlCompanyResponse.class);
                     List<ControlBean> deptInfoList = response.getDeptInfoList();
                     if (deptInfoList != null) {
@@ -122,7 +122,7 @@ public class ControlDepartmentActivity extends BaseActivity {
 
             @Override
             public void onError(String msg) {
-                if (tvError!=null){
+                if (getActivity()!=null&&!getActivity().isFinishing()){
                     tvError.setVisibility(View.VISIBLE);
                 }
                 showToast(msg);

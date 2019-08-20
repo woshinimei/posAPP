@@ -14,6 +14,7 @@ import com.example.onedream.flightapp.constant.OrderType;
 import com.example.onedream.flightapp.intefaces.OnChoiceListener;
 import com.example.onedream.flightapp.request.OrderListRequest;
 import com.example.onedream.flightapp.utils.OrderListFliterUtils;
+import com.example.onedream.flightapp.utils.VeDate;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class FilterTicketActivity extends BaseActivity {
     TextView tvDateEnd;
     @BindView(R.id.tv_order_status)
     TextView tvOrderStatus;
-//    @BindView(R.id.tv_cl_type)
+    //    @BindView(R.id.tv_cl_type)
 //    TextView tvClType;
     OrderListRequest request;
     String startTime = "";
@@ -56,21 +57,21 @@ public class FilterTicketActivity extends BaseActivity {
     }
 
     private void initFilter() {
-        Log.e("-----type---",type+"");
-        if (type ==0) {
+        Log.e("-----type---", type + "");
+        if (type == 0) {
             OrderListRequest normalRequest = AppLocal.normalRequest;
             setFirstRequest(normalRequest);
-        }else if (type==1){
+        } else if (type == 1) {
             OrderListRequest refundRequest = AppLocal.refundRequest;
             setFirstRequest(refundRequest);
-        }else {
+        } else {
             OrderListRequest endoreRequest = AppLocal.endoreRequest;
             setFirstRequest(endoreRequest);
         }
     }
 
     private void setFirstRequest(OrderListRequest baseRequest) {
-        if (baseRequest==null){
+        if (baseRequest == null) {
             baseRequest = new OrderListRequest();
             OrderListFliterUtils.setTimeforRequest(baseRequest);
         }
@@ -81,18 +82,18 @@ public class FilterTicketActivity extends BaseActivity {
         }
         if (TextUtils.isEmpty(baseRequest.getOrderStatus())) {
             tvOrderStatus.setText("全部");
-        }else {
+        } else {
             tvOrderStatus.setText(baseRequest.getOrderStatus());
         }
 
         if (TextUtils.isEmpty(baseRequest.getDateType())) {
-            if (type==1){
+            if (type == 1) {
                 tvDateType.setText("办理日期");
-            }else {
+            } else {
                 tvDateType.setText("预订日期");
             }
 
-        }else {
+        } else {
             tvDateType.setText(baseRequest.getDateType());
         }
         request = baseRequest;
@@ -144,8 +145,11 @@ public class FilterTicketActivity extends BaseActivity {
 //                initAllType();
                 break;
             case R.id.btn_search:
-                doSearch();
-
+                String chooseStartTime = tvDateStart.getText().toString();
+                String chooseEndTime = tvDateEnd.getText().toString();
+                if (checkDate(chooseStartTime, chooseEndTime)) {
+                    doSearch();
+                }
                 break;
         }
     }
@@ -161,21 +165,36 @@ public class FilterTicketActivity extends BaseActivity {
             if (request != null) {
                 request.setName(name);
             }
-        }else {
+        } else {
             if (request != null) {
                 request.setName("");
             }
         }
-        if (type==0){
-            AppLocal.normalRequest =request;
-        }else if (type==1){
-            AppLocal.refundRequest =request;
-        }else {
-            AppLocal.endoreRequest =request;
+
+        if (type == 0) {
+            AppLocal.normalRequest = request;
+        } else if (type == 1) {
+            AppLocal.refundRequest = request;
+        } else {
+            AppLocal.endoreRequest = request;
         }
         Intent intent = getIntent();
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    /**
+     * 校验起始日期不能大于结束日期
+     *
+     * @return
+     */
+    public boolean checkDate(String chooseStartDay, String chooseEndDay) {
+        long days = VeDate.getDays(chooseStartDay, chooseEndDay);
+        if (days > 0) {
+            showToast("起始日期不能大于截止日期！");
+            return false;
+        }
+        return true;
     }
 
     /*
@@ -186,12 +205,12 @@ public class FilterTicketActivity extends BaseActivity {
     private void initDateType() {
         List<String> strList = new ArrayList<>();
         strList.clear();
-        if (type==1){
+        if (type == 1) {
             String[] orderTimeStatusOfRefund = AppLocal.orderTimeStatusOfRefund;
             for (String s : orderTimeStatusOfRefund) {
                 strList.add(s);
             }
-        }else {
+        } else {
             String[] orderTimeStatus = AppLocal.orderTimeStatus;
             for (String s : orderTimeStatus) {
                 strList.add(s);
@@ -224,12 +243,12 @@ public class FilterTicketActivity extends BaseActivity {
     private void initStatus() {
         List<String> strList = new ArrayList<>();
         strList.clear();
-        if (type!=1) {
+        if (type != 1) {
             String[] orderStatus = AppLocal.orderStatus;
             for (String s : orderStatus) {
                 strList.add(s);
             }
-        }else {
+        } else {
             String[] orderStatus = AppLocal.orderStatusOfRefund;
             for (String s : orderStatus) {
                 strList.add(s);
@@ -294,6 +313,49 @@ public class FilterTicketActivity extends BaseActivity {
         } else {
             picker.setSelectedItem(lyear, lmonth, lday);
         }
+
+        if (request != null) {
+            if (type.equals("0")) {
+                String dateStart = request.getDateStart();
+                if (!TextUtils.isEmpty(dateStart)) {
+                    try {
+                        String year = dateStart.substring(0, dateStart.indexOf("-"));
+                        String month = dateStart.substring(dateStart.indexOf("-") + 1, dateStart.lastIndexOf("-"));
+                        String day = dateStart.substring(dateStart.lastIndexOf("-") + 1);
+                        if (!TextUtils.isEmpty(year)) {
+                            Integer y = Integer.valueOf(year);
+                            Integer m = Integer.valueOf(month);
+                            Integer d = Integer.valueOf(day);
+                            picker.setSelectedItem(y, m, d);
+                        }
+                    } catch (Exception e) {
+                        Log.e("------Exception-----", e.toString() + "");
+                    }
+
+                }
+            } else {
+                String dateEnd = request.getDateEnd();
+                if (!TextUtils.isEmpty(dateEnd)) {
+                    try {
+                        String year = dateEnd.substring(0, dateEnd.indexOf("-"));
+                        String month = dateEnd.substring(dateEnd.indexOf("-") + 1, dateEnd.lastIndexOf("-"));
+                        String day = dateEnd.substring(dateEnd.lastIndexOf("-") + 1);
+                        if (!TextUtils.isEmpty(year)) {
+                            Integer y = Integer.valueOf(year);
+                            Integer m = Integer.valueOf(month);
+                            Integer d = Integer.valueOf(day);
+                            picker.setSelectedItem(y, m, d);
+                        }
+                    } catch (Exception e) {
+                        Log.e("------Exception-----", e.toString() + "");
+                    }
+
+                }
+            }
+
+
+        }
+
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

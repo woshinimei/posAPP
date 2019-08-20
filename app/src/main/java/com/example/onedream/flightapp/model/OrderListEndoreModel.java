@@ -14,15 +14,14 @@ import com.example.onedream.flightapp.utils.SignUtils;
 
 public class OrderListEndoreModel extends BaseModel {
 
-    public void getData(Context context,boolean showDialog, OnCallBack<String> callBack){
+    public void getData(Context context, boolean showDialog, OrderListRequest request, OnCallBack<String> callBack) {
         String key = AppLocal.USERKEY;
-        String sign  =SignUtils.getSign();
-        OrderListRequest request = new OrderListRequest();
-        OrderListFliterUtils.getCacheRequest(2,request);
+        String sign = SignUtils.getSign();
+        OrderListFliterUtils.getCacheRequest(2, request);
         request.setUserKey(key);
         request.setSign(sign);
-        String json =GsonUtils.getJson(request);
-       doRequest(context,showDialog, BaseHttp.ORDERLIST_ENDORE, json,callBack);
+        String json = GsonUtils.getJson(request);
+        doRequest(context, showDialog, BaseHttp.ORDERLIST_ENDORE, json, callBack);
     }
 
 }

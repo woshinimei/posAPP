@@ -14,12 +14,14 @@ import com.example.onedream.flightapp.constant.OrderType;
 import com.example.onedream.flightapp.intefaces.OnCallBack;
 import com.example.onedream.flightapp.model.OrderListNormalModel;
 import com.example.onedream.flightapp.model.OrderListRefundModel;
+import com.example.onedream.flightapp.request.OrderListRequest;
 import com.example.onedream.flightapp.response.OrderListResponse;
 import com.example.onedream.flightapp.utils.GsonUtils;
 import com.example.onedream.flightapp.view.RecycleViewDivider;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
@@ -41,6 +43,8 @@ public class OrderListRefundFragment extends BaseFragment {
     OrderListAdapter adater;
     List<OrderListBean> list = new ArrayList<>();
     private  boolean isFirst =true;
+    private  int start =0;
+    private int count =30;
     @Override
     public int getlayout() {
         return R.layout.fragment_orderlist_refund;
@@ -67,35 +71,51 @@ public class OrderListRefundFragment extends BaseFragment {
         pull.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
+                start =0;
                 initData(true);
                 adater.notifyDataSetChanged();
                 pull.finishRefresh(300);//加载时间，必须加这句
             }
         });
-//        pull.setEnableLoadmore(false);
-//       pull.setOnLoadmoreListener(new OnLoadmoreListener() {
-//           @Override
-//           public void onLoadmore(RefreshLayout refreshlayout) {
-//
-//               adater.notifyDataSetChanged();
-//               pull.finishLoadmore(1000);
-//           }
-//       });
+        pull.setEnableLoadmore(true);
+       pull.setOnLoadmoreListener(new OnLoadmoreListener() {
+           @Override
+           public void onLoadmore(RefreshLayout refreshlayout) {
+                start +=count;
+                initData(true);
+               adater.notifyDataSetChanged();
+               pull.finishLoadmore(300);
+           }
+       });
 
     }
 
     @Override
     public void lazyData() {
-        if (isFirst&&(list==null||list.size()==0)){
+//        if (isFirst&&(list==null||list.size()==0)){
+//            initData(true);
+//        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!isFirst){
             initData(true);
+        }else {
+            initData(false);
         }
     }
 
     //获取数据
     public void initData(boolean showDialog) {
         isFirst =false;
+        OrderListRequest request  = new OrderListRequest();
+        Log.e("--start---",start+"");
+        request.setStart(start);
+        request.setCount(count);
         OrderListRefundModel model = new OrderListRefundModel();
-        model.getData(getActivity(),showDialog, new OnCallBack<String>() {
+        model.getData(getActivity(),showDialog, request,new OnCallBack<String>() {
             @Override
             public void onSucess(String s) {
                 if (!getActivity().isFinishing()) {
@@ -103,13 +123,18 @@ public class OrderListRefundFragment extends BaseFragment {
                     List<OrderListBean> orderInfoList = response.getOrderInfoList();
                     if (orderInfoList != null) {
                         tvError.setVisibility(View.GONE);
-                        list.clear();
+                        if (start==0){
+                            list.clear();
+                        }
                         list.addAll(orderInfoList);
                         if (totalListener!=null){
                             totalListener.getNum(list.size());
                         }
                         adater.notifyDataSetChanged();
                     }else {
+                        if (totalListener!=null){
+                            totalListener.getNum(0);
+                        }
                         tvError.setVisibility(View.VISIBLE);
                     }
                 }
@@ -117,15 +142,29 @@ public class OrderListRefundFragment extends BaseFragment {
 
             @Override
             public void onError(String msg) {
-                if (!getActivity().isFinishing()) {
+                if (adater!=null&&tvError!=null) {
                     list.clear();
                     adater.notifyDataSetChanged();
                     tvError.setVisibility(View.VISIBLE);
+                    if (totalListener!=null){
+                        totalListener.getNum(0);
+                    }
                 }
-                showToast(msg);
+                if (isShowFragment){
+                    showToast(msg);
+                }
             }
         });
     }
+
+    public int getStart() {
+        return start;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
+    }
+
     //获取总数
     public interface OnTotalListener {
         void getNum(int total);

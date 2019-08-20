@@ -121,7 +121,7 @@ public class OrderDetailActivity extends BaseActivity {
 //                new Handler().postDelayed(new Runnable() {
 //                    @Override
 //                    public void run() {
-                if (!isFinishing()) {
+                if (getActivity()!=null&&!getActivity().isFinishing()) {
                     response = GsonUtils.fromJson(s, OrderDetailResponse.class);
                     if (response.isSuccess()) {
                         OrderDetail orderDetail;

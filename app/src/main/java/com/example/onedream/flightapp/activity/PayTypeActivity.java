@@ -1,8 +1,11 @@
 package com.example.onedream.flightapp.activity;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -39,9 +42,10 @@ public class PayTypeActivity extends BaseActivity {
     TextView tvBottomPrice;
     RvPayListAdapter adapter;
     List<PayTypeBean> list = new ArrayList<>();
-    private String ddje ="";//订单金额
-    private String orderNo="";//订单编号
-    private int type =0;//
+    private String ddje = "";//订单金额
+    private String orderNo = "";//订单编号
+    private int type = 0;//
+
     @Override
     public int getLayout() {
         return R.layout.activity_pay_type;
@@ -49,12 +53,12 @@ public class PayTypeActivity extends BaseActivity {
 
     @Override
     public void initView() {
-         ddje = getIntent().getStringExtra(OrderType.ORDER_AMOUNT);//订单金额
+        ddje = getIntent().getStringExtra(OrderType.ORDER_AMOUNT);//订单金额
         orderNo = getIntent().getStringExtra(OrderType.ORDER_NO);//订单编号
-         type = getIntent().getIntExtra(OrderType.ORDER_TYPE,0);
+        type = getIntent().getIntExtra(OrderType.ORDER_TYPE, 0);
 
-        tvBottomPrice.setText(ddje+"");
-        tvTopPrice.setText(ddje+"");
+        tvBottomPrice.setText(ddje + "");
+        tvTopPrice.setText(ddje + "");
         initAdapter();
     }
 
@@ -67,7 +71,7 @@ public class PayTypeActivity extends BaseActivity {
         list.add(new PayTypeBean("二维码支付", false));
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
-        rvContent.addItemDecoration(new RecycleViewDivider(getActivity(),LinearLayoutManager.VERTICAL,1,getResources().getColor(R.color.colorLine)));
+        rvContent.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.VERTICAL, 1, getResources().getColor(R.color.colorLine)));
         rvContent.setLayoutManager(manager);
         adapter = new RvPayListAdapter(list, getActivity());
         rvContent.setAdapter(adapter);
@@ -95,8 +99,6 @@ public class PayTypeActivity extends BaseActivity {
     }
 
 
-
-
     @OnClick({R.id.tv_back, R.id.ll_bottom})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -104,15 +106,58 @@ public class PayTypeActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.ll_bottom:
-                if(hasSelectPay()){
-                    orderPay();
-                }else {
+                if (hasSelectPay()) {
+
+                 if (chooseItemPay()){
+                     //跳转银行支付
+                    goToBankPay();
+                 }else {
+                     orderPay();
+                 }
+
+
+                } else {
                     showToast("请选择支付方式");
                 }
                 break;
         }
     }
 
+    private boolean chooseItemPay() {
+        for (PayTypeBean bean : list) {
+            if (bean.isCheck()&&bean.getName().equals("预授权支付")){
+                return true ;
+            }
+        }
+        return false;
+    }
+
+    private void goToBankPay() {
+        if(checkPackInfo("com.boc.smartpos.bankpay")) {
+            Intent intent = new Intent();
+            intent.setComponent(new ComponentName("com.boc.smartpos.bankpay", " com.boc.smartpos.bankpay.ui.MainActivity"));
+            intent.putExtra("transName", "消费");
+            intent.putExtra("amount", "0.01");
+            startActivityForResult(intent, 0);
+        }else {
+            showToast("中行app未安装");
+        }
+    }
+    /**
+     * 检查包是否存在
+     *
+     * @param packname
+     * @return
+     */
+    private boolean checkPackInfo(String packname) {
+        PackageInfo packageInfo = null;
+        try {
+            packageInfo = getPackageManager().getPackageInfo(packname, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return packageInfo != null;
+    }
     //订单支付接口
     private void orderPay() {
         PayModel model = new PayModel();
@@ -121,7 +166,7 @@ public class PayTypeActivity extends BaseActivity {
         request.setPayResult("0");
         request.setPayType("0");
         PosPayInfo info = new PosPayInfo();
-        info.setAmount(ddje+"");
+        info.setAmount(ddje + "");
         info.setBatchNo("4234324");
         info.setCardNo("4234322222");
         info.setDate("2019-12-1");
@@ -130,9 +175,9 @@ public class PayTypeActivity extends BaseActivity {
         model.getData(getActivity(), type, request, new OnCallBack<String>() {
             @Override
             public void onSucess(String s) {
-                PayResponse response = GsonUtils.fromJson(s,PayResponse.class);
-                if (response.isSuccess()){
-                   showSuccessDialog();
+                PayResponse response = GsonUtils.fromJson(s, PayResponse.class);
+                if (response.isSuccess()) {
+                    showSuccessDialog();
                 }
             }
 
@@ -144,9 +189,10 @@ public class PayTypeActivity extends BaseActivity {
     }
 
     MyDialog successDialog;
+
     private void showSuccessDialog() {
-        View view = View.inflate(getActivity(),R.layout.pay_success_layout,null);
-        TextView tvOrder =view.findViewById(R.id.tv_order);
+        View view = View.inflate(getActivity(), R.layout.pay_success_layout, null);
+        TextView tvOrder = view.findViewById(R.id.tv_order);
         tvOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,37 +205,37 @@ public class PayTypeActivity extends BaseActivity {
             public void onClick(View v) {
                 successDialog.dismiss();
                 Set<Activity> set = MyApp.getInstance().getSet();
-                if (set!=null){
+                if (set != null) {
                     for (int i = 0; i < set.size(); i++) {
                         for (Activity activity : set) {
-                                if (!activity.isFinishing()&&activity.getClass().equals(OrderDetailActivity.class)){
-                                    activity.finish();
-                                }
-                            if (!activity.isFinishing()&&activity.getClass().equals(OrderListActivity.class)){
+                            if (!activity.isFinishing() && activity.getClass().equals(OrderDetailActivity.class)) {
+                                activity.finish();
+                            }
+                            if (!activity.isFinishing() && activity.getClass().equals(OrderListActivity.class)) {
                                 activity.finish();
                             }
                         }
                     }
                 }
-                startActivity(new Intent(getActivity(),OrderListActivity.class));
+                startActivity(new Intent(getActivity(), OrderListActivity.class));
 
             }
         });
 
-         successDialog = new MyDialog(getActivity(),view);
-         successDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-             @Override
-             public void onDismiss(DialogInterface dialog) {
-                 finish();
-             }
-         });
+        successDialog = new MyDialog(getActivity(), view);
+        successDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                finish();
+            }
+        });
         successDialog.showPaddingScreen();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if (successDialog!=null&&successDialog.isShowing()){
+        if (successDialog != null && successDialog.isShowing()) {
             successDialog.dismiss();
         }
     }
@@ -197,9 +243,9 @@ public class PayTypeActivity extends BaseActivity {
     //是否选择了支付方式
     private boolean hasSelectPay() {
 
-        if (list!=null){
+        if (list != null) {
             for (PayTypeBean bean : list) {
-                if (bean.isCheck()){
+                if (bean.isCheck()) {
                     return true;
                 }
             }

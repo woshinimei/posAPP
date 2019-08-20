@@ -203,10 +203,13 @@ public class OrderListActivity extends BaseActivity {
             int currentItem = vp.getCurrentItem();
             Log.e("-currentItem--",currentItem+"");
             if (currentItem == 0) {
+                normalFragment.setStart(0);
                 normalFragment.initData(true);
             } else if (currentItem == 1) {
+                refundFragment.setStart(0);
                 refundFragment.initData(true);
             } else {
+                endoreFragment.setStart(0);
                 endoreFragment.initData(true);
             }
         }
