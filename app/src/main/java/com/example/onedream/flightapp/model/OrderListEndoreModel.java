@@ -10,12 +10,14 @@ import com.example.onedream.flightapp.network.BaseModel;
 import com.example.onedream.flightapp.request.OrderListRequest;
 import com.example.onedream.flightapp.utils.GsonUtils;
 import com.example.onedream.flightapp.utils.OrderListFliterUtils;
+import com.example.onedream.flightapp.utils.Shelper;
 import com.example.onedream.flightapp.utils.SignUtils;
 
 public class OrderListEndoreModel extends BaseModel {
 
     public void getData(Context context, boolean showDialog, OrderListRequest request, OnCallBack<String> callBack) {
-        String key = AppLocal.USERKEY;
+        Shelper shelper = new Shelper(context);
+        String key = shelper.getString(AppLocal.USER_KEY);
         String sign = SignUtils.getSign();
         OrderListFliterUtils.getCacheRequest(2, request);
         request.setUserKey(key);

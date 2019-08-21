@@ -65,7 +65,7 @@ public class BaseModel {
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 Log.e("请求失败：", ex.getMessage() + "");
-                callBack.onError(ex.getMessage() + "");
+                callBack.onError( " 请求失败 ");
             }
 
             @Override

@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -108,12 +109,12 @@ public class PayTypeActivity extends BaseActivity {
             case R.id.ll_bottom:
                 if (hasSelectPay()) {
 
-                 if (chooseItemPay()){
-                     //跳转银行支付
-                    goToBankPay();
-                 }else {
-                     orderPay();
-                 }
+                    if (chooseItemPay()) {
+                        //跳转银行支付
+                        goToBankPay();
+                    } else {
+                        orderPay();
+                    }
 
 
                 } else {
@@ -125,24 +126,25 @@ public class PayTypeActivity extends BaseActivity {
 
     private boolean chooseItemPay() {
         for (PayTypeBean bean : list) {
-            if (bean.isCheck()&&bean.getName().equals("预授权支付")){
-                return true ;
+            if (bean.isCheck() && bean.getName().equals("预授权支付")) {
+                return true;
             }
         }
         return false;
     }
 
     private void goToBankPay() {
-        if(checkPackInfo("com.boc.smartpos.bankpay")) {
+        if (checkPackInfo("com.boc.smartpos.bankpay")) {
             Intent intent = new Intent();
             intent.setComponent(new ComponentName("com.boc.smartpos.bankpay", " com.boc.smartpos.bankpay.ui.MainActivity"));
             intent.putExtra("transName", "消费");
             intent.putExtra("amount", "0.01");
             startActivityForResult(intent, 0);
-        }else {
+        } else {
             showToast("中行app未安装");
         }
     }
+
     /**
      * 检查包是否存在
      *
@@ -158,6 +160,7 @@ public class PayTypeActivity extends BaseActivity {
         }
         return packageInfo != null;
     }
+
     //订单支付接口
     private void orderPay() {
         PayModel model = new PayModel();
@@ -253,4 +256,20 @@ public class PayTypeActivity extends BaseActivity {
         return false;
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode) {
+            case Activity.RESULT_CANCELED:
+                String reason = data.getStringExtra("reason");
+                if (reason != null) {
+                    showToast(reason);
+                }
+                break;
+            case Activity.RESULT_OK:
+                    showToast("交易成功");
+                break;
+        }
+    }
 }

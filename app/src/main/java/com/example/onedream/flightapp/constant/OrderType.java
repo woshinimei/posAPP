@@ -5,6 +5,7 @@ public class OrderType {
     public static String ORDER_NO="orderNo";
     public static String ORDER_AMOUNT = "orderAmount";
     public static String ORDER_SEARCH ="order_search";
+    public static String ORDER_STATUS ="order_status";
     public static int NORMAL = 0;//普通单
     public static int REFUND = 1;//退废单
     public static int ENDORE = 2;//改签单

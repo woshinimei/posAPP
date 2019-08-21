@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -74,7 +75,6 @@ public class OrderDetailBaseFragment extends BaseFragment {
     private String orderNo;
     private int type = 0;
 
-
     @Override
     public int getlayout() {
         return R.layout.fragment_order_detail_base;
@@ -101,13 +101,12 @@ public class OrderDetailBaseFragment extends BaseFragment {
                 if (getDataListener() != null) {
                     getDataListener().getData();
                 }
-                pull.finishRefresh(500);//加载时间，必须加这句
+
             }
         });
     }
 
-    public void refreshData(OrderDetail orderDetail) {
-
+    public void refreshData(OrderDetail orderDetail, String status) {
         //基本信息
         if (orderDetail != null) {
             JbInfo jbxx = orderDetail.getJbxx();
@@ -115,6 +114,17 @@ public class OrderDetailBaseFragment extends BaseFragment {
                 //订单信息
                 tvOrderNo.setText(orderNo + "");
                 StringBuilder orderStatus = new StringBuilder();
+
+                if (!TextUtils.isEmpty(status)) {
+                    if (type != 1 && status.equals("2")) {
+                        orderStatus.append("已调度");
+                        orderStatus.append(" | ");
+                    }
+                    if (type == 1 && status.equals("3")) {
+                        orderStatus.append("已调度");
+                        orderStatus.append(" | ");
+                    }
+                }
                 if (!TextUtils.isEmpty(jbxx.getDdzt())) {
                     orderStatus.append(jbxx.getDdzt());
                 }
@@ -125,10 +135,10 @@ public class OrderDetailBaseFragment extends BaseFragment {
                     orderStatus.append(jbxx.getSpzt());
                 }
                 tvOrderStatus.setText(orderStatus);
-                String cllx = MyTextUtil.setNullText(jbxx.getCllx());
-                if (cllx.equals("1")){
+                String cllx = MyTextUtil.clearNullText(jbxx.getCllx());
+                if (cllx.equals("1")) {
                     tvSi.setText("因公");
-                }else if (cllx.equals("2")){
+                } else if (cllx.equals("2")) {
                     tvSi.setText("因私");
                 }
                 if (type == 0) {
@@ -160,16 +170,22 @@ public class OrderDetailBaseFragment extends BaseFragment {
                     setDateWeek(holder.tvStartTimeWeek, bean.getCfsj());
                     setDateWeek(holder.tvEndTimeWeek, bean.getDdsj());
                     setHBTop(holder, bean);
-                    holder.tvHkName.setText(MyTextUtil.setNullText(bean.getHsjc()) + "");
+                    String nextDay = bean.getNextDay();
+                    if (!TextUtils.isEmpty(nextDay)&&nextDay.equals("1")){
+                        holder.tvNextDay.setVisibility(View.VISIBLE);
+                    }else {
+                        holder.tvNextDay.setVisibility(View.GONE);
+                    }
+                    holder.tvHkName.setText(MyTextUtil.clearNullText(bean.getHsjc()) + "");
                     holder.tvHkhbh.setText(bean.getHbh() + "");
                     holder.tvTimeStart.setText(bean.getCfsj().split(" ")[1] + "");
                     holder.tvTimeEnd.setText(bean.getDdsj().split(" ")[1] + "");
 
-                    holder.tvStartAdress.setText(MyTextUtil.setNullText(bean.getCfcity()) + MyTextUtil.setNullText(bean.getCfjc()) + MyTextUtil.setNullText(bean.getCfhzl()));
-                    holder.tvEndAdress.setText(MyTextUtil.setNullText(bean.getDdcity()) + MyTextUtil.setNullText(bean.getDdjc()) + MyTextUtil.setNullText(bean.getDdhzl()));
+                    holder.tvStartAdress.setText(MyTextUtil.clearNullText(bean.getCfcity()) + MyTextUtil.clearNullText(bean.getCfjc()) + MyTextUtil.clearNullText(bean.getCfhzl()));
+                    holder.tvEndAdress.setText(MyTextUtil.clearNullText(bean.getDdcity()) + MyTextUtil.clearNullText(bean.getDdjc()) + MyTextUtil.clearNullText(bean.getDdhzl()));
 
                     llHb.addView(view);
-                    if (type!=0) {//改签单和退票单的情况调用
+                    if (type != 0) {//改签单和退票单的情况调用
                         View couponView = CouponView.addCouponDetailView(getActivity(), orderDetail, i);
                         if (couponView != null) {
                             llHb.addView(couponView);
@@ -217,9 +233,9 @@ public class OrderDetailBaseFragment extends BaseFragment {
                 for (PayInfo bean : zfxxjh) {
                     View view = View.inflate(getActivity(), R.layout.item_pay_info, null);
                     PayViewHolder holder = new PayViewHolder(view);
-                    holder.tvType.setText(MyTextUtil.setNullText(bean.getZffs()));
-                    holder.tvAmount.setText("¥" + MyTextUtil.setNullText(bean.getZfje()));
-                    holder.tvTime.setText(MyTextUtil.setNullText(bean.getZfsj()));
+                    holder.tvType.setText(MyTextUtil.clearNullText(bean.getZffs()));
+                    holder.tvAmount.setText("¥" + MyTextUtil.clearNullText(bean.getZfje()));
+                    holder.tvTime.setText(MyTextUtil.clearNullText(bean.getZfsj()));
                     llPayInfo.addView(view);
                 }
             } else {
@@ -230,10 +246,12 @@ public class OrderDetailBaseFragment extends BaseFragment {
             if (type == 0) {//其他情况在航班信息添加礼包
                 addCouponView(orderDetail);
             }
+
+        } else {
+            Log.e("OrderDetailBase--", "--orderdeail   null--");
         }
-
+        pull.finishRefresh(100);//加载时间，必须加这句
     }
-
 
 
     //礼包信息(普通订单)
@@ -322,6 +340,8 @@ public class OrderDetailBaseFragment extends BaseFragment {
         TextView tvJx;
         @BindView(R.id.tv_hk_chang)
         TextView tvCang;
+        @BindView(R.id.tv_nextday)
+        TextView tvNextDay;
 
         HbViewHolder(View view) {
             ButterKnife.bind(this, view);

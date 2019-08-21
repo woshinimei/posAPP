@@ -3,6 +3,7 @@ package com.example.onedream.flightapp.fragment.orderlist;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -107,6 +108,7 @@ public class OrderListNormalFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.e("---onResume-----","-------");
+        start=0;
         if (!isFirst) {
             initData(false);
         }else {
@@ -128,22 +130,20 @@ public class OrderListNormalFragment extends BaseFragment {
                 if (getActivity()!=null&&!getActivity().isFinishing()) {
                     OrderListResponse response = GsonUtils.fromJson(s, OrderListResponse.class);
                     List<OrderListBean> orderInfoList = response.getOrderInfoList();
+                    tvError.setVisibility(View.GONE);
                     if (orderInfoList != null) {
-                        tvError.setVisibility(View.GONE);
+
                         if (start==0) {
                             list.clear();
                         }
                         list.addAll(orderInfoList);
-                        int size = list.size();
-                        if (totalListener!=null){
-                            totalListener.getNum(size);
+                        String totalCount = response.getTotalCount();
+                        if (totalListener!=null&&!TextUtils.isEmpty(totalCount)){
+                            totalListener.getNum(totalCount);
                         }
                         adater.notifyDataSetChanged();
                     } else {
-                        if (totalListener!=null){
-                            totalListener.getNum(0);
-                        }
-                        tvError.setVisibility(View.VISIBLE);
+                       showToast("无更多订单信息");
                     }
                 }
             }
@@ -154,7 +154,7 @@ public class OrderListNormalFragment extends BaseFragment {
                     list.clear();
                     adater.notifyDataSetChanged();
                     if (totalListener!=null){
-                        totalListener.getNum(0);
+                        totalListener.getNum("0");
                     }
                     tvError.setVisibility(View.VISIBLE);
                 }
@@ -175,7 +175,7 @@ public class OrderListNormalFragment extends BaseFragment {
 
     //获取总数
     public interface OnTotalListener {
-        void getNum(int total);
+        void getNum(String total);
     }
 
     OnTotalListener totalListener;

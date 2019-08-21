@@ -64,7 +64,7 @@
             android:padding="@dimen/dp_5"
             android:text="普通订单"
             android:textColor="@color/rb_text"
-            android:textSize="@dimen/sp_15" />
+            android:textSize="@dimen/sp_14" />
 
         <RadioButton
             android:minWidth="@dimen/dp_100"
@@ -78,7 +78,7 @@
             android:padding="@dimen/dp_5"
             android:text="退票订单"
             android:textColor="@color/rb_text"
-            android:textSize="@dimen/sp_15" />
+            android:textSize="@dimen/sp_14" />
 
         <RadioButton
             android:minWidth="@dimen/dp_100"
@@ -91,7 +91,7 @@
             android:padding="@dimen/dp_5"
             android:text="改期订单"
             android:textColor="@color/rb_text"
-            android:textSize="@dimen/sp_15" />
+            android:textSize="@dimen/sp_14" />
     </RadioGroup>
 
     <LinearLayout

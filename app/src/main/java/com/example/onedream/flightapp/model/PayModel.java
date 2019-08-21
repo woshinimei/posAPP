@@ -8,6 +8,7 @@ import com.example.onedream.flightapp.network.BaseHttp;
 import com.example.onedream.flightapp.network.BaseModel;
 import com.example.onedream.flightapp.request.PayRequest;
 import com.example.onedream.flightapp.utils.GsonUtils;
+import com.example.onedream.flightapp.utils.Shelper;
 import com.example.onedream.flightapp.utils.SignUtils;
 
 public class PayModel extends BaseModel {
@@ -21,7 +22,9 @@ public class PayModel extends BaseModel {
                 baseUrl  =BaseHttp.ORDER_ENDORE_LPAY;
                 break;
         }
-        request.setUserKey(AppLocal.USERKEY);
+        Shelper shelper = new Shelper(context);
+        String key = shelper.getString(AppLocal.USER_KEY);
+        request.setUserKey(key);
         String sign = SignUtils.getSign();
         request.setSign(sign);
         String json =GsonUtils.getJson(request);

@@ -10,6 +10,7 @@ import com.example.onedream.flightapp.network.BaseHttp;
 import com.example.onedream.flightapp.network.BaseModel;
 import com.example.onedream.flightapp.request.OrderDetailRequest;
 import com.example.onedream.flightapp.utils.GsonUtils;
+import com.example.onedream.flightapp.utils.Shelper;
 import com.example.onedream.flightapp.utils.SignUtils;
 
 public class OrderDetailModel extends BaseModel {
@@ -31,7 +32,8 @@ public class OrderDetailModel extends BaseModel {
         }
 //        Log.e("--type---",type+"");
 //        Log.e("--orderNo---",orderNo+"");
-        String key = AppLocal.USERKEY;
+        Shelper shelper = new Shelper(context);
+        String key = shelper.getString(AppLocal.USER_KEY);
         String sign =SignUtils.getSign();
 
 

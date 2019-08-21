@@ -15,7 +15,8 @@ public class AppLocal {
     //登录密码
     public static String USER_PWD = "user_pwd";
     //登录返回的userKey
-    public static String USERKEY ="";
+    public static String USER_KEY ="user_key";
+
 
 
     //订单筛选条件（订单状态）    //0：申请中   1：已订座  2：已调度   3：已出票  4：配送中   5：部分出票 7：客户消   8：已取消  9：完成

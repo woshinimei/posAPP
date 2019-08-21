@@ -61,7 +61,7 @@ public class SpalshActivity extends AppCompatActivity {
                             String userKey = response.getUserKey();
                             Log.e("---userKey---", userKey + "----");
                             if (!TextUtils.isEmpty(userKey)) {
-                                AppLocal.USERKEY = userKey;
+                                shelper.save(new Shelper.Contanvlues(AppLocal.USER_KEY,userKey));
                             }
                             startActivity(new Intent(getBaseContext(), OrderListActivity.class));
                             finish();

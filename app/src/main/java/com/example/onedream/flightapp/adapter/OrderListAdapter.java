@@ -125,6 +125,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
                 intent.putExtra(OrderType.ORDER_TYPE,type);
                 String orderNo = bean.getOrderNo();
                 intent.putExtra(OrderType.ORDER_NO,orderNo);
+                intent.putExtra(OrderType.ORDER_STATUS,status);
                 context.startActivity(intent);
 
             }

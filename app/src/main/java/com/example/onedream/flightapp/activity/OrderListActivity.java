@@ -110,7 +110,7 @@ public class OrderListActivity extends BaseActivity {
         });
         normalFragment.setTotalListener(new OrderListNormalFragment.OnTotalListener() {
             @Override
-            public void getNum(int total) {
+            public void getNum(String total) {
                 if (rb1!=null) {
                     rb1.setText("普通订单（" + total + ")");
                 }
@@ -118,7 +118,7 @@ public class OrderListActivity extends BaseActivity {
         });
         refundFragment.setTotalListener(new OrderListNormalFragment.OnTotalListener() {
             @Override
-            public void getNum(int total) {
+            public void getNum(String total) {
                 if (rb2!=null){
                     rb2.setText("退票订单（"+total+")");
                 }
@@ -126,7 +126,7 @@ public class OrderListActivity extends BaseActivity {
         });
         endoreFragment.setTotalListener(new OrderListNormalFragment.OnTotalListener() {
             @Override
-            public void getNum(int total) {
+            public void getNum(String total) {
                 if (rb3!=null){
                     rb3.setText("改期订单（"+total+")");
                 }

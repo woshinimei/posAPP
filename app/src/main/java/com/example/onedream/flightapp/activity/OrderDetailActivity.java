@@ -1,7 +1,6 @@
 package com.example.onedream.flightapp.activity;
 
 import android.content.Intent;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,7 +23,6 @@ import com.example.onedream.flightapp.bean.OrderDetail;
 import com.example.onedream.flightapp.bean.PosPayInfo;
 import com.example.onedream.flightapp.bean.PriceDetailedBen;
 import com.example.onedream.flightapp.bean.PriceInfo;
-import com.example.onedream.flightapp.bean.PriceItem;
 import com.example.onedream.flightapp.bean.TopBarBean;
 import com.example.onedream.flightapp.constant.OrderType;
 import com.example.onedream.flightapp.fragment.orderDetail.OrderDetailBaseFragment;
@@ -74,6 +72,7 @@ public class OrderDetailActivity extends BaseActivity {
     DialogPriceDetailAdapter priceAdapter;
     List<PriceInfo> priceList = new ArrayList<>();
     String orderNo;
+    String orderStatus ="";
     OrderDetailResponse response;//返回的接口数据
     OrderDetailBaseFragment baseFragment = new OrderDetailBaseFragment();
     OrderDetailDeliveryFragment deliveryFragment = new OrderDetailDeliveryFragment();
@@ -92,6 +91,7 @@ public class OrderDetailActivity extends BaseActivity {
         Intent intent = getIntent();
         type = intent.getIntExtra(OrderType.ORDER_TYPE, 0);
         orderNo = intent.getStringExtra(OrderType.ORDER_NO);
+        orderStatus=intent.getStringExtra(OrderType.ORDER_STATUS);
         if (type == 1) {
             tvTitle.setText("退票详情");
             tvPay.setText("退款");
@@ -146,19 +146,27 @@ public class OrderDetailActivity extends BaseActivity {
     }
 
     private void refreshView(OrderDetail orderDetail) {
-        baseFragment.refreshData(orderDetail);
+        baseFragment.refreshData(orderDetail,orderStatus);
         deliveryFragment.refreshData(orderDetail);
         travelFragment.refreshData(orderDetail);
 //        approvalFragment.refreshData(orderDetail);
         if (orderDetail != null) {
             JbInfo jbxx = orderDetail.getJbxx();
             if (jbxx != null) {
-                String zfzt = MyTextUtil.setNullText(jbxx.getZfzt());//是否可支付
-                String ddzt = MyTextUtil.setNullText(jbxx.getDdzt());
+                String zfzt = MyTextUtil.clearNullText(jbxx.getZfzt());//是否可支付
+                String ddzt = MyTextUtil.clearNullText(jbxx.getDdzt());
                  if (ddzt.equals("已取消")||ddzt.equals("已完成")){
                      tvControl.setVisibility(View.GONE);
                  }else {
                      tvControl.setVisibility(View.VISIBLE);
+                 }
+                 if (!TextUtils.isEmpty(orderStatus)){
+                     if (type!=1&&orderStatus.equals("2")){
+                         tvControl.setVisibility(View.GONE);
+                     }
+                     if (type == 1 && orderStatus.equals("3")){
+                         tvControl.setVisibility(View.GONE);
+                     }
                  }
                 if (type == 0) {
                     if (zfzt.equals("未付") && !ddzt.equals("已取消")) {

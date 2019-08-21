@@ -8,13 +8,16 @@ import com.example.onedream.flightapp.network.BaseHttp;
 import com.example.onedream.flightapp.network.BaseModel;
 import com.example.onedream.flightapp.request.ControlCompanyRequest;
 import com.example.onedream.flightapp.utils.GsonUtils;
+import com.example.onedream.flightapp.utils.Shelper;
 import com.example.onedream.flightapp.utils.SignUtils;
 
 public class ControlCompanyModel extends BaseModel {
 
     public void getData(Context context, OnCallBack<String> callBack){
         ControlCompanyRequest request = new ControlCompanyRequest();
-        request.setUserKey(AppLocal.USERKEY);
+        Shelper shelper = new Shelper(context);
+        String key = shelper.getString(AppLocal.USER_KEY);
+        request.setUserKey(key);
         String sign = SignUtils.getSign();
         request.setSign(sign);
         String json = GsonUtils.getJson(request);

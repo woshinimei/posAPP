@@ -6,7 +6,16 @@ import com.example.onedream.flightapp.network.BaseResponse;
 import java.util.List;
 
 public class OrderListResponse extends BaseResponse {
-    List<OrderListBean> orderInfoList;
+    private List<OrderListBean> orderInfoList;
+    private String totalCount;
+
+    public String getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(String totalCount) {
+        this.totalCount = totalCount;
+    }
 
     public List<OrderListBean> getOrderInfoList() {
         return orderInfoList;
