@@ -119,7 +119,7 @@ public class PayTypeActivity extends BaseActivity {
                     //选择支付方式
                     int position = chooseItemPay();
                     String count = MoneyUtils.changeY2F(ddje);
-                    Log.e("----count----",count+"");
+                    Log.e("----12位金额----",count+"");
                     Log.e("---position--", position + "");
                     String amount = "000000000001";
                     goToBankPay(amount, tranNameList[position]);
@@ -320,7 +320,23 @@ public class PayTypeActivity extends BaseActivity {
         qcInfo.setPromotionCode(promotionCode);
         qcInfo.setRealAmount(realAmount);
         qcInfo.setPromotionAmount(promotionAmount);
-
+//        Log.e("---amount--", amount + "");
+//        Log.e("---traceNo --", traceNo + "");
+//        Log.e("---referenceNo --", referenceNo + "");
+//        Log.e("---cardNo --", cardNo + "");
+//        Log.e("---type  --", type + "");
+//        Log.e("---authorizationCode--", authorizationCode + "");
+//        Log.e("---batchNo --", batchNo + "");
+//        Log.e("---time --", time + "");
+//        Log.e("---date --", date+"");
+//        Log.e("---terminalId --",  terminalId+ "");
+//        Log.e("---merchantId --",  merchantId+ "");
+//        Log.e("---merchantName --",  merchantName+ "");
+//        Log.e("---payCodInfo --",  payCodInfo+ "");
+//        Log.e("---unionPayTradeNo --",  unionPayTradeNo+ "");
+//        Log.e("---promotionCode --",  promotionCode+ "");
+//        Log.e("---realAmount --",  realAmount+ "");
+//        Log.e("---promotionAmount --",  promotionAmount+ "");
         PayRequest request = new PayRequest();
         request.setDdbh(ddbh);
         request.setPayResult("1");
@@ -351,7 +367,16 @@ public class PayTypeActivity extends BaseActivity {
         weInfo.setMerchantId(merchantId);
         weInfo.setMerchantName(merchantName);
         weInfo.setOrderNo(orderNo);
-        Log.e("----orderNo---",orderNo+"");
+//        Log.e("----orderNo---",orderNo+"");
+//        Log.e("---amount--", amount + "");
+//        Log.e("---traceNo --", traceNo + "");
+//        Log.e("---type  --", type + "");
+//        Log.e("---batchNo --", batchNo + "");
+//        Log.e("---time --", time + "");
+//        Log.e("---date --", date+"");
+//        Log.e("---terminalId --",  terminalId+ "");
+//        Log.e("---merchantId --",  merchantId+ "");
+//        Log.e("---merchantName --",  merchantName+ "");
         PayRequest request = new PayRequest();
         request.setDdbh(ddbh);
         request.setPayResult("1");
@@ -382,7 +407,15 @@ public class PayTypeActivity extends BaseActivity {
       aliPayInfo.setMerchantId(merchantId);
       aliPayInfo.setMerchantName(merchantName);
       aliPayInfo.setOrderNo(orderNo);
-
+//        Log.e("---amount--", amount + "");
+//        Log.e("---traceNo --", traceNo + "");
+//        Log.e("---type  --", type + "");
+//        Log.e("---batchNo --", batchNo + "");
+//        Log.e("---time --", time + "");
+//        Log.e("---date --", date+"");
+//        Log.e("---terminalId --",  terminalId+ "");
+//        Log.e("---merchantId --",  merchantId+ "");
+//        Log.e("---merchantName --",  merchantName+ "");
         PayRequest request = new PayRequest();
         request.setDdbh(ddbh);
         request.setPayResult("1");
@@ -428,19 +461,19 @@ public class PayTypeActivity extends BaseActivity {
         request.setPosPayInfo(posInfo);
         //回调接口
         orderPay(request);
-        Log.e("---amount--", amount + "");
-        Log.e("---traceNo --", traceNo + "");
-        Log.e("---authCode --", authCode + "");
-        Log.e("---referenceNo --", referenceNo + "");
-        Log.e("---cardNo --", cardNo + "");
-        Log.e("---type  --", type + "");
-        Log.e("---issue   --", issue + "");
-        Log.e("---batchNo --", batchNo + "");
-        Log.e("---time --", time + "");
-        Log.e("---date --", date+"");
-        Log.e("---terminalId --",  terminalId+ "");
-        Log.e("---merchantId --",  merchantId+ "");
-        Log.e("---merchantName --",  merchantName+ "");
+//        Log.e("---amount--", amount + "");
+//        Log.e("---traceNo --", traceNo + "");
+//        Log.e("---authCode --", authCode + "");
+//        Log.e("---referenceNo --", referenceNo + "");
+//        Log.e("---cardNo --", cardNo + "");
+//        Log.e("---type  --", type + "");
+//        Log.e("---issue   --", issue + "");
+//        Log.e("---batchNo --", batchNo + "");
+//        Log.e("---time --", time + "");
+//        Log.e("---date --", date+"");
+//        Log.e("---terminalId --",  terminalId+ "");
+//        Log.e("---merchantId --",  merchantId+ "");
+//        Log.e("---merchantName --",  merchantName+ "");
     }
 
     //订单支付接口

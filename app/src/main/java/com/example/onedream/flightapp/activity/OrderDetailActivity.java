@@ -48,6 +48,7 @@ import com.example.onedream.flightapp.response.OrderDetailResponse;
 import com.example.onedream.flightapp.response.RefundResponse;
 import com.example.onedream.flightapp.utils.FlightComomLogic;
 import com.example.onedream.flightapp.utils.GsonUtils;
+import com.example.onedream.flightapp.utils.MoneyUtils;
 import com.example.onedream.flightapp.utils.MyTextUtil;
 import com.example.onedream.flightapp.view.MyDialog;
 
@@ -92,8 +93,8 @@ public class OrderDetailActivity extends BaseActivity {
     OrderDetailTravelFragment travelFragment = new OrderDetailTravelFragment();
     //    OrderDetailApprovalFragment approvalFragment = new OrderDetailApprovalFragment();
 
-    int type = 0;
-
+  private   int type = 0;
+   MyDialog refundResultDialog;
     @Override
     public int getLayout() {
         return R.layout.activity_order_normal_detail;
@@ -101,6 +102,7 @@ public class OrderDetailActivity extends BaseActivity {
 
     @Override
     public void initView() {
+
         Intent intent = getIntent();
         type = intent.getIntExtra(OrderType.ORDER_TYPE, 0);
         orderNo = intent.getStringExtra(OrderType.ORDER_NO);
@@ -122,6 +124,19 @@ public class OrderDetailActivity extends BaseActivity {
                 initData();
             }
         });
+    }
+
+    private void showRefundResultDialog() {
+        View view = View.inflate(getActivity(), R.layout.refund_success_layout, null);
+        TextView tvSure = view.findViewById(R.id.tv_sure);
+        refundResultDialog = new MyDialog(getActivity(),view);
+        tvSure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refundResultDialog.dismiss();
+            }
+        });
+        refundResultDialog.showPaddingScreen();
     }
 
     private void initData() {
@@ -175,19 +190,19 @@ public class OrderDetailActivity extends BaseActivity {
                     tvControl.setVisibility(View.VISIBLE);
                 }
 
-                if (type == 0) {
-//                    String sfkzf = jbxx.getSfkzf();
-//                    if (!TextUtils.isEmpty(sfkzf)&&sfkzf.equals("1")){
-//                        tvPay.setVisibility(View.VISIBLE);
-//                    }else {
-//                        tvPay.setVisibility(View.GONE);
-//                    }
-                    if (zfzt.equals("未付") && !ddzt.equals("已取消")) {
+                if (type == 0) {//普通单支付按钮
+                    String sfkzf = jbxx.getSfkzf();
+                    if (!TextUtils.isEmpty(sfkzf)&&sfkzf.equals("1")){
                         tvPay.setVisibility(View.VISIBLE);
-                    } else {
+                    }else {
                         tvPay.setVisibility(View.GONE);
                     }
-                } else if (type == 1) {
+//                    if (zfzt.equals("未付") && !ddzt.equals("已取消")) {
+//                        tvPay.setVisibility(View.VISIBLE);
+//                    } else {
+//                        tvPay.setVisibility(View.GONE);
+//                    }
+                } else if (type == 1) {//退废单退款按钮
 //                    String sfktp = jbxx.getSfktp();//是否可退款
 //                    if (!TextUtils.isEmpty(sfktp)&&"1".equals(sfktp)){
 //                        tvPay.setVisibility(View.VISIBLE);
@@ -200,9 +215,8 @@ public class OrderDetailActivity extends BaseActivity {
 //                    }else {
 //                        tvPay.setVisibility(View.GONE);
 //                    }
-                    if (zfzt.equals("已退")) {
-                        tvPay.setVisibility(View.GONE);
-                    } else {
+                    String sffh = orderDetail.getSffh();
+                    if (!TextUtils.isEmpty(sffh)&&sffh.equals("1")){
                         tvPay.setVisibility(View.VISIBLE);
                         AliPayRefundInfo alipayInfo = orderDetail.getAlipayInfo();
                         PosPayRefundInfo posInfo = orderDetail.getPosInfo();
@@ -211,19 +225,33 @@ public class OrderDetailActivity extends BaseActivity {
                         if (alipayInfo==null&&posInfo==null&&wechatInfo==null&&qrcodeInfo==null){
                             tvPay.setVisibility(View.GONE);
                         }
-                    }
-                } else {
-//                    String sfkzf = jbxx.getSfkzf();
-//                    if (!TextUtils.isEmpty(sfkzf)&&sfkzf.equals("1")){
-//                        tvPay.setVisibility(View.VISIBLE);
-//                    }else {
-//                        tvPay.setVisibility(View.GONE);
-//                    }
-                    if (zfzt.equals("未付") && (!ddzt.equals("已取消") || !ddzt.equals("已完成") || !ddzt.equals("待支付"))) {
-                        tvPay.setVisibility(View.VISIBLE);
-                    } else {
+                    }else {
                         tvPay.setVisibility(View.GONE);
                     }
+//                    if (zfzt.equals("已退")) {
+//                        tvPay.setVisibility(View.GONE);
+//                    } else {
+//                        tvPay.setVisibility(View.VISIBLE);
+//                        AliPayRefundInfo alipayInfo = orderDetail.getAlipayInfo();
+//                        PosPayRefundInfo posInfo = orderDetail.getPosInfo();
+//                        WechatRefundInfo wechatInfo = orderDetail.getWechatInfo();
+//                        QrcodePayRefundInfo qrcodeInfo = orderDetail.getQrcodeInfo();
+//                        if (alipayInfo==null&&posInfo==null&&wechatInfo==null&&qrcodeInfo==null){
+//                            tvPay.setVisibility(View.GONE);
+//                        }
+//                    }
+                } else {//改签单支付按钮
+                    String sfkzf = jbxx.getSfkzf();
+                    if (!TextUtils.isEmpty(sfkzf)&&sfkzf.equals("1")){
+                        tvPay.setVisibility(View.VISIBLE);
+                    }else {
+                        tvPay.setVisibility(View.GONE);
+                    }
+//                    if (zfzt.equals("未付") && (!ddzt.equals("已取消") || !ddzt.equals("已完成") || !ddzt.equals("待支付"))) {
+//                        tvPay.setVisibility(View.VISIBLE);
+//                    } else {
+//                        tvPay.setVisibility(View.GONE);
+//                    }
                 }
             }
         }
@@ -354,7 +382,10 @@ public class OrderDetailActivity extends BaseActivity {
                             ytje = jbInfo.getYtje();
                             Log.e("----ytje----",ytje+"");
                             if (!TextUtils.isEmpty(ytje)){
-                                showRefundDialog(ytje, response.getTfOrderDetail());
+                                //转成12位格式的金额
+                                String count = MoneyUtils.changeY2F(ytje);
+                                Log.e("----count----",count+"");
+                                showRefundDialog(count, response.getTfOrderDetail());
                             }else {
                                 showToast("获取不到订单金额");
                             }
@@ -371,7 +402,7 @@ public class OrderDetailActivity extends BaseActivity {
 
     MyDialog refundDialog;
 
-    private void showRefundDialog(String amount, OrderDetail orderDetail) {
+    private void showRefundDialog(String count, OrderDetail orderDetail) {
         refundDialog = new MyDialog(getActivity());
         refundDialog.setContent("是否立即退款?");
         refundDialog.setLeftButtonClickListener(new View.OnClickListener() {
@@ -394,7 +425,7 @@ public class OrderDetailActivity extends BaseActivity {
     }
 
     private void goToBankPay(String amount, OrderDetail orderDetail) {
-        Log.e("--amount-", amount + "");
+//        Log.e("--amount-", amount + "");
         PosPayRefundInfo posPayInfo = null;
         AliPayRefundInfo aliPayInfo = null;
         WechatRefundInfo wechatPayInfo = null;
@@ -417,10 +448,9 @@ public class OrderDetailActivity extends BaseActivity {
                     intent.putExtra("transName", "退货");
                     intent.putExtra("orgTime", posPayInfo.getOrgTime() + "");
                     intent.putExtra("orgTraceNo", posPayInfo.getOrgTraceNo() + "");
-                    Log.e("-----orgTime----",posPayInfo.getOrgTime()+"");
-                    Log.e("-----orgTraceNo----",posPayInfo.getOrgTraceNo()+"");
+//                    Log.e("-----orgTime----",posPayInfo.getOrgTime()+"");
+//                    Log.e("-----orgTraceNo----",posPayInfo.getOrgTraceNo()+"");
 
-                    Log.e("--orgTime--", posPayInfo.getOrgTime() + "");
                     if (posPayInfo.getOrgAuthCode() != null) {
                         intent.putExtra("orgAuthCode", posPayInfo.getOrgAuthCode());
                     }
@@ -428,21 +458,21 @@ public class OrderDetailActivity extends BaseActivity {
                 } else if (aliPayInfo != null) {
                     intent.putExtra("transName", "支付宝扫码退货");
                     intent.putExtra("oldOrderNo", aliPayInfo.getOldOrderNo() + "");
-                    Log.e("--oldOrderNo--", aliPayInfo.getOldOrderNo() + "");
+//                    Log.e("--oldOrderNo--", aliPayInfo.getOldOrderNo() + "");
                     intent.putExtra("oldScanData", aliPayInfo.getOldScanData() + "");
-                    Log.e("---oldScanData-", aliPayInfo.getOldScanData() + "");
+//                    Log.e("---oldScanData-", aliPayInfo.getOldScanData() + "");
 
                 } else if (wechatPayInfo != null) {
                     intent.putExtra("transName", "微信扫码退货");
                     intent.putExtra("oldOrderNo", wechatPayInfo.getOldOrderNo() + "");
                     intent.putExtra("oldScanData", wechatPayInfo.getOldScanData() + "");
-                    Log.e("---oldScanData-", wechatPayInfo.getOldScanData() + "");
+//                    Log.e("---oldScanData-", wechatPayInfo.getOldScanData() + "");
 
                 } else if (qrCodePayInfo != null) {
                     intent.putExtra("transName", "二维码退货");
                     intent.putExtra("oldUnionPayTradeNo", qrCodePayInfo.getOldUnionPayTrad() + "");
-                    Log.e("-----oldUnionNo-",qrCodePayInfo.getOldUnionPayTrad()+"");
-                    Log.e("------qrCodePayInfo----",amount+"");
+//                    Log.e("-----oldUnionNo-",qrCodePayInfo.getOldUnionPayTrad()+"");
+//                    Log.e("------qrCodePayInfo----",amount+"");
                 }
                 if (posPayInfo != null || aliPayInfo != null || wechatPayInfo != null || qrCodePayInfo != null) {
                     startActivityForResult(intent, 0);
@@ -483,7 +513,11 @@ public class OrderDetailActivity extends BaseActivity {
             @Override
             public void onSucess(String s) {
                 RefundResponse response = GsonUtils.fromJson(s, RefundResponse.class);
+                if (response.isSuccess()){
+                    showRefundResultDialog();
+                }
                 showToast(response.getMessage() + "");
+
                 initData();
             }
 
@@ -597,6 +631,9 @@ public class OrderDetailActivity extends BaseActivity {
         }
         if (refundDialog != null && refundDialog.isShowing()) {
             refundDialog.dismiss();
+        }
+        if (refundResultDialog!=null&&refundResultDialog.isShowing()){
+            refundResultDialog.dismiss();
         }
     }
 

@@ -77,7 +77,7 @@
             android:layout_height="wrap_content"
             android:paddingRight="@dimen/dp_12"
             android:paddingBottom="@dimen/dp_12"
-            android:text="预定成功，为保证您的出票，请您在30分钟内完成支付"
+            android:text="为保证您的出票，请您在30分钟内完成支付"
             android:textColor="@color/topview_bg" />
     </LinearLayout>
 

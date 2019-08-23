@@ -3,22 +3,31 @@ package com.example.onedream.flightapp.bean;
 import java.util.List;
 
 public class OrderDetail {
-    JbInfo jbxx;//基本信息
-    List<HbInfo> hdjh;//航程信息集合
-    List<PassengerInfo> cjrjh;//乘机人信息集合
+    private String sffh;//是否可退款  1：是    其他：否
+    private JbInfo jbxx;//基本信息
+    private List<HbInfo> hdjh;//航程信息集合
+    private List<PassengerInfo> cjrjh;//乘机人信息集合
 
 
-    List<PayInfo> zfxxjh;//支付集合
-    FlightPayInfo gjhcxx;//支付信息
-    TravelInfo clxx;//差旅信息
-    DeliveryAndInvoiceInfo fppsxx;//发票和配送信息对象
-    List<InterHbInfo> jgzcjh;//国际航班信息
-    List<CouponBean> coupon;//卡券信息
-    String couponCost ;//优惠券金额
+    private List<PayInfo> zfxxjh;//支付集合
+    private FlightPayInfo gjhcxx;//支付信息
+    private TravelInfo clxx;//差旅信息
+    private DeliveryAndInvoiceInfo fppsxx;//发票和配送信息对象
+    private List<InterHbInfo> jgzcjh;//国际航班信息
+    private List<CouponBean> coupon;//卡券信息
+    private String couponCost;//优惠券金额
     private PosPayRefundInfo posInfo;//退废单退票（pos信息）
     private AliPayRefundInfo alipayInfo;//退废单退票（支付宝信息）
     private WechatRefundInfo wechatInfo;//退废单退票（微信信息）
     private QrcodePayRefundInfo qrcodeInfo;//退废单退票（二维码信息）
+
+    public String getSffh() {
+        return sffh;
+    }
+
+    public void setSffh(String sffh) {
+        this.sffh = sffh;
+    }
 
     public PosPayRefundInfo getPosInfo() {
         return posInfo;
@@ -63,6 +72,7 @@ public class OrderDetail {
     public void setZfxxjh(List<PayInfo> zfxxjh) {
         this.zfxxjh = zfxxjh;
     }
+
     public List<PayInfo> getZfxxjh() {
         return zfxxjh;
     }
