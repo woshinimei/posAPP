@@ -10,6 +10,15 @@ public class AliPayInfo {
     private String merchantId;//商户号
     private String merchantName;//商户名称
     private String orderNo;//订单号
+    private String authCode;//授权码（非必返)
+
+    public String getAuthCode() {
+        return authCode;
+    }
+
+    public void setAuthCode(String authCode) {
+        this.authCode = authCode;
+    }
 
     public String getAmount() {
         return amount;

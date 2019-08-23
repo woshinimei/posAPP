@@ -13,6 +13,7 @@ import com.example.onedream.flightapp.constant.AppLocal;
 import com.example.onedream.flightapp.constant.OrderType;
 import com.example.onedream.flightapp.intefaces.OnChoiceListener;
 import com.example.onedream.flightapp.request.OrderListRequest;
+import com.example.onedream.flightapp.utils.MyTextUtil;
 import com.example.onedream.flightapp.utils.OrderListFliterUtils;
 import com.example.onedream.flightapp.utils.VeDate;
 
@@ -163,7 +164,8 @@ public class FilterTicketActivity extends BaseActivity {
         String name = edName.getText().toString();
         if (!TextUtils.isEmpty(name)) {
             if (request != null) {
-                request.setName(name);
+                String s = MyTextUtil.replaceBlank(name);
+                request.setName(s);
             }
         } else {
             if (request != null) {

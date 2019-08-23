@@ -75,6 +75,7 @@
                         android:textSize="@dimen/sp_15" />
 
                     <EditText
+
                         android:id="@+id/ed_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

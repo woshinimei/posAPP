@@ -1,7 +1,6 @@
 package com.example.onedream.flightapp.activity;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -9,14 +8,18 @@ import android.content.pm.PackageManager;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.onedream.flightapp.R;
 import com.example.onedream.flightapp.adapter.RvPayListAdapter;
 import com.example.onedream.flightapp.base.BaseActivity;
+import com.example.onedream.flightapp.bean.AliPayInfo;
 import com.example.onedream.flightapp.bean.PayTypeBean;
 import com.example.onedream.flightapp.bean.PosPayInfo;
+import com.example.onedream.flightapp.bean.QrCodePayInfo;
+import com.example.onedream.flightapp.bean.WechatPayInfo;
 import com.example.onedream.flightapp.config.MyApp;
 import com.example.onedream.flightapp.constant.OrderType;
 import com.example.onedream.flightapp.intefaces.OnCallBack;
@@ -24,6 +27,7 @@ import com.example.onedream.flightapp.model.PayModel;
 import com.example.onedream.flightapp.request.PayRequest;
 import com.example.onedream.flightapp.response.PayResponse;
 import com.example.onedream.flightapp.utils.GsonUtils;
+import com.example.onedream.flightapp.utils.MoneyUtils;
 import com.example.onedream.flightapp.view.MyDialog;
 import com.example.onedream.flightapp.view.RecycleViewDivider;
 
@@ -44,8 +48,12 @@ public class PayTypeActivity extends BaseActivity {
     RvPayListAdapter adapter;
     List<PayTypeBean> list = new ArrayList<>();
     private String ddje = "";//订单金额
-    private String orderNo = "";//订单编号
+    private String ddbh = "";//订单编号
     private int type = 0;//
+    //支付类型
+    private String[] payType = {"POS支付", "支付宝扫码支付", "微信扫码支付", "二维码支付"};
+    //transName 支付调起类型
+    private String[] tranNameList = {"消费", "支付宝扫码消费", "微信扫码消费", "二维码消费"};
 
     @Override
     public int getLayout() {
@@ -55,7 +63,7 @@ public class PayTypeActivity extends BaseActivity {
     @Override
     public void initView() {
         ddje = getIntent().getStringExtra(OrderType.ORDER_AMOUNT);//订单金额
-        orderNo = getIntent().getStringExtra(OrderType.ORDER_NO);//订单编号
+        ddbh = getIntent().getStringExtra(OrderType.ORDER_NO);//订单编号
         type = getIntent().getIntExtra(OrderType.ORDER_TYPE, 0);
 
         tvBottomPrice.setText(ddje + "");
@@ -65,11 +73,10 @@ public class PayTypeActivity extends BaseActivity {
 
     private void initAdapter() {
         list.clear();
-        list.add(new PayTypeBean("POS支付", true));
-        list.add(new PayTypeBean("支付宝扫码支付", false));
-        list.add(new PayTypeBean("微信扫码支付", false));
-        list.add(new PayTypeBean("预授权支付", false));
-        list.add(new PayTypeBean("二维码支付", false));
+        list.add(new PayTypeBean(payType[0], true));
+        list.add(new PayTypeBean(payType[1], false));
+        list.add(new PayTypeBean(payType[2], false));
+        list.add(new PayTypeBean(payType[3], false));
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         rvContent.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.VERTICAL, 1, getResources().getColor(R.color.colorLine)));
@@ -107,16 +114,15 @@ public class PayTypeActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.ll_bottom:
+
                 if (hasSelectPay()) {
-
-                    if (chooseItemPay()) {
-                        //跳转银行支付
-                        goToBankPay();
-                    } else {
-                        orderPay();
-                    }
-
-
+                    //选择支付方式
+                    int position = chooseItemPay();
+                    String count = MoneyUtils.changeY2F(ddje);
+                    Log.e("----count----",count+"");
+                    Log.e("---position--", position + "");
+                    String amount = "000000000001";
+                    goToBankPay(amount, tranNameList[position]);
                 } else {
                     showToast("请选择支付方式");
                 }
@@ -124,24 +130,36 @@ public class PayTypeActivity extends BaseActivity {
         }
     }
 
-    private boolean chooseItemPay() {
-        for (PayTypeBean bean : list) {
-            if (bean.isCheck() && bean.getName().equals("预授权支付")) {
-                return true;
+    //选择支付方式
+    private int chooseItemPay() {
+        for (int i = 0; i < list.size(); i++) {
+            PayTypeBean bean = list.get(i);
+            if (bean.isCheck()) {
+                return i;
             }
+
         }
-        return false;
+        return 0;
     }
 
-    private void goToBankPay() {
+
+    private void goToBankPay(String amount, String transName) {
+        Log.e("--amount-", amount + "");
+        Log.e("--transName-", transName + "");
         if (checkPackInfo("com.boc.smartpos.bankpay")) {
-            Intent intent = new Intent();
-            intent.setComponent(new ComponentName("com.boc.smartpos.bankpay", " com.boc.smartpos.bankpay.ui.MainActivity"));
-            intent.putExtra("transName", "消费");
-            intent.putExtra("amount", "0.01");
-            startActivityForResult(intent, 0);
+            try {
+                Intent intent = new Intent();
+//            intent.setComponent(new ComponentName("com.boc.smartpos.bankpay", " com.boc.smartpos.bankpay.ui.MainActivity"));
+                intent.setClassName("com.boc.smartpos.bankpay", "com.boc.smartpos.bankpay.ui.MainActivity");
+                intent.putExtra("transName", transName);
+                intent.putExtra("amount", amount);
+                startActivityForResult(intent, 0);
+            } catch (Exception e) {
+                showToast("跳转失败");
+            }
+
         } else {
-            showToast("中行app未安装");
+            showToast("中国银行app尚未安装");
         }
     }
 
@@ -161,35 +179,7 @@ public class PayTypeActivity extends BaseActivity {
         return packageInfo != null;
     }
 
-    //订单支付接口
-    private void orderPay() {
-        PayModel model = new PayModel();
-        PayRequest request = new PayRequest();
-        request.setDdbh(orderNo);
-        request.setPayResult("0");
-        request.setPayType("0");
-        PosPayInfo info = new PosPayInfo();
-        info.setAmount(ddje + "");
-        info.setBatchNo("4234324");
-        info.setCardNo("4234322222");
-        info.setDate("2019-12-1");
-        info.setMerchantId("32132");
-        request.setPosPayInfo(info);
-        model.getData(getActivity(), type, request, new OnCallBack<String>() {
-            @Override
-            public void onSucess(String s) {
-                PayResponse response = GsonUtils.fromJson(s, PayResponse.class);
-                if (response.isSuccess()) {
-                    showSuccessDialog();
-                }
-            }
 
-            @Override
-            public void onError(String msg) {
-                showToast(msg);
-            }
-        });
-    }
 
     MyDialog successDialog;
 
@@ -268,8 +258,207 @@ public class PayTypeActivity extends BaseActivity {
                 }
                 break;
             case Activity.RESULT_OK:
-                    showToast("交易成功");
+                int position = chooseItemPay();
+                //pos机支付成功后请求回调差旅支付接口
+                showToast("交易回调");
+                payResult(position, data);
+
                 break;
         }
+    }
+
+    //回调差旅支付接口
+    private void payResult(int position, Intent data) {
+        switch (position) {
+            case 0://pos支付
+                posPay(data);
+                break;
+            case 1://支付宝支付
+                aliPay(data);
+                break;
+            case 2://微信支付
+                wechatPay(data);
+                break;
+            case 3://二维码支付
+               QrCodePay(data);
+                break;
+        }
+
+    }
+    //二维码支付
+    private void QrCodePay(Intent data) {
+        String amount = data.getStringExtra("amount");
+        String traceNo = data.getStringExtra("traceNo");
+        String referenceNo = data.getStringExtra("referenceNo");
+        String cardNo = data.getStringExtra("cardNo");
+        String authorizationCode = data.getStringExtra("authorizationCode");
+        String batchNo = data.getStringExtra("batchNo");
+        String time = data.getStringExtra("time");
+        String date = data.getStringExtra("date");
+        String terminalId = data.getStringExtra("terminalId");
+        String merchantId = data.getStringExtra("merchantId");
+        String merchantName = data.getStringExtra("merchantName");
+        String payCodInfo = data.getStringExtra("payCodInfo");
+        String unionPayTradeNo = data.getStringExtra("unionPayTradeNo");
+        String promotionCode = data.getStringExtra("promotionCode");
+        String realAmount = data.getStringExtra("realAmount");
+        String promotionAmount = data.getStringExtra("promotionAmount");
+        QrCodePayInfo qcInfo = new QrCodePayInfo();
+        qcInfo.setAmount(ddje);
+        qcInfo.setTraceNo(traceNo);
+        qcInfo.setReferenceNo(referenceNo);
+        qcInfo.setCardNo(cardNo);
+        qcInfo.setAuthorizationCode(authorizationCode);
+        qcInfo.setBatchNo(batchNo);
+        qcInfo.setTime(time);
+        qcInfo.setDate(date);
+        qcInfo.setTerminalId(terminalId);
+        qcInfo.setMerchantId(merchantId);
+        qcInfo.setMerchantName(merchantName);
+        qcInfo.setPayCodInfo(payCodInfo);
+        qcInfo.setUnionPayTradeNo(unionPayTradeNo);
+        qcInfo.setPromotionCode(promotionCode);
+        qcInfo.setRealAmount(realAmount);
+        qcInfo.setPromotionAmount(promotionAmount);
+
+        PayRequest request = new PayRequest();
+        request.setDdbh(ddbh);
+        request.setPayResult("1");
+        request.setPayType("0");
+        request.setQrcodePayInfo(qcInfo);
+        //回调接口
+        orderPay(request);
+    }
+
+    //微信支付
+    private void wechatPay(Intent data) {
+        String amount = data.getStringExtra("amount");
+        String traceNo = data.getStringExtra("traceNo");
+        String batchNo = data.getStringExtra("batchNo");
+        String time = data.getStringExtra("time");
+        String date = data.getStringExtra("date");
+        String terminalId = data.getStringExtra("terminalId");
+        String merchantId = data.getStringExtra("merchantId");
+        String merchantName = data.getStringExtra("merchantName");
+        String orderNo = data.getStringExtra("orderNo");
+        WechatPayInfo weInfo = new WechatPayInfo();
+        weInfo.setAmount(ddje);
+        weInfo.setTraceNo(traceNo);
+        weInfo.setBatchNo(batchNo);
+        weInfo.setTime(time);
+        weInfo.setDate(date);
+        weInfo.setTerminalId(terminalId);
+        weInfo.setMerchantId(merchantId);
+        weInfo.setMerchantName(merchantName);
+        weInfo.setOrderNo(orderNo);
+        Log.e("----orderNo---",orderNo+"");
+        PayRequest request = new PayRequest();
+        request.setDdbh(ddbh);
+        request.setPayResult("1");
+        request.setPayType("0");
+        request.setWechatPayInfo(weInfo);
+        //回调接口
+        orderPay(request);
+    }
+
+    //支付宝支付
+    private void aliPay(Intent data) {
+        String amount = data.getStringExtra("amount");
+        String traceNo = data.getStringExtra("traceNo");
+        String batchNo = data.getStringExtra("batchNo");
+        String time = data.getStringExtra("time");
+        String date = data.getStringExtra("date");
+        String terminalId = data.getStringExtra("terminalId");
+        String merchantId = data.getStringExtra("merchantId");
+        String merchantName = data.getStringExtra("merchantName");
+        String orderNo = data.getStringExtra("orderNo");
+      AliPayInfo aliPayInfo = new AliPayInfo();
+      aliPayInfo.setAmount(ddje);
+      aliPayInfo.setTraceNo(traceNo);
+      aliPayInfo.setBatchNo(batchNo);
+      aliPayInfo.setTime(time);
+      aliPayInfo.setDate(date);
+      aliPayInfo.setTerminalId(terminalId);
+      aliPayInfo.setMerchantId(merchantId);
+      aliPayInfo.setMerchantName(merchantName);
+      aliPayInfo.setOrderNo(orderNo);
+
+        PayRequest request = new PayRequest();
+        request.setDdbh(ddbh);
+        request.setPayResult("1");
+        request.setPayType("0");
+        request.setAliPayInfo(aliPayInfo);
+        //回调接口
+        orderPay(request);
+    }
+
+    //pos机支付
+    private void posPay(Intent data) {
+        String amount = data.getStringExtra("amount");
+        String traceNo = data.getStringExtra("traceNo");
+        String referenceNo = data.getStringExtra("referenceNo");
+        String cardNo = data.getStringExtra("cardNo");
+        String type = data.getStringExtra("type");
+        String issue = data.getStringExtra("issue");
+        String batchNo = data.getStringExtra("batchNo");
+        String time = data.getStringExtra("time");
+        String date = data.getStringExtra("date");
+        String terminalId = data.getStringExtra("terminalId");
+        String merchantId = data.getStringExtra("merchantId");
+        String merchantName = data.getStringExtra("merchantName");
+        String authCode = data.getStringExtra("authCode");
+        PosPayInfo posInfo = new PosPayInfo();
+        posInfo.setAmount(ddje);
+        posInfo.setTraceNo(traceNo);
+        posInfo.setReferenceNo(referenceNo);
+        posInfo.setCardNo(cardNo);
+        posInfo.setType(type);
+        posInfo.setIssue(issue);
+        posInfo.setBatchNo(batchNo);
+        posInfo.setTime(time);
+        posInfo.setDate(date);
+        posInfo.setTerminalId(terminalId);
+        posInfo.setMerchantId(merchantId);
+        posInfo.setMerchantName(merchantName);
+        posInfo.setAuthCode(authCode);
+        PayRequest request = new PayRequest();
+        request.setDdbh(ddbh);
+        request.setPayResult("1");
+        request.setPayType("0");
+        request.setPosPayInfo(posInfo);
+        //回调接口
+        orderPay(request);
+        Log.e("---amount--", amount + "");
+        Log.e("---traceNo --", traceNo + "");
+        Log.e("---authCode --", authCode + "");
+        Log.e("---referenceNo --", referenceNo + "");
+        Log.e("---cardNo --", cardNo + "");
+        Log.e("---type  --", type + "");
+        Log.e("---issue   --", issue + "");
+        Log.e("---batchNo --", batchNo + "");
+        Log.e("---time --", time + "");
+        Log.e("---date --", date+"");
+        Log.e("---terminalId --",  terminalId+ "");
+        Log.e("---merchantId --",  merchantId+ "");
+        Log.e("---merchantName --",  merchantName+ "");
+    }
+
+    //订单支付接口
+    private void orderPay(PayRequest request) {
+        PayModel model = new PayModel();
+        model.getData(getActivity(), type, request, new OnCallBack<String>() {
+            @Override
+            public void onSucess(String s) {
+                PayResponse response = GsonUtils.fromJson(s, PayResponse.class);
+                if (response.isSuccess()) {
+                    showSuccessDialog();
+                }
+            }
+
+            @Override
+            public void onError(String msg) {
+                showToast(msg);
+            }
+        });
     }
 }

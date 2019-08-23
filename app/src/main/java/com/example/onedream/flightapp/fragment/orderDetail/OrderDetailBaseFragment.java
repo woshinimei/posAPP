@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.onedream.flightapp.R;
@@ -72,6 +73,10 @@ public class OrderDetailBaseFragment extends BaseFragment {
     TextView tvPayInfo;
     @BindView(R.id.ll_pay_info)
     LinearLayout llPayInfo;
+    @BindView(R.id.tv_error)
+    TextView tvError;
+    @BindView(R.id.scrollView)
+    ScrollView scrollView;
     private String orderNo;
     private int type = 0;
 
@@ -109,6 +114,8 @@ public class OrderDetailBaseFragment extends BaseFragment {
     public void refreshData(OrderDetail orderDetail, String status) {
         //基本信息
         if (orderDetail != null) {
+            scrollView.setVisibility(View.VISIBLE);
+            tvError.setVisibility(View.GONE);
             JbInfo jbxx = orderDetail.getJbxx();
             if (jbxx != null) {
                 //订单信息
@@ -181,9 +188,10 @@ public class OrderDetailBaseFragment extends BaseFragment {
                     holder.tvTimeStart.setText(bean.getCfsj().split(" ")[1] + "");
                     holder.tvTimeEnd.setText(bean.getDdsj().split(" ")[1] + "");
 
-                    holder.tvStartAdress.setText(MyTextUtil.clearNullText(bean.getCfcity()) + MyTextUtil.clearNullText(bean.getCfjc()) + MyTextUtil.clearNullText(bean.getCfhzl()));
-                    holder.tvEndAdress.setText(MyTextUtil.clearNullText(bean.getDdcity()) + MyTextUtil.clearNullText(bean.getDdjc()) + MyTextUtil.clearNullText(bean.getDdhzl()));
-
+//                    holder.tvStartAdress.setText(MyTextUtil.clearNullText(bean.getCfcity()) + MyTextUtil.clearNullText(bean.getCfjc()) + MyTextUtil.clearNullText(bean.getCfhzl()));
+                    holder.tvStartAdress.setText(MyTextUtil.clearNullText(bean.getCfcity(),bean.getCfjc(),bean.getCfhzl()));
+//                    holder.tvEndAdress.setText(MyTextUtil.clearNullText(bean.getDdcity()) + MyTextUtil.clearNullText(bean.getDdjc()) + MyTextUtil.clearNullText(bean.getDdhzl()));
+                    holder.tvEndAdress.setText(MyTextUtil.clearNullText(bean.getDdcity(),bean.getDdjc(),bean.getDdhzl()));
                     llHb.addView(view);
                     if (type != 0) {//改签单和退票单的情况调用
                         View couponView = CouponView.addCouponDetailView(getActivity(), orderDetail, i);
@@ -204,10 +212,8 @@ public class OrderDetailBaseFragment extends BaseFragment {
                     View view = View.inflate(getActivity(), R.layout.item_base_passenger_view, null);
                     PasengerViewHolder holder = new PasengerViewHolder(view);
                     holder.tvName.setText(bean.getCjrxm());
-                    String itp = bean.getZjlx();
-                    String cardNameByCode = OrderLogic.getCardNameByCode(itp);
-                    holder.tvIdType.setText(cardNameByCode);
-                    holder.tvIdcard.setText(bean.getZjhm());
+
+
                     String cjrlx = bean.getCjrlx();
                     String cjrlxName = "";
                     if ("1".equals(cjrlx)) {
@@ -216,6 +222,17 @@ public class OrderDetailBaseFragment extends BaseFragment {
                         cjrlxName = "儿童";
                     } else if ("3".equals(cjrlx)) {
                         cjrlxName = "婴儿";
+                    }
+                    String itp = bean.getZjlx();
+                    String cardNameByCode = OrderLogic.getCardNameByCode(itp);
+                    holder.tvIdType.setText(cardNameByCode);
+                    holder.tvIdcard.setText(bean.getZjhm());
+                    if (cjrlx.equals("3")){
+                        holder.tvIdcard.setVisibility(View.GONE);
+                        holder.tvIdType.setVisibility(View.GONE);
+                    }else {
+                        holder.tvIdcard.setVisibility(View.VISIBLE);
+                        holder.tvIdType.setVisibility(View.VISIBLE);
                     }
                     holder.tvType.setText(cjrlxName);
                     holder.tvPhone.setText(bean.getCjrsj());
@@ -248,9 +265,15 @@ public class OrderDetailBaseFragment extends BaseFragment {
             }
 
         } else {
+            if (getActivity()!=null&&!getActivity().isFinishing()) {
+                scrollView.setVisibility(View.GONE);
+                tvError.setVisibility(View.VISIBLE);
+            }
             Log.e("OrderDetailBase--", "--orderdeail   null--");
         }
-        pull.finishRefresh(100);//加载时间，必须加这句
+        if (getActivity()!=null) {
+            pull.finishRefresh(100);//加载时间，必须加这句
+        }
     }
 
 

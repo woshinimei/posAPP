@@ -8,8 +8,6 @@ import com.example.onedream.flightapp.request.OrderListRequest;
 public class AppLocal {
     //用户缓存
     public static String USER = "user";
-    //登录状态
-    public static String USER_LOGIN="user_login_status";
     //登录账号
     public static String USER_NAME = "user_name";
     //登录密码

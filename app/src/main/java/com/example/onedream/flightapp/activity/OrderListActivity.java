@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.example.onedream.flightapp.R;
 import com.example.onedream.flightapp.adapter.VpFragmentAdapter;
 import com.example.onedream.flightapp.base.BaseActivity;
+import com.example.onedream.flightapp.config.MyApp;
 import com.example.onedream.flightapp.constant.OrderType;
 import com.example.onedream.flightapp.fragment.orderlist.OrderListEndoreFragment;
 import com.example.onedream.flightapp.fragment.orderlist.OrderListNormalFragment;
@@ -193,6 +194,18 @@ public class OrderListActivity extends BaseActivity {
         if (pop!=null&&pop.isShowing()){
             pop.dismiss();
         }
+    }
+
+    long time;
+    @Override
+    public void onBackPressed() {
+        if (System.currentTimeMillis() - time < 2000) {
+            MyApp.getInstance().exit();
+        } else {
+            time = System.currentTimeMillis();
+            showToast("再按一次退出应用");
+        }
+
     }
 
     @Override

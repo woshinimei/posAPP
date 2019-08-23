@@ -1,27 +1,22 @@
 package com.example.onedream.flightapp.bean;
 
-public class PosPayInfo {
+public class QrCodePayInfo {
     private String amount;//金额
     private String traceNo;//流水号
     private String referenceNo;//参考号
     private String cardNo;//卡号
-    private String type;//(卡类型，俩位数)01-中行借记卡,02-中行信用卡(分行),04-中行信用卡(总行),11-银联借记卡,21-VISA借记卡,22-VISA信用卡,31-MC借记卡,32-MC信用卡,42-运通卡,52-大来卡,62-JCB卡,72-南商信用卡
-    private String issue;//发卡行
+    private String authorizationCode;//授权码
     private String batchNo;//批次号
     private String time;//交易时间
     private String date;//交易日期
     private String terminalId;//终端号
     private String merchantId;//商户号
     private String merchantName;//商户名称
-    private String authCode;//授权码（非必返
-
-    public String getAuthCode() {
-        return authCode;
-    }
-
-    public void setAuthCode(String authCode) {
-        this.authCode = authCode;
-    }
+    private String payCodInfo;//付款码信息
+    private String unionPayTradeNo;//付款凭证号（用于撤销/退货）
+    private String promotionCode;//优惠产品码（如:DD01-随机立减            CP01-满额立减）（优惠时返)
+    private String realAmount;//实际金额，如000000001000（优惠时返）
+    private String promotionAmount;//优惠金额，如000000001000（优惠时返）
 
     public String getAmount() {
         return amount;
@@ -55,20 +50,12 @@ public class PosPayInfo {
         this.cardNo = cardNo;
     }
 
-    public String getType() {
-        return type;
+    public String getAuthorizationCode() {
+        return authorizationCode;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getIssue() {
-        return issue;
-    }
-
-    public void setIssue(String issue) {
-        this.issue = issue;
+    public void setAuthorizationCode(String authorizationCode) {
+        this.authorizationCode = authorizationCode;
     }
 
     public String getBatchNo() {
@@ -117,5 +104,45 @@ public class PosPayInfo {
 
     public void setMerchantName(String merchantName) {
         this.merchantName = merchantName;
+    }
+
+    public String getPayCodInfo() {
+        return payCodInfo;
+    }
+
+    public void setPayCodInfo(String payCodInfo) {
+        this.payCodInfo = payCodInfo;
+    }
+
+    public String getUnionPayTradeNo() {
+        return unionPayTradeNo;
+    }
+
+    public void setUnionPayTradeNo(String unionPayTradeNo) {
+        this.unionPayTradeNo = unionPayTradeNo;
+    }
+
+    public String getPromotionCode() {
+        return promotionCode;
+    }
+
+    public void setPromotionCode(String promotionCode) {
+        this.promotionCode = promotionCode;
+    }
+
+    public String getRealAmount() {
+        return realAmount;
+    }
+
+    public void setRealAmount(String realAmount) {
+        this.realAmount = realAmount;
+    }
+
+    public String getPromotionAmount() {
+        return promotionAmount;
+    }
+
+    public void setPromotionAmount(String promotionAmount) {
+        this.promotionAmount = promotionAmount;
     }
 }

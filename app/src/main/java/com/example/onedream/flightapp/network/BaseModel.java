@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.onedream.flightapp.activity.LoginActivity;
 import com.example.onedream.flightapp.intefaces.OnCallBack;
 import com.example.onedream.flightapp.utils.GsonUtils;
+import com.example.onedream.flightapp.utils.NetWorkUtils;
 import com.example.onedream.flightapp.view.ProgressDialog;
 
 import org.xutils.common.Callback;
@@ -88,6 +90,7 @@ public class BaseModel {
         String rtnCode = response.getRtnCode();
                         if (!TextUtils.isEmpty(rtnCode)&&rtnCode.equals("E003")){//登录过期
                             context.startActivity(new Intent(context,LoginActivity.class));
+
 //        if (!TextUtils.isEmpty(rtnCode)&&rtnCode.equals("I000")){//登录过期
 //            MyDialog dialog = new MyDialog(context);
 //            dialog.setContent("当前登录信息已经过期，是否重新登录？");

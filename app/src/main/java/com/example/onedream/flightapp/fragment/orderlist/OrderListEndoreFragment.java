@@ -104,6 +104,7 @@ public class OrderListEndoreFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        start=0;
         if (!isFirst){
             initData(true);
         }else {

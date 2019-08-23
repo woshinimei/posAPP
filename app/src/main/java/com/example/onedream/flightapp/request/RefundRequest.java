@@ -1,6 +1,9 @@
 package com.example.onedream.flightapp.request;
 
+import com.example.onedream.flightapp.bean.AliPayInfo;
 import com.example.onedream.flightapp.bean.PosPayInfo;
+import com.example.onedream.flightapp.bean.QrCodePayInfo;
+import com.example.onedream.flightapp.bean.WechatPayInfo;
 import com.example.onedream.flightapp.network.BaseRequest;
 
 public class RefundRequest extends BaseRequest {
@@ -12,6 +15,41 @@ public class RefundRequest extends BaseRequest {
     private String cldh;//处理编号
     private String jylsh;//交易流水号
     private PosPayInfo posRefundInfo;//
+    private AliPayInfo aliRefundInfo;
+    private WechatPayInfo wechatRefundInfo;
+    QrCodePayInfo qrcodeRefundInfo;
+
+    public PosPayInfo getPosRefundInfo() {
+        return posRefundInfo;
+    }
+
+    public void setPosRefundInfo(PosPayInfo posRefundInfo) {
+        this.posRefundInfo = posRefundInfo;
+    }
+
+    public AliPayInfo getAliRefundInfo() {
+        return aliRefundInfo;
+    }
+
+    public void setAliRefundInfo(AliPayInfo aliRefundInfo) {
+        this.aliRefundInfo = aliRefundInfo;
+    }
+
+    public WechatPayInfo getWechatRefundInfo() {
+        return wechatRefundInfo;
+    }
+
+    public void setWechatRefundInfo(WechatPayInfo wechatRefundInfo) {
+        this.wechatRefundInfo = wechatRefundInfo;
+    }
+
+    public QrCodePayInfo getQrcodeRefundInfo() {
+        return qrcodeRefundInfo;
+    }
+
+    public void setQrcodeRefundInfo(QrCodePayInfo qrcodeRefundInfo) {
+        this.qrcodeRefundInfo = qrcodeRefundInfo;
+    }
 
     public PosPayInfo getPosPayInfo() {
         return posRefundInfo;

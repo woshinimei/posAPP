@@ -6,8 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.onedream.flightapp.R;
 import com.example.onedream.flightapp.bean.PayTypeBean;
 
@@ -39,6 +41,18 @@ public class RvPayListAdapter extends RecyclerView.Adapter<RvPayListAdapter.View
         PayTypeBean bean = list.get(i);
         viewHolder.tvName.setSelected(bean.isCheck());
         viewHolder.tvName.setText(bean.getName());
+        if (i==0){
+            viewHolder.ivImg.setImageResource(R.mipmap.icon_pos);
+        }else if (i==1){
+            viewHolder.ivImg.setImageResource(R.mipmap.icon_alipay);
+        }else if (i==2){
+            viewHolder.ivImg.setImageResource(R.mipmap.icon_wechat);
+        }else if (i==3){
+            viewHolder.ivImg.setImageResource(R.mipmap.icon_qrcore);
+        }else {
+            viewHolder.ivImg.setImageResource(R.mipmap.icon_pay_img);
+        }
+
         viewHolder.tvName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +85,8 @@ public class RvPayListAdapter extends RecyclerView.Adapter<RvPayListAdapter.View
     class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_name)
         TextView tvName;
-
+        @BindView(R.id.iv_img)
+        ImageView ivImg;
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);

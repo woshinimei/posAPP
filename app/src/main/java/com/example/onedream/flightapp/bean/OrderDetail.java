@@ -15,6 +15,42 @@ public class OrderDetail {
     List<InterHbInfo> jgzcjh;//国际航班信息
     List<CouponBean> coupon;//卡券信息
     String couponCost ;//优惠券金额
+    private PosPayRefundInfo posInfo;//退废单退票（pos信息）
+    private AliPayRefundInfo alipayInfo;//退废单退票（支付宝信息）
+    private WechatRefundInfo wechatInfo;//退废单退票（微信信息）
+    private QrcodePayRefundInfo qrcodeInfo;//退废单退票（二维码信息）
+
+    public PosPayRefundInfo getPosInfo() {
+        return posInfo;
+    }
+
+    public void setPosInfo(PosPayRefundInfo posInfo) {
+        this.posInfo = posInfo;
+    }
+
+    public AliPayRefundInfo getAlipayInfo() {
+        return alipayInfo;
+    }
+
+    public void setAlipayInfo(AliPayRefundInfo alipayInfo) {
+        this.alipayInfo = alipayInfo;
+    }
+
+    public WechatRefundInfo getWechatInfo() {
+        return wechatInfo;
+    }
+
+    public void setWechatInfo(WechatRefundInfo wechatInfo) {
+        this.wechatInfo = wechatInfo;
+    }
+
+    public QrcodePayRefundInfo getQrcodeInfo() {
+        return qrcodeInfo;
+    }
+
+    public void setQrcodeInfo(QrcodePayRefundInfo qrcodeInfo) {
+        this.qrcodeInfo = qrcodeInfo;
+    }
 
     public String getCouponCost() {
         return couponCost;

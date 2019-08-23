@@ -91,8 +91,13 @@ public class DialogPriceDetailAdapter extends BaseExpandableListAdapter {
            holder = (ChildViewHolder) convertView.getTag();
         }
         PriceItem bean = list.get(groupPosition).getFjjh().get(childPosition);
+        if (bean.getNumber()>1){
+            holder.tvCount.setText("¥" + bean.getUnitPrice()+"x"+bean.getNumber()+"人");
+        }else {
+            holder.tvCount.setText("¥" + bean.getUnitPrice());
+        }
         holder.tvName.setText(setNullText(bean.getName()));
-        holder.tvCount.setText("¥" + bean.getUnitPrice());
+
         return convertView;
     }
 

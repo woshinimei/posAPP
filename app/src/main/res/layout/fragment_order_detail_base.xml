@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:drawableTop="@mipmap/no_data"
+        android:drawablePadding="@dimen/dp_10"
+        android:gravity="center_horizontal"
+        android:text="暂无订单信息"
+        android:textSize="@dimen/sp_14"
+        android:visibility="gone" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/pull"
@@ -13,6 +25,7 @@
         app:srlDisableContentWhenRefresh="true">
 
         <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="none">
@@ -53,18 +66,20 @@
                             android:text=""
                             android:textColor="@color/colorT6"
                             android:textSize="@dimen/sp_13" />
+
                         <TextView
-                            android:background="@drawable/btn_order_si"
                             android:id="@+id/tv_si"
-                            android:gravity="center"
                             android:layout_width="@dimen/dp_30"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="@dimen/dp_5"
                             android:layout_marginRight="5dp"
+                            android:background="@drawable/btn_order_si"
+                            android:gravity="center"
                             android:text=""
                             android:textColor="@color/price_color"
                             android:textSize="@dimen/sp_13" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -195,12 +210,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"></LinearLayout>
                 <!--<include layout="@layout/item_base_contact_view" />-->
-             <LinearLayout
-                 android:orientation="vertical"
-                 android:id="@+id/ll_coupon"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"></LinearLayout>
-              <!--<include layout="@layout/item_coupon_view"/>-->
+                <LinearLayout
+                    android:id="@+id/ll_coupon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"></LinearLayout>
+                <!--<include layout="@layout/item_coupon_view"/>-->
                 <TextView
                     android:id="@+id/tv_pay_info"
                     android:layout_width="match_parent"
@@ -222,4 +237,4 @@
         </ScrollView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-</LinearLayout>
+</RelativeLayout>
