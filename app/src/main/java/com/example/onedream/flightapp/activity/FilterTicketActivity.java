@@ -38,9 +38,13 @@ public class FilterTicketActivity extends BaseActivity {
     TextView tvDateEnd;
     @BindView(R.id.tv_order_status)
     TextView tvOrderStatus;
+    @BindView(R.id.tv_pay_status)
+    TextView tvPayStatus;
+    @BindView(R.id.tv_pay_text)
+    TextView tvPayText;
     //    @BindView(R.id.tv_cl_type)
 //    TextView tvClType;
-    OrderListRequest request;
+    OrderListRequest request = new OrderListRequest();
     String startTime = "";
     String endTime = "";
     private int type = 0;
@@ -75,11 +79,18 @@ public class FilterTicketActivity extends BaseActivity {
         if (baseRequest == null) {
             baseRequest = new OrderListRequest();
             OrderListFliterUtils.setTimeforRequest(baseRequest);
+            if (type==1){
+                OrderListFliterUtils.setRufundRequest(baseRequest);
+            }else {
+                OrderListFliterUtils.setPayRequest(baseRequest);
+            }
         }
         tvDateStart.setText(baseRequest.getDateStart());
         tvDateEnd.setText(baseRequest.getDateEnd());
         if (!TextUtils.isEmpty(baseRequest.getName())) {
             edName.setText(baseRequest.getName());
+        }else {
+            edName.setText("");
         }
         if (TextUtils.isEmpty(baseRequest.getOrderStatus())) {
             tvOrderStatus.setText("全部");
@@ -97,7 +108,40 @@ public class FilterTicketActivity extends BaseActivity {
         } else {
             tvDateType.setText(baseRequest.getDateType());
         }
-        request = baseRequest;
+
+        if (type==1){
+            tvPayText.setText("退款状态");
+            if (TextUtils.isEmpty(baseRequest.getTkzt())){
+                tvPayStatus.setText("未退");
+            }else {
+                tvPayStatus.setText(baseRequest.getTkzt());
+            }
+        }else {
+            tvPayText.setText("支付状态");
+            if (TextUtils.isEmpty(baseRequest.getZfzt())){
+                tvPayStatus.setText("未付");
+            }else {
+                tvPayStatus.setText(baseRequest.getZfzt());
+            }
+        }
+
+        setBaseRequest(baseRequest);
+    }
+
+    private void setBaseRequest(OrderListRequest baseRequest) {
+        if (baseRequest!=null){
+            request.setTkzt(baseRequest.getTkzt());
+            request.setZfzt(baseRequest.getZfzt());
+            request.setStart(baseRequest.getStart());
+            request.setCount(baseRequest.getCount());
+            request.setDateType(baseRequest.getDateType());
+            request.setOrderStatus(baseRequest.getOrderStatus());
+            request.setName(baseRequest.getName());
+            request.setDateStart(baseRequest.getDateStart());
+            request.setDateEnd(baseRequest.getDateEnd());
+            request.setSign(baseRequest.getSign());
+            request.setUserKey(baseRequest.getUserKey());
+        }
     }
 
 
@@ -107,7 +151,8 @@ public class FilterTicketActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.tv_back, R.id.tv_reset, R.id.tv_date_type, R.id.tv_date_start, R.id.tv_date_end, R.id.tv_order_status, R.id.tv_cl_type, R.id.btn_search})
+    @OnClick({R.id.tv_back, R.id.tv_reset, R.id.tv_date_type, R.id.tv_date_start, R.id.tv_date_end,
+            R.id.tv_order_status, R.id.tv_cl_type, R.id.btn_search,R.id.tv_pay_status})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_back:
@@ -142,6 +187,9 @@ public class FilterTicketActivity extends BaseActivity {
             case R.id.tv_order_status:
                 initStatus();
                 break;
+            case R.id.tv_pay_status:
+                initPayStatus();
+                break;
             case R.id.tv_cl_type:
 //                initAllType();
                 break;
@@ -152,6 +200,37 @@ public class FilterTicketActivity extends BaseActivity {
                     doSearch();
                 }
                 break;
+        }
+    }
+    //支付状态
+    private void initPayStatus() {
+        List<String> strList = new ArrayList<>();
+        if (type==1){
+            strList.clear();
+            String[] refundStatus = AppLocal.refundStatus;
+            for (String s : refundStatus) {
+                strList.add(s);
+            }
+            showOptionDialog("退款状态选择", strList, new OnChoiceListener() {
+                @Override
+                public void onOption(String content) {
+                    tvPayStatus.setText(content);
+                    request.setTkzt(content);
+                }
+            });
+        }else {
+            strList.clear();
+            String[] payStatus = AppLocal.payStatus;
+            for (String s : payStatus) {
+                strList.add(s);
+            }
+            showOptionDialog("支付状态选择", strList, new OnChoiceListener() {
+                @Override
+                public void onOption(String content) {
+                    tvPayStatus.setText(content);
+                    request.setZfzt(content);
+                }
+            });
         }
     }
 
@@ -310,11 +389,12 @@ public class FilterTicketActivity extends BaseActivity {
         picker.setTextColor(getResources().getColor(R.color.colorT3));
         picker.setDividerColor(getResources().getColor(R.color.colorLine));
         picker.setTextSize(30);
-        if (type.equals("1")) {
-            picker.setSelectedItem(year, month, day);
-        } else {
-            picker.setSelectedItem(lyear, lmonth, lday);
-        }
+        picker.setSelectedItem(year, month, day);
+//        if (type.equals("1")) {
+//            picker.setSelectedItem(year, month, day);
+//        } else {
+//            picker.setSelectedItem(lyear, lmonth, lday);
+//        }
 
         if (request != null) {
             if (type.equals("0")) {

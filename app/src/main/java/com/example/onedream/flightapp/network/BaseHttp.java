@@ -44,4 +44,14 @@ public class BaseHttp {
     public static String CONTROL_ORDER_REFUND =BASE +"saveTfDept";
     //改签单调度部门接口
     public static String CONTROL_ORDER_ENDORE=BASE +"saveGqdDept";
+
+    /**
+     * 校验接口
+     * */
+    //普通单支付校验接口
+    public static String CHECK_NOMAR_PAY =BASE+"pat";
+    //退款单退款校验接口
+    public static String CHECK_REFUND = BASE+"tfCheck";
+    //改签单支付校验接口
+    public static String CHECK_ENDORE_PAY =BASE+"gqCheck";
 }

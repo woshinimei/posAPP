@@ -111,8 +111,11 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
                 statusColor = R.color.colorT9;
             }
         }
-
-        holder.tvName.setText(setNullText(bean.getDepartment()));
+        String zfzt = bean.getZfzt();
+        if (!content.equals("已取消")&&!TextUtils.isEmpty(zfzt)){
+            content  =content+"-"+zfzt;
+        }
+        holder.tvName.setText(setNullText(bean.getName()));
         holder.tvCity.setText(setNullText(bean.getCfcity())+"-"+setNullText(bean.getDdcity()));
         holder.tvStatus.setText(content);
         holder.tvPrice.setText(setNullText(bean.getOrderPirce()));

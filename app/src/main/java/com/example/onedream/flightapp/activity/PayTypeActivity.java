@@ -23,8 +23,10 @@ import com.example.onedream.flightapp.bean.WechatPayInfo;
 import com.example.onedream.flightapp.config.MyApp;
 import com.example.onedream.flightapp.constant.OrderType;
 import com.example.onedream.flightapp.intefaces.OnCallBack;
+import com.example.onedream.flightapp.model.CheckModel;
 import com.example.onedream.flightapp.model.PayModel;
 import com.example.onedream.flightapp.request.PayRequest;
+import com.example.onedream.flightapp.response.CheckResponse;
 import com.example.onedream.flightapp.response.PayResponse;
 import com.example.onedream.flightapp.utils.GsonUtils;
 import com.example.onedream.flightapp.utils.MoneyUtils;
@@ -114,22 +116,49 @@ public class PayTypeActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.ll_bottom:
-
-                if (hasSelectPay()) {
-                    //选择支付方式
-                    int position = chooseItemPay();
-                    String count = MoneyUtils.changeY2F(ddje);
-                    Log.e("----12位金额----",count+"");
-                    Log.e("---position--", position + "");
-                    String amount = "000000000001";
-                    goToBankPay(amount, tranNameList[position]);
-                } else {
-                    showToast("请选择支付方式");
-                }
+                //先校验价格
+                checkForPay();
                 break;
         }
     }
 
+    //校验价格
+    private void checkForPay() {
+        CheckModel model = new CheckModel();
+        model.checkPayOrRefund(getActivity(), type, ddbh, ddje, new OnCallBack<String>() {
+            @Override
+            public void onSucess(String s) {
+                CheckResponse response = GsonUtils.fromJson(s,CheckResponse.class);
+                if (response.isSuccess()){
+                    //开始支付
+                    payNow();
+                }else {
+                    showToast(response.getMessage()+"");
+                }
+            }
+
+            @Override
+            public void onError(String msg) {
+                showToast(msg);
+            }
+        });
+
+
+    }
+    //开始支付
+    private void payNow(){
+        if (hasSelectPay()) {
+            //选择支付方式
+            int position = chooseItemPay();
+            String count = MoneyUtils.changeY2F(ddje);
+            Log.e("----12位金额----", count + "");
+            Log.e("---position--", position + "");
+            String amount = "000000000003";
+            goToBankPay(amount, tranNameList[position]);
+        } else {
+            showToast("请选择支付方式");
+        }
+    }
     //选择支付方式
     private int chooseItemPay() {
         for (int i = 0; i < list.size(); i++) {
@@ -178,7 +207,6 @@ public class PayTypeActivity extends BaseActivity {
         }
         return packageInfo != null;
     }
-
 
 
     MyDialog successDialog;
@@ -280,11 +308,12 @@ public class PayTypeActivity extends BaseActivity {
                 wechatPay(data);
                 break;
             case 3://二维码支付
-               QrCodePay(data);
+                QrCodePay(data);
                 break;
         }
 
     }
+
     //二维码支付
     private void QrCodePay(Intent data) {
         String amount = data.getStringExtra("amount");
@@ -397,16 +426,16 @@ public class PayTypeActivity extends BaseActivity {
         String merchantId = data.getStringExtra("merchantId");
         String merchantName = data.getStringExtra("merchantName");
         String orderNo = data.getStringExtra("orderNo");
-      AliPayInfo aliPayInfo = new AliPayInfo();
-      aliPayInfo.setAmount(ddje);
-      aliPayInfo.setTraceNo(traceNo);
-      aliPayInfo.setBatchNo(batchNo);
-      aliPayInfo.setTime(time);
-      aliPayInfo.setDate(date);
-      aliPayInfo.setTerminalId(terminalId);
-      aliPayInfo.setMerchantId(merchantId);
-      aliPayInfo.setMerchantName(merchantName);
-      aliPayInfo.setOrderNo(orderNo);
+        AliPayInfo aliPayInfo = new AliPayInfo();
+        aliPayInfo.setAmount(ddje);
+        aliPayInfo.setTraceNo(traceNo);
+        aliPayInfo.setBatchNo(batchNo);
+        aliPayInfo.setTime(time);
+        aliPayInfo.setDate(date);
+        aliPayInfo.setTerminalId(terminalId);
+        aliPayInfo.setMerchantId(merchantId);
+        aliPayInfo.setMerchantName(merchantName);
+        aliPayInfo.setOrderNo(orderNo);
 //        Log.e("---amount--", amount + "");
 //        Log.e("---traceNo --", traceNo + "");
 //        Log.e("---type  --", type + "");

@@ -11,18 +11,37 @@ public class OrderListBean {
      * flightNo : ZH9801
      * takeOffTime : 2019-10-31 07:05
      * orderPirce : 1100.0
+     * zfzt=待支付
      */
 
     private String orderNo;//订单编号
     private String issueResult;//预订时间
     private String orderStatus;//订单状态   //0：申请中1：已订座2：已调度3：已出票4：配送中5：部分出票7：客户消8：已取消9：完成
     private String department;//当前所属部门
+    private String name;//联系人姓名
     private String flight;//航程
     private String flightNo;//航班号
     private String takeOffTime;//起飞时间
     private String orderPirce;//订单金额
     private String cfcity;//出发城市
     private String ddcity;//到达城市
+    private String zfzt;//支付状态
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getZfzt() {
+        return zfzt;
+    }
+
+    public void setZfzt(String zfzt) {
+        this.zfzt = zfzt;
+    }
 
     public String getCfcity() {
         return cfcity;

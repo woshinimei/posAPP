@@ -45,6 +45,7 @@ public class OrderListNormalFragment extends BaseFragment {
     OrderListAdapter adater;
     List<OrderListBean> list = new ArrayList<>();
     private boolean isFirst = true;
+    public boolean isResfresh =true;//是否刷新（防止重复刷新）
     private  int start =0;
     private int count =30;
 
@@ -109,10 +110,12 @@ public class OrderListNormalFragment extends BaseFragment {
         super.onResume();
         Log.e("---onResume-----","-------");
         start=0;
-        if (!isFirst) {
-            initData(false);
-        }else {
-            initData(true);
+        if (isResfresh) {
+            if (!isFirst) {
+                initData(false);
+            } else {
+                initData(true);
+            }
         }
     }
 
@@ -143,14 +146,20 @@ public class OrderListNormalFragment extends BaseFragment {
                         }
                         adater.notifyDataSetChanged();
                     } else {
+                        if (list==null||list.size()==0) {
+                            tvError.setVisibility(View.VISIBLE);
+                        }
                        showToast("无更多订单信息");
                     }
+                    isResfresh =true;
                 }
+
             }
 
             @Override
             public void onError(String msg) {
                 if (getActivity()!=null&&!getActivity().isFinishing()) {
+                    isResfresh =true;
                     list.clear();
                     adater.notifyDataSetChanged();
                     if (totalListener!=null){

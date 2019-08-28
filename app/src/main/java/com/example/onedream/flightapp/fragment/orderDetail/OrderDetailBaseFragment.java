@@ -178,9 +178,9 @@ public class OrderDetailBaseFragment extends BaseFragment {
                     setDateWeek(holder.tvEndTimeWeek, bean.getDdsj());
                     setHBTop(holder, bean);
                     String nextDay = bean.getNextDay();
-                    if (!TextUtils.isEmpty(nextDay)&&nextDay.equals("1")){
+                    if (!TextUtils.isEmpty(nextDay) && nextDay.equals("1")) {
                         holder.tvNextDay.setVisibility(View.VISIBLE);
-                    }else {
+                    } else {
                         holder.tvNextDay.setVisibility(View.GONE);
                     }
                     holder.tvHkName.setText(MyTextUtil.clearNullText(bean.getHsjc()) + "");
@@ -189,9 +189,9 @@ public class OrderDetailBaseFragment extends BaseFragment {
                     holder.tvTimeEnd.setText(bean.getDdsj().split(" ")[1] + "");
 
 //                    holder.tvStartAdress.setText(MyTextUtil.clearNullText(bean.getCfcity()) + MyTextUtil.clearNullText(bean.getCfjc()) + MyTextUtil.clearNullText(bean.getCfhzl()));
-                    holder.tvStartAdress.setText(MyTextUtil.clearNullText(bean.getCfcity(),bean.getCfjc(),bean.getCfhzl()));
+                    holder.tvStartAdress.setText(MyTextUtil.clearNullText(bean.getCfcity(), bean.getCfjc(), bean.getCfhzl()));
 //                    holder.tvEndAdress.setText(MyTextUtil.clearNullText(bean.getDdcity()) + MyTextUtil.clearNullText(bean.getDdjc()) + MyTextUtil.clearNullText(bean.getDdhzl()));
-                    holder.tvEndAdress.setText(MyTextUtil.clearNullText(bean.getDdcity(),bean.getDdjc(),bean.getDdhzl()));
+                    holder.tvEndAdress.setText(MyTextUtil.clearNullText(bean.getDdcity(), bean.getDdjc(), bean.getDdhzl()));
                     llHb.addView(view);
                     if (type != 0) {//改签单和退票单的情况调用
                         View couponView = CouponView.addCouponDetailView(getActivity(), orderDetail, i);
@@ -227,15 +227,33 @@ public class OrderDetailBaseFragment extends BaseFragment {
                     String cardNameByCode = OrderLogic.getCardNameByCode(itp);
                     holder.tvIdType.setText(cardNameByCode);
                     holder.tvIdcard.setText(bean.getZjhm());
-                    if (cjrlx.equals("3")){
+                    if (cjrlx.equals("3")) {
                         holder.tvIdcard.setVisibility(View.GONE);
                         holder.tvIdType.setVisibility(View.GONE);
-                    }else {
+                    } else {
                         holder.tvIdcard.setVisibility(View.VISIBLE);
                         holder.tvIdType.setVisibility(View.VISIBLE);
                     }
                     holder.tvType.setText(cjrlxName);
                     holder.tvPhone.setText(bean.getCjrsj());
+                    if (type!=2){
+                        String ph = bean.getPh();
+                        if (!TextUtils.isEmpty(ph)){
+                            holder.llPh.setVisibility(View.VISIBLE);
+                            holder.tvPhNo.setText(ph+"");
+                        }else {
+                            holder.llPh.setVisibility(View.GONE);
+                        }
+                    }else {
+                        String ph = bean.getYph();
+                        if (!TextUtils.isEmpty(ph)){
+                            holder.llPh.setVisibility(View.VISIBLE);
+                            holder.tvPhNo.setText(ph+"");
+                        }else {
+                            holder.llPh.setVisibility(View.GONE);
+                        }
+                    }
+
                     llPassenger.addView(view);
 
                 }
@@ -265,13 +283,13 @@ public class OrderDetailBaseFragment extends BaseFragment {
             }
 
         } else {
-            if (getActivity()!=null&&!getActivity().isFinishing()) {
+            if (getActivity() != null && !getActivity().isFinishing()) {
                 scrollView.setVisibility(View.GONE);
                 tvError.setVisibility(View.VISIBLE);
             }
             Log.e("OrderDetailBase--", "--orderdeail   null--");
         }
-        if (getActivity()!=null) {
+        if (getActivity() != null) {
             pull.finishRefresh(100);//加载时间，必须加这句
         }
     }
@@ -382,7 +400,10 @@ public class OrderDetailBaseFragment extends BaseFragment {
         TextView tvIdType;
         @BindView(R.id.tv_idcard)
         TextView tvIdcard;
-
+        @BindView(R.id.ll_ph)
+        LinearLayout llPh;
+        @BindView(R.id.tv_ph_no)
+        TextView tvPhNo;
         PasengerViewHolder(View view) {
             ButterKnife.bind(this, view);
         }

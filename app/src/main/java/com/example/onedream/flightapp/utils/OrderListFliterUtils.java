@@ -8,25 +8,48 @@ import com.example.onedream.flightapp.request.OrderListRequest;
 public class OrderListFliterUtils {
     public static void resetData(int type) {
         OrderListRequest request = new OrderListRequest();
-        setTimeforRequest(request);
+
+
         if (type == 0) {
+            setTimeforRequest(request);
+            setPayRequest(request);
             AppLocal.normalRequest = request;
         } else if (type == 1) {
+            setRefundTimeRequest(request);
+            setRufundRequest(request);
             AppLocal.refundRequest = request;
         } else {
+            setTimeforRequest(request);
+            setPayRequest(request);
             AppLocal.endoreRequest = request;
         }
 
     }
-public static void setTimeforRequest(OrderListRequest request){
-    String[] timeArr = DateUtils.getBeforeMonthTime(-1);
-    String startTime = timeArr[0];
-    String endTime = timeArr[1];
-    request.setDateStart(startTime);
-    request.setDateEnd(endTime);
-}
+
+    public static void setTimeforRequest(OrderListRequest request) {
+        String startTime = DateUtils.getNowTime();
+        String endTime = DateUtils.getNowTime();
+        request.setDateStart(startTime);
+        request.setDateEnd(endTime);
+    }
+    public static void setRefundTimeRequest(OrderListRequest request) {
+        String startTime = DateUtils.getBeforeOfTime(-3);
+        String endTime = DateUtils.getNowTime();
+        request.setDateStart(startTime);
+        request.setDateEnd(endTime);
+    }
+
+    public static void setPayRequest(OrderListRequest request) {
+        String[] payStatus = AppLocal.payStatus;
+        request.setZfzt(payStatus[0]);
+    }
+    public static void setRufundRequest(OrderListRequest request) {
+        String[] refundStatus = AppLocal.refundStatus;
+        request.setTkzt(refundStatus[0]);
+    }
+
     //从缓存中拿数据
-    public  static void getCacheRequest(int type, OrderListRequest request) {
+    public static void getCacheRequest(int type, OrderListRequest request) {
         OrderListRequest cacheRequest;
         if (type == 0) {
             cacheRequest = AppLocal.normalRequest;
@@ -39,26 +62,25 @@ public static void setTimeforRequest(OrderListRequest request){
 
             String orderStatus = cacheRequest.getOrderStatus();
             if (!TextUtils.isEmpty(orderStatus)) {
-                if (type!=1){
+                if (type != 1) {
                     String[] statusContent = AppLocal.orderStatus;
                     String[] orderStatusType = AppLocal.orderStatusType;
                     for (int i = 0; i < statusContent.length; i++) {
                         String s = statusContent[i];
-                        if (s.equals(orderStatus)){
+                        if (s.equals(orderStatus)) {
                             request.setOrderStatus(orderStatusType[i]);
                         }
                     }
-                }else {
+                } else {
                     String[] statusContent = AppLocal.orderStatusOfRefund;
                     String[] orderStatusType = AppLocal.orderStatusTypeOfRefund;
                     for (int i = 0; i < statusContent.length; i++) {
                         String s = statusContent[i];
-                        if (s.equals(orderStatus)){
+                        if (s.equals(orderStatus)) {
                             request.setOrderStatus(orderStatusType[i]);
                         }
                     }
                 }
-
 
 
             }
@@ -75,26 +97,52 @@ public static void setTimeforRequest(OrderListRequest request){
                 request.setName(name);
             }
             String dateType = cacheRequest.getDateType();
-            if (!TextUtils.isEmpty(dateType)){
+            if (!TextUtils.isEmpty(dateType)) {
                 String[] orderTimeStatus = AppLocal.orderTimeStatus;
                 String[] orderTimeStatusOfRefund = AppLocal.orderTimeStatusOfRefund;
                 String[] orderTimeType = AppLocal.orderTimeType;
-                if (type==1){
+                if (type == 1) {
                     for (int i = 0; i < orderTimeStatusOfRefund.length; i++) {
                         String s = orderTimeStatusOfRefund[i];
-                        if (dateType.equals(s)){
+                        if (dateType.equals(s)) {
                             request.setDateType(orderTimeType[i]);
                         }
                     }
-                }else {
+                } else {
                     for (int i = 0; i < orderTimeStatus.length; i++) {
                         String s = orderTimeStatus[i];
-                        if (dateType.equals(s)){
+                        if (dateType.equals(s)) {
                             request.setDateType(orderTimeType[i]);
                         }
                     }
                 }
 
+            }
+
+            if (type != 1) {
+                String zfzt = cacheRequest.getZfzt();
+                if (!TextUtils.isEmpty(zfzt)) {
+                    String[] payStatusType = AppLocal.payStatusType;
+                    String[] payStatus = AppLocal.payStatus;
+                    for (int i = 0; i < payStatus.length; i++) {
+                        String status = payStatus[i];
+                        if (status.equals(zfzt)) {
+                            request.setZfzt(payStatusType[i]);
+                        }
+                    }
+                }
+            } else {
+                String tkzt = cacheRequest.getTkzt();
+                if (!TextUtils.isEmpty(tkzt)) {
+                    String[] refundStatus = AppLocal.refundStatus;
+                    String[] refundStatusType = AppLocal.refundStatusType;
+                    for (int i = 0; i < refundStatus.length; i++) {
+                        String status = refundStatus[i];
+                        if (status.equals(tkzt)) {
+                            request.setTkzt(refundStatusType[i]);
+                        }
+                    }
+                }
             }
 
 

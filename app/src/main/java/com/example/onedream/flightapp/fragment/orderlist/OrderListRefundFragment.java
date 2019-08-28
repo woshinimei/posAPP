@@ -44,6 +44,7 @@ public class OrderListRefundFragment extends BaseFragment {
     OrderListAdapter adater;
     List<OrderListBean> list = new ArrayList<>();
     private  boolean isFirst =true;
+    public boolean isResfresh =true;//是否刷新（防止重复刷新）
     private  int start =0;
     private int count =30;
     @Override
@@ -102,10 +103,12 @@ public class OrderListRefundFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         start =0;
-        if (!isFirst){
-            initData(true);
-        }else {
-            initData(false);
+        if (isResfresh) {
+            if (!isFirst) {
+                initData(true);
+            } else {
+                initData(false);
+            }
         }
     }
 
@@ -120,7 +123,7 @@ public class OrderListRefundFragment extends BaseFragment {
         model.getData(getActivity(),showDialog, request,new OnCallBack<String>() {
             @Override
             public void onSucess(String s) {
-                if (!getActivity().isFinishing()) {
+                if (getActivity()!=null&&!getActivity().isFinishing()) {
                     OrderListResponse response = GsonUtils.fromJson(s, OrderListResponse.class);
                     List<OrderListBean> orderInfoList = response.getOrderInfoList();
                     tvError.setVisibility(View.GONE);
@@ -135,14 +138,19 @@ public class OrderListRefundFragment extends BaseFragment {
                         }
                         adater.notifyDataSetChanged();
                     }else {
+                        if (list==null||list.size()==0) {
+                            tvError.setVisibility(View.VISIBLE);
+                        }
                         showToast("无更多订单信息");
                     }
+                    isResfresh =true;
                 }
             }
 
             @Override
             public void onError(String msg) {
-                if (adater!=null&&tvError!=null) {
+                if (getActivity()!=null&&!getActivity().isFinishing()) {
+                    isResfresh =true;
                     list.clear();
                     adater.notifyDataSetChanged();
                     tvError.setVisibility(View.VISIBLE);

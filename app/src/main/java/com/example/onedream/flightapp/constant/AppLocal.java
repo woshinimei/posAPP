@@ -30,6 +30,13 @@ public class AppLocal {
     public static String [] orderTimeStatusOfRefund = {"办理日期","采购办理日期","起飞日期"};
     public static String[] orderTimeType = {"1","2","3"};
 
+    //订单筛选条件（支付状态）
+    public static String[] payStatus = {"未付","已付","部分付","全部"};
+    public static String[] payStatusType = {"0","1","2",""};
+
+    //订单筛选条件（退款状态）
+    public static String[] refundStatus = {"未退","已退","全部"};
+    public static String[] refundStatusType = {"0","1",""};
 
     //订单列表筛选缓存
     public  static OrderListRequest normalRequest ;//（普通）

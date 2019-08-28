@@ -46,7 +46,7 @@
     </LinearLayout>
 
     <LinearLayout
-
+        android:layout_marginBottom="@dimen/dp_6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -69,5 +69,29 @@
             android:textColor="@color/colorT3"
             android:textSize="@dimen/sp_13" />
     </LinearLayout>
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/ll_ph"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
+        <TextView
+            android:layout_marginRight="@dimen/dp_5"
+            android:id="@+id/tv_ph"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="票号"
+            android:textColor="@color/colorT3"
+            android:textSize="@dimen/sp_13" />
+
+
+        <TextView
+            android:id="@+id/tv_ph_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/colorT3"
+            android:textSize="@dimen/sp_13" />
+    </LinearLayout>
 </LinearLayout>

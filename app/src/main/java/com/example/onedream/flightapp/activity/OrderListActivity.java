@@ -217,12 +217,15 @@ public class OrderListActivity extends BaseActivity {
             Log.e("-currentItem--",currentItem+"");
             if (currentItem == 0) {
                 normalFragment.setStart(0);
+                normalFragment.isResfresh =false;
                 normalFragment.initData(true);
             } else if (currentItem == 1) {
                 refundFragment.setStart(0);
+                refundFragment.isResfresh =false;
                 refundFragment.initData(true);
             } else {
                 endoreFragment.setStart(0);
+                endoreFragment.isResfresh =false;
                 endoreFragment.initData(true);
             }
         }

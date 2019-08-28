@@ -43,7 +43,8 @@ public class OrderListEndoreFragment extends BaseFragment {
     TextView tvError;
     OrderListAdapter adater;
     List<OrderListBean> list = new ArrayList<>();
-    boolean isFirst =true;
+    public boolean isResfresh =true;//是否刷新（防止重复刷新）
+   public boolean isFirst =true;
     private  int start =0;
     private int count =30;
 
@@ -105,10 +106,12 @@ public class OrderListEndoreFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         start=0;
-        if (!isFirst){
-            initData(true);
-        }else {
-            initData(false);
+        if (isResfresh) {
+            if (!isFirst) {
+                initData(true);
+            } else {
+                initData(false);
+            }
         }
     }
 
@@ -122,7 +125,7 @@ public class OrderListEndoreFragment extends BaseFragment {
         model.getData(getActivity(),showDialog, request,new OnCallBack<String>() {
             @Override
             public void onSucess(String s) {
-                if (!getActivity().isFinishing()) {
+                if (getActivity()!=null&&!getActivity().isFinishing()) {
                     OrderListResponse response = GsonUtils.fromJson(s, OrderListResponse.class);
                     List<OrderListBean> orderInfoList = response.getOrderInfoList();
                     tvError.setVisibility(View.GONE);
@@ -137,20 +140,25 @@ public class OrderListEndoreFragment extends BaseFragment {
                         }
                         adater.notifyDataSetChanged();
                     }else {
+                        if (list==null||list.size()==0) {
+                            tvError.setVisibility(View.VISIBLE);
+                        }
                      showToast("无更多订单信息");
                     }
+                    isResfresh =true;
                 }
             }
 
             @Override
             public void onError(String msg) {
-                if (!getActivity().isFinishing()) {
+                if (getActivity()!=null&&!getActivity().isFinishing()) {
                     list.clear();
                     adater.notifyDataSetChanged();
                     if (totalListener!=null){
                         totalListener.getNum("0");
                     }
                     tvError.setVisibility(View.VISIBLE);
+                    isResfresh =true;
                 }
                 Log.e("---isShowFragment-----",isShowFragment+"");
                 if (isShowFragment){

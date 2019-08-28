@@ -12,8 +12,26 @@ public class OrderListRequest extends BaseRequest implements Serializable {
     private String dateStart;//日期始 格式：yyyy-MM-dd
     private String dateEnd;//日期止  格式：yyyy-MM-dd
     private String orderStatus;//订单状态
+    private String zfzt;//支付状态
+    private String tkzt;//退款状态
     private int start =0;//起始页
     private int count;//每页数目
+
+    public String getTkzt() {
+        return tkzt;
+    }
+
+    public void setTkzt(String tkzt) {
+        this.tkzt = tkzt;
+    }
+
+    public String getZfzt() {
+        return zfzt;
+    }
+
+    public void setZfzt(String zfzt) {
+        this.zfzt = zfzt;
+    }
 
     public int getStart() {
         return start;

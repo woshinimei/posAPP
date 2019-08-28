@@ -41,9 +41,11 @@ import com.example.onedream.flightapp.fragment.orderDetail.OrderDetailBaseFragme
 import com.example.onedream.flightapp.fragment.orderDetail.OrderDetailDeliveryFragment;
 import com.example.onedream.flightapp.fragment.orderDetail.OrderDetailTravelFragment;
 import com.example.onedream.flightapp.intefaces.OnCallBack;
+import com.example.onedream.flightapp.model.CheckModel;
 import com.example.onedream.flightapp.model.OrderDetailModel;
 import com.example.onedream.flightapp.model.RefundModel;
 import com.example.onedream.flightapp.request.RefundRequest;
+import com.example.onedream.flightapp.response.CheckResponse;
 import com.example.onedream.flightapp.response.OrderDetailResponse;
 import com.example.onedream.flightapp.response.RefundResponse;
 import com.example.onedream.flightapp.utils.FlightComomLogic;
@@ -385,7 +387,7 @@ public class OrderDetailActivity extends BaseActivity {
                                 //转成12位格式的金额
                                 String count = MoneyUtils.changeY2F(ytje);
                                 Log.e("----count----",count+"");
-                                showRefundDialog(count, response.getTfOrderDetail());
+                                showRefundDialog(ytje, response.getTfOrderDetail());
                             }else {
                                 showToast("获取不到订单金额");
                             }
@@ -403,7 +405,13 @@ public class OrderDetailActivity extends BaseActivity {
     MyDialog refundDialog;
 
     private void showRefundDialog(String count, OrderDetail orderDetail) {
-        refundDialog = new MyDialog(getActivity());
+        if (refundDialog==null) {
+            refundDialog = new MyDialog(getActivity());
+        }else if (refundDialog.isShowing()){
+            refundDialog.dismiss();
+        }else {
+            refundDialog.showPaddingScreen();
+        }
         refundDialog.setContent("是否立即退款?");
         refundDialog.setLeftButtonClickListener(new View.OnClickListener() {
             @Override
@@ -415,12 +423,42 @@ public class OrderDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 refundDialog.dismiss();
-                String amounts = "000000000001";
-                goToBankPay(amounts, orderDetail);
+                //退款前校验价格
+                checkRefund(count,orderDetail);
+
 
             }
         });
-        refundDialog.showPaddingScreen();
+        refundResultDialog.setLeftButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refundDialog.dismiss();
+            }
+        });
+
+
+    }
+    //退款前校验价格
+    private void checkRefund(String count,OrderDetail orderDetail) {
+
+        CheckModel model = new CheckModel();
+        model.checkPayOrRefund(getActivity(), type, orderNo, count, new OnCallBack<String>() {
+            @Override
+            public void onSucess(String s) {
+                CheckResponse response = GsonUtils.fromJson(s,CheckResponse.class);
+                if (response.isSuccess()){
+                    String amounts = "000000000001";
+                    goToBankPay(amounts, orderDetail);
+                }else {
+                    showToast(response.getMessage()+"");
+                }
+            }
+
+            @Override
+            public void onError(String msg) {
+                showToast(msg);
+            }
+        });
 
     }
 

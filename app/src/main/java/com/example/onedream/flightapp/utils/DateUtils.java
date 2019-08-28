@@ -30,6 +30,33 @@ public class DateUtils {
 	public DateUtils() {
 
 	}
+
+/**
+ * 获取当前时间
+ * */
+	public static String getNowTime() {
+		//获取当前时间
+		Calendar c;
+		c = Calendar.getInstance();
+		SimpleDateFormat format= new SimpleDateFormat("yyyy-MM-dd");
+		String nowTime = format.format(c.getTime());
+		Log.e("--当前时间--",nowTime+"");
+
+		return nowTime;
+	}
+	/**
+	 * 获取n天前时间
+	 * */
+	public static String getBeforeOfTime(int n) {
+		//获取当前时间
+		Calendar c;
+		c = Calendar.getInstance();
+		c.add(Calendar.DAY_OF_MONTH,n);
+		SimpleDateFormat format= new SimpleDateFormat("yyyy-MM-dd");
+		String nowTime = format.format(c.getTime());
+		Log.e("--n天后时间--",nowTime+"");
+		return nowTime;
+	}
 /**
  * 获取n个月前时间
  * */

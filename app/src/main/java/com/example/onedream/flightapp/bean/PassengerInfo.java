@@ -33,6 +33,7 @@ public class PassengerInfo {
     private String zjhm	;
     private String cjrsj	;
     private String ph	;
+    private String yph;
     private double pj	;
     private double ry	;
     private double jj	;
@@ -73,6 +74,14 @@ public class PassengerInfo {
     private List<CouponDetailBean> directCouponList;
     //直加产品（新航程）
     private List<CouponDetailBean> tgqDirectCouponList;
+
+    public String getYph() {
+        return yph;
+    }
+
+    public void setYph(String yph) {
+        this.yph = yph;
+    }
 
     public List<CouponDetailBean> getCouponList() {
         return couponList;
