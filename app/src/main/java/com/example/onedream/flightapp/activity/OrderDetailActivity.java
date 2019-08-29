@@ -220,13 +220,13 @@ public class OrderDetailActivity extends BaseActivity {
                     String sffh = orderDetail.getSffh();
                     if (!TextUtils.isEmpty(sffh)&&sffh.equals("1")){
                         tvPay.setVisibility(View.VISIBLE);
-                        AliPayRefundInfo alipayInfo = orderDetail.getAlipayInfo();
-                        PosPayRefundInfo posInfo = orderDetail.getPosInfo();
-                        WechatRefundInfo wechatInfo = orderDetail.getWechatInfo();
-                        QrcodePayRefundInfo qrcodeInfo = orderDetail.getQrcodeInfo();
-                        if (alipayInfo==null&&posInfo==null&&wechatInfo==null&&qrcodeInfo==null){
-                            tvPay.setVisibility(View.GONE);
-                        }
+//                        AliPayRefundInfo alipayInfo = orderDetail.getAlipayInfo();
+//                        PosPayRefundInfo posInfo = orderDetail.getPosInfo();
+//                        WechatRefundInfo wechatInfo = orderDetail.getWechatInfo();
+//                        QrcodePayRefundInfo qrcodeInfo = orderDetail.getQrcodeInfo();
+//                        if (alipayInfo==null&&posInfo==null&&wechatInfo==null&&qrcodeInfo==null){
+//                            tvPay.setVisibility(View.GONE);
+//                        }
                     }else {
                         tvPay.setVisibility(View.GONE);
                     }
@@ -429,7 +429,7 @@ public class OrderDetailActivity extends BaseActivity {
 
             }
         });
-        refundResultDialog.setLeftButtonClickListener(new View.OnClickListener() {
+        refundDialog.setLeftButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 refundDialog.dismiss();

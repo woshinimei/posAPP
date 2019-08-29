@@ -82,7 +82,7 @@ public class FilterTicketActivity extends BaseActivity {
             if (type==1){
                 OrderListFliterUtils.setRufundRequest(baseRequest);
             }else {
-                OrderListFliterUtils.setPayRequest(baseRequest);
+                OrderListFliterUtils.setNormalRequest(baseRequest);
             }
         }
         tvDateStart.setText(baseRequest.getDateStart());
@@ -324,17 +324,23 @@ public class FilterTicketActivity extends BaseActivity {
     private void initStatus() {
         List<String> strList = new ArrayList<>();
         strList.clear();
-        if (type != 1) {
+        if (type==0){
             String[] orderStatus = AppLocal.orderStatus;
             for (String s : orderStatus) {
                 strList.add(s);
             }
-        } else {
+        }else if (type==1){
             String[] orderStatus = AppLocal.orderStatusOfRefund;
             for (String s : orderStatus) {
                 strList.add(s);
             }
+        }else {
+            String[] orderStatus = AppLocal.orderStatusOfEndore;
+            for (String s : orderStatus) {
+                strList.add(s);
+            }
         }
+
 
         showOptionDialog("订单状态选择", strList, new OnChoiceListener() {
             @Override

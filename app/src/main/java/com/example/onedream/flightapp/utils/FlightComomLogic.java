@@ -132,7 +132,7 @@ public class FlightComomLogic {
      * @param priceben
      */
     public static void initRefundDetailPriceInfo(OrderDetail parserefundJson, PriceDetailedBen priceben) {
-
+         double psf =0;
         double xsj = 0;
         double jpjl = 0;
         double jj = 0;
@@ -216,6 +216,19 @@ public class FlightComomLogic {
                     }catch (Exception ption){
 
                     }
+                    //配送费
+                    try {
+                        DeliveryAndInvoiceInfo info = 	parserefundJson.getFppsxx();
+                        if(info!=null){
+                            String yjpsf = info.getYjpsf();
+                            if(!TextUtils.isEmpty(yjpsf)&&!"0".equals(FormatUtils.formatPrice(yjpsf))){
+                              psf = Double.valueOf(yjpsf);
+                            }
+                        }
+                    }catch (Exception e){
+
+                    }
+
 
                     String sxf1 = flightGetRefundDetailPassengerInfoResponse.getSxf();  //手续费
                     try {
@@ -284,7 +297,7 @@ public class FlightComomLogic {
             priceben.setTjpsxf(sxf);
             priceben.setTjpsfwf(sfwf);
             priceben.setTjpbxje(tjpbxje);
-
+            priceben.setPsf(psf);
 
 
 
@@ -392,6 +405,7 @@ public class FlightComomLogic {
 
 
 
+
 				/*	String tjpbxfs = priceben.getTjpbxfs();
 
 					if(!MyTextUtil.isEmpty(tjpbxfs)&&!"0".equals(FormatUtils.formatPrice(tjpbxfs))){
@@ -415,6 +429,16 @@ public class FlightComomLogic {
 
 
 
+
+        }
+        if(priceben!=null){
+            double psf = priceben.getPsf();
+            if (psf!=0){
+                PriceInfo gqjppsfinfo  = new PriceInfo();
+                gqjppsfinfo.setName("配送费");
+                gqjppsfinfo.setTotalPrice(Double.valueOf(psf));
+                priceinfos.add(gqjppsfinfo);
+            }
 
         }
         //机票优惠券金额

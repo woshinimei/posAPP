@@ -85,7 +85,7 @@ public class PriceDetailedBen implements Serializable {
     private  double couponCost =0;//优惠券
     private  double     tjpbxje = 0;
     private double jpyhje =0;//机票优惠券
-
+    private double psf =0;//配送费
 
     /**
      * 机票改签订单详
@@ -94,6 +94,14 @@ public class PriceDetailedBen implements Serializable {
     private String gqjpgqf = "0";     //改签机票改签费
     private String gqjpfwf = "0";    //改签机票服务费
     private String gqjpcj = "0";    //改签机票差价
+
+    public double getPsf() {
+        return psf;
+    }
+
+    public void setPsf(double psf) {
+        this.psf = psf;
+    }
 
     public double getCouponCost() {
         return couponCost;

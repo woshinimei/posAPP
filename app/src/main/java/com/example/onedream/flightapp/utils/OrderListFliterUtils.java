@@ -12,7 +12,7 @@ public class OrderListFliterUtils {
 
         if (type == 0) {
             setTimeforRequest(request);
-            setPayRequest(request);
+            setNormalRequest(request);
             AppLocal.normalRequest = request;
         } else if (type == 1) {
             setRefundTimeRequest(request);
@@ -20,7 +20,7 @@ public class OrderListFliterUtils {
             AppLocal.refundRequest = request;
         } else {
             setTimeforRequest(request);
-            setPayRequest(request);
+            setNormalRequest(request);
             AppLocal.endoreRequest = request;
         }
 
@@ -39,7 +39,7 @@ public class OrderListFliterUtils {
         request.setDateEnd(endTime);
     }
 
-    public static void setPayRequest(OrderListRequest request) {
+    public static void setNormalRequest(OrderListRequest request) {
         String[] payStatus = AppLocal.payStatus;
         request.setZfzt(payStatus[0]);
     }
@@ -62,7 +62,7 @@ public class OrderListFliterUtils {
 
             String orderStatus = cacheRequest.getOrderStatus();
             if (!TextUtils.isEmpty(orderStatus)) {
-                if (type != 1) {
+                if (type==0){
                     String[] statusContent = AppLocal.orderStatus;
                     String[] orderStatusType = AppLocal.orderStatusType;
                     for (int i = 0; i < statusContent.length; i++) {
@@ -71,7 +71,7 @@ public class OrderListFliterUtils {
                             request.setOrderStatus(orderStatusType[i]);
                         }
                     }
-                } else {
+                }else if (type==1){
                     String[] statusContent = AppLocal.orderStatusOfRefund;
                     String[] orderStatusType = AppLocal.orderStatusTypeOfRefund;
                     for (int i = 0; i < statusContent.length; i++) {
@@ -80,7 +80,17 @@ public class OrderListFliterUtils {
                             request.setOrderStatus(orderStatusType[i]);
                         }
                     }
+                }else {
+                    String[] statusContent = AppLocal.orderStatusOfEndore;
+                    String[] orderStatusType = AppLocal.orderStatusTypeOfEndore;
+                    for (int i = 0; i < statusContent.length; i++) {
+                        String s = statusContent[i];
+                        if (s.equals(orderStatus)) {
+                            request.setOrderStatus(orderStatusType[i]);
+                        }
+                    }
                 }
+
 
 
             }

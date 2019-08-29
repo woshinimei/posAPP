@@ -19,20 +19,20 @@
         <activity android:name=".activity.MainActivity">
 
         </activity>
-        <activity android:name=".activity.SpalshActivity"   android:theme="@style/splashTheme" >
+        <activity android:name=".activity.SpalshActivity"   android:theme="@style/splashTheme"   android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.LoginActivity" android:launchMode="singleTask" />
-        <activity android:name=".activity.SearchHbActivity" />
-        <activity android:name=".activity.OrderListActivity" />
-        <activity android:name=".activity.FilterTicketActivity" />
-        <activity android:name=".activity.OrderDetailActivity" />
-        <activity android:name=".activity.PayTypeActivity" />
-        <activity android:name=".activity.ControlDepartmentActivity" />
-        <activity android:name=".activity.WebActivity" />
+        <activity android:name=".activity.LoginActivity"   android:screenOrientation="portrait" android:launchMode="singleTask" />
+        <activity android:name=".activity.SearchHbActivity"   android:screenOrientation="portrait" />
+        <activity android:name=".activity.OrderListActivity"   android:screenOrientation="portrait" />
+        <activity android:name=".activity.FilterTicketActivity"   android:screenOrientation="portrait" />
+        <activity android:name=".activity.OrderDetailActivity"    android:screenOrientation="portrait"/>
+        <activity android:name=".activity.PayTypeActivity"    android:screenOrientation="portrait"/>
+        <activity android:name=".activity.ControlDepartmentActivity"   android:screenOrientation="portrait" />
+        <activity android:name=".activity.WebActivity"   android:screenOrientation="portrait" />
     </application>
 
 </manifest>
