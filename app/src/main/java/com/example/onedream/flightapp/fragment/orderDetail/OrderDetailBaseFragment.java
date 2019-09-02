@@ -147,6 +147,8 @@ public class OrderDetailBaseFragment extends BaseFragment {
                     tvSi.setText("因公");
                 } else if (cllx.equals("2")) {
                     tvSi.setText("因私");
+                }else if (cllx.equals("")){
+                    tvSi.setVisibility(View.GONE);
                 }
                 if (type == 0) {
                     tvOrderTimeStr.setText("预定时间：");
@@ -174,8 +176,8 @@ public class OrderDetailBaseFragment extends BaseFragment {
                     View view = View.inflate(getActivity(), R.layout.item_base_airtravel_view, null);
                     HbViewHolder holder = new HbViewHolder(view);
                     setLogo(holder.iconHk, bean.getHbh());
-                    setDateWeek(holder.tvStartTimeWeek, bean.getCfsj());
-                    setDateWeek(holder.tvEndTimeWeek, bean.getDdsj());
+                    setDateWeek(holder.tvStartTimeWeek, MyTextUtil.clearNullText(bean.getCfsj()));
+                    setDateWeek(holder.tvEndTimeWeek, MyTextUtil.clearNullText(bean.getDdsj()));
                     setHBTop(holder, bean);
                     String nextDay = bean.getNextDay();
                     if (!TextUtils.isEmpty(nextDay) && nextDay.equals("1")) {
@@ -185,8 +187,13 @@ public class OrderDetailBaseFragment extends BaseFragment {
                     }
                     holder.tvHkName.setText(MyTextUtil.clearNullText(bean.getHsjc()) + "");
                     holder.tvHkhbh.setText(bean.getHbh() + "");
-                    holder.tvTimeStart.setText(bean.getCfsj().split(" ")[1] + "");
-                    holder.tvTimeEnd.setText(bean.getDdsj().split(" ")[1] + "");
+
+                    if (bean.getCfsj()!=null) {
+                        holder.tvTimeStart.setText(MyTextUtil.clearNullText(bean.getCfsj()).split(" ")[1] + "");
+                    }
+                    if (bean.getDdsj()!=null) {
+                        holder.tvTimeEnd.setText(MyTextUtil.clearNullText(bean.getDdsj()).split(" ")[1] + "");
+                    }
 
 //                    holder.tvStartAdress.setText(MyTextUtil.clearNullText(bean.getCfcity()) + MyTextUtil.clearNullText(bean.getCfjc()) + MyTextUtil.clearNullText(bean.getCfhzl()));
                     holder.tvStartAdress.setText(MyTextUtil.clearNullText(bean.getCfcity(), bean.getCfjc(), bean.getCfhzl()));

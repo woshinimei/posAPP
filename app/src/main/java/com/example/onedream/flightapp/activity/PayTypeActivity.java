@@ -152,9 +152,9 @@ public class PayTypeActivity extends BaseActivity {
             int position = chooseItemPay();
             String count = MoneyUtils.changeY2F(ddje);
             Log.e("----12位金额----", count + "");
-            Log.e("---position--", position + "");
-            String amount = "000000000003";
-            goToBankPay(amount, tranNameList[position]);
+//            Log.e("---position--", position + "");
+//            String amount = "000000000003";
+            goToBankPay(count, tranNameList[position]);
         } else {
             showToast("请选择支付方式");
         }

@@ -2,10 +2,10 @@ package com.example.onedream.flightapp.network;
 
 public class BaseHttp {
     //正式地址
-//    private static String BASE ="http://tmc.shenzhenair.com/openapi/boc/";
+    private static String BASE ="http://tmc.shenzhenair.com/openapi/boc/";
     //测试地址
-    private static String BASE = "http://14.21.67.172:8099/openapi/boc/";
-//    private static String BASE = "http://10.13.131.105:8099/openapi/boc/";
+//    private static String BASE = "http://14.21.67.172:8099/openapi/boc/";
+//    private static String BASE = "http://10.13.131.105:8022/openapi/boc/";
 //    private static String BASE = "http://10.21.89.40:8080/openapi/boc/";
     //登录接口
     public static String LOGIN = BASE + "login";

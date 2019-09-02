@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -384,9 +385,6 @@ public class OrderDetailActivity extends BaseActivity {
                             ytje = jbInfo.getYtje();
                             Log.e("----ytje----",ytje+"");
                             if (!TextUtils.isEmpty(ytje)){
-                                //转成12位格式的金额
-                                String count = MoneyUtils.changeY2F(ytje);
-                                Log.e("----count----",count+"");
                                 showRefundDialog(ytje, response.getTfOrderDetail());
                             }else {
                                 showToast("获取不到订单金额");
@@ -447,8 +445,11 @@ public class OrderDetailActivity extends BaseActivity {
             public void onSucess(String s) {
                 CheckResponse response = GsonUtils.fromJson(s,CheckResponse.class);
                 if (response.isSuccess()){
-                    String amounts = "000000000001";
-                    goToBankPay(amounts, orderDetail);
+//                    String amounts = "000000000001";
+                    //转成12位格式的金额
+                    String payCount = MoneyUtils.changeY2F(count);
+                    Log.e("----payCount----",payCount+"");
+                    goToBankPay(payCount, orderDetail);
                 }else {
                     showToast(response.getMessage()+"");
                 }

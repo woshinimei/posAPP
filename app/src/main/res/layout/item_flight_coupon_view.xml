@@ -27,7 +27,7 @@
         android:maxWidth="@dimen/dp_80"
          />
     <ImageView
-        android:id="@+id/iv_user"
+        android:id="@+id/iv_used"
         android:visibility="gone"
         android:layout_gravity="center_horizontal"
         android:src="@mipmap/icon_coupon_used"

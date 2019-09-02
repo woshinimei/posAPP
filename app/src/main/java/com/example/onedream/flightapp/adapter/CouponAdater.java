@@ -16,11 +16,14 @@ import com.bumptech.glide.Glide;
 import com.example.onedream.flightapp.R;
 import com.example.onedream.flightapp.activity.WebActivity;
 import com.example.onedream.flightapp.bean.CouponBean;
+import com.example.onedream.flightapp.utils.MyTextUtil;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.List;
+
+import butterknife.BindView;
 
 
 public class CouponAdater extends RecyclerView.Adapter<CouponAdater.MyHoldel> {
@@ -56,6 +59,12 @@ public class CouponAdater extends RecyclerView.Adapter<CouponAdater.MyHoldel> {
         }
         Glide.with(content).load(activeIcon).error(R.mipmap.icon_zj_qian).into(holder.iv);
         holder.tvName.setText(couponName + "");
+        String status = MyTextUtil.clearNullText(bean.getStatus());
+        if (!TextUtils.isEmpty(status) && (status.equals("1")||status.equals("2"))) {
+            holder.ivUser.setVisibility(View.VISIBLE);
+        }else {
+            holder.ivUser.setVisibility(View.GONE);
+        }
         final String url = bean.getDetailH5Url();
         holder.llitem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +107,8 @@ public class CouponAdater extends RecyclerView.Adapter<CouponAdater.MyHoldel> {
         TextView tvName;
         @ViewInject(R.id.ll_item)
         LinearLayout llitem;
+        @ViewInject(R.id.iv_used)
+        ImageView ivUser;
 
         public MyHoldel(View itemView) {
             super(itemView);

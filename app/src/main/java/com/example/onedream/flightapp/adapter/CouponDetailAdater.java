@@ -23,6 +23,8 @@ import org.xutils.x;
 
 import java.util.List;
 
+import butterknife.BindView;
+
 
 public class CouponDetailAdater extends RecyclerView.Adapter<CouponDetailAdater.MyHoldel> {
     Context content;
@@ -56,6 +58,12 @@ public class CouponDetailAdater extends RecyclerView.Adapter<CouponDetailAdater.
             holder.tvName.setText(couponName + "");
         }
         Glide.with(content).load(activeIcon).error(R.mipmap.icon_zj_qian).into(holder.iv);
+        String status = bean.getStatus();
+        if (!TextUtils.isEmpty(status) && (status.equals("1")||status.equals("2"))) {
+            holder. ivUser.setVisibility(View.VISIBLE);
+        }else {
+            holder.ivUser.setVisibility(View.GONE);
+        }
         holder.tvName.setText(couponName + "");
         final String url = bean.getDetail_info_url();
         holder.llitem.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +107,8 @@ public class CouponDetailAdater extends RecyclerView.Adapter<CouponDetailAdater.
         TextView tvName;
         @ViewInject(R.id.ll_item)
         LinearLayout llitem;
-
+        @ViewInject(R.id.iv_used)
+        ImageView ivUser;
         public MyHoldel(View itemView) {
             super(itemView);
             x.view().inject(this, itemView);
